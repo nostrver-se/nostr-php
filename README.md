@@ -1,6 +1,7 @@
 # nostr-php
 
 PHP Helper library for Nostr.
+More info about Nostr: https://github.com/nostr-protocol/nostr
 
 ## Signing an event
 
