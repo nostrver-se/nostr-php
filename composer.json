@@ -4,7 +4,7 @@
     "homepage": "https://github.com/swentel/nostr-php",
     "license": "GPL-2.0-or-later",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "public-square/phpecc": "^0.1.0"
     },
     "require-dev": {
