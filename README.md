@@ -9,6 +9,8 @@ Calculates the id and signs an event. The 'id' and 'sig' properties are added
 to the array.
 
 ```
+$private_key = 'yourprivatekey';
+
 $event = [
   'pubkey' => $public_key,
   'created_at' => time(),
@@ -17,7 +19,7 @@ $event = [
   'content' => trim($entity->get('body')->value),
 ];
 $signer = new Sign();
-$event = $signer->sign($event);
+$event = $signer->sign($event, $private_key);
 ```
 
 ## Converting keys

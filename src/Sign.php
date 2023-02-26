@@ -7,7 +7,7 @@ use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
 class Sign
 {
 
-    public function sign(array $event)
+    public function sign(array $event, string $private_key)
     {
 
         // This is weird, but it works. json_encode works differently on an
