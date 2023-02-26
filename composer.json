@@ -1,0 +1,18 @@
+{
+    "name": "swentel/nostr-php",
+    "description": "Nostr helper library for PHP ",
+    "homepage": "https://github.com/swentel/nostr-php",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "public-square/phpecc": "^0.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "swentel\\nostr\\": "src/"
+        }
+    }
+}
