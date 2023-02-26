@@ -18,6 +18,10 @@ class Sign
             if (is_numeric($val)) {
                 $hash_content .= ',' . $val;
             }
+            elseif (is_array($val)) {
+                // TODO these are tags. hardcoded for now.
+                $hash_content .= ',[]';
+            }
             else
             {
                 $hash_content .= ',"' . $val . '"';
@@ -28,7 +32,6 @@ class Sign
         $id = hash('sha256', utf8_encode($hash_content));
         $event['id'] = $id;
 
-        $message = '';
         $sign = new SchnorrSignature();
         $signature = $sign->sign($private_key, $event['id']);
         $event['sig'] = $signature['signature'];
