@@ -4,7 +4,8 @@ PHP Helper library for Nostr.
 
 ## Signing an event
 
-Calculates the id and signs an event. Both properties are added to the array.
+Calculates the id and signs an event. The 'id' and 'sig' properties are added
+to the array.
 
 ```
 $event = [
