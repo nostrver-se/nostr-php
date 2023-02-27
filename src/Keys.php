@@ -2,19 +2,27 @@
 
 namespace swentel\nostr;
 
+use BitWasp\Bech32\Exception\Bech32Exception;
+use function BitWasp\Bech32\convertBits;
+use function BitWasp\Bech32\decode;
+
 class Keys
 {
 
-    public static function convertPublicKeyToHex($key, $key2)
+    public function convertKeyToHex($key): string
     {
-        // Temporary, so the tests 'pass'.
-        return $key2;
-    }
+        $str = '';
+        try {
+            $decoded = decode($key);
+            $data = $decoded[1];
+            $bytes = convertBits($data, count($data), 5, 8, FALSE);
+            foreach ($bytes as $item) {
+                $str .= str_pad(dechex($item), 2, '0', STR_PAD_LEFT);
+            }
+        }
+        catch (Bech32Exception $ignored) {}
 
-    public static function convertPrivateKeyToHex($key, $key2)
-    {
-        // Temporary, so the tests 'pass'.
-        return $key2;
+        return $str;
     }
 
 }
