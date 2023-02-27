@@ -20,12 +20,22 @@ class ConvertTest extends TestCase
 
         $this->assertEquals(
           $public_key_hex,
-          $keys->convertKeyToHex($public_key_bech32),
+          $keys->convertToHex($public_key_bech32),
+        );
+
+        $this->assertEquals(
+            $public_key_bech32,
+            $keys->convertPublicKeyToBech32($public_key_hex),
         );
 
         $this->assertEquals(
           $private_key_hex,
-          $keys->convertKeyToHex($private_key_bech32),
+          $keys->convertToHex($private_key_bech32),
+        );
+
+        $this->assertEquals(
+            $private_key_bech32,
+            $keys->convertPrivateKeyToBech32($private_key_hex),
         );
 
     }
