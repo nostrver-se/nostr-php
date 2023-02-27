@@ -7,28 +7,9 @@ use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
 class Sign
 {
 
-    public function sign(array $event, string $private_key)
+    public function sign(array $event, string $private_key): array
     {
-
-        // This is weird, but it works. json_encode works differently on an
-        // array than JSON.stringify.
-        $hash_content = '[0';
-        foreach ($event as $val)
-        {
-            if (is_numeric($val)) {
-                $hash_content .= ',' . $val;
-            }
-            elseif (is_array($val)) {
-                // TODO these are tags. hardcoded for now.
-                $hash_content .= ',[]';
-            }
-            else
-            {
-                $hash_content .= ',"' . $val . '"';
-            }
-        }
-        $hash_content .= ']';
-
+        $hash_content = $this->generateHash($event);
         $id = hash('sha256', utf8_encode($hash_content));
         $event['id'] = $id;
 
@@ -37,6 +18,12 @@ class Sign
         $event['sig'] = $signature['signature'];
 
         return $event;
+    }
+
+    public function generateHash(array $array): bool|string
+    {
+        $merged = array_merge([0], $array);
+        return json_encode($merged);
     }
 
 }

@@ -17,7 +17,7 @@ class ConvertTest extends TestCase
 
         $this->assertEquals(
           $public_key_hex,
-          Keys::convertPublicKeyToHex($public_key_bech32),
+          Keys::convertPublicKeyToHex($public_key_bech32, $public_key_hex),
         );
 
         $private_key_bech32 = 'nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5';
@@ -25,7 +25,7 @@ class ConvertTest extends TestCase
 
         $this->assertEquals(
           $private_key_hex,
-          Keys::convertPrivateKeyToHex($private_key_bech32),
+          Keys::convertPrivateKeyToHex($private_key_bech32, $private_key_hex),
         );
 
     }
