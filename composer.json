@@ -4,13 +4,14 @@
     "homepage": "https://github.com/swentel/nostr-php",
     "license": "GPL-2.0-or-later",
     "require": {
-        "php": ">=8.0",
+        "php": "^8.1",
         "ext-gmp": "*",
+        "ext-xml": "*",
         "public-square/phpecc": "^0.1.0",
         "bitwasp/bech32": "^0.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "^10"
     },
     "autoload": {
         "psr-4": {
