@@ -24,7 +24,7 @@ $event = $signer->signEvent($event, $private_key);
 
 ## Generate event message
 
-Generates ["EVENT", <event JSON as created above with id and sig>]
+Generates `["EVENT", <event JSON as created above with id and sig>]`
 
 ```
 $signer = new Sign();
