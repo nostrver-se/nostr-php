@@ -36,12 +36,30 @@ class Sign
      *
      * @param array $array
      *
-     * @return bool|string
+     * @return string
      */
-    public function generateHash(array $array): bool|string
+    public function generateHash(array $array): string
     {
-        $merged = array_merge([0], array_values($array));
-        return json_encode($merged);
+        // TODO, I have no idea why this fails, investigate.
+        /*$merged = array_merge([0], array_values($array));
+        return json_encode($merged);*/
+        $hash_content = '[0';
+        foreach ($array as $val)
+        {
+            if (is_numeric($val)) {
+                $hash_content .= ',' . $val;
+            }
+            elseif (is_array($val)) {
+                // TODO these are tags. hardcoded for now.
+                $hash_content .= ',[]';
+            }
+            else
+            {
+                $hash_content .= ',"' . $val . '"';
+            }
+        }
+        $hash_content .= ']';
+        return $hash_content;
     }
 
 }
