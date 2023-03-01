@@ -40,7 +40,7 @@ class Sign
      */
     public function generateHash(array $array): bool|string
     {
-        $merged = array_merge([0], $array);
+        $merged = array_merge([0], array_values($array));
         return json_encode($merged);
     }
 

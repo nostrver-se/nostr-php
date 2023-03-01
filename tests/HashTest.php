@@ -18,6 +18,7 @@ class HashTest extends TestCase
         $arrays['[0,"value",123,[]]'] = ['value', 123, []];
         $arrays['[0,"value",123,[],"another value"]'] = ['value', 123, [], 'another value'];
         $arrays['[0,"value",123,1,[],"another value"]'] = ['value', 123, 1, [], 'another value'];
+        $arrays['[0,"value","with keys"]'] = ['key' => 'value', 'key2' => "with keys"];
 
         foreach ($arrays as $expected => $source)
         {
