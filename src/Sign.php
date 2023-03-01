@@ -15,7 +15,7 @@ class Sign
      *
      * @return array
      */
-    public function sign(array $event, string $private_key): array
+    public function signEvent(array $event, string $private_key): array
     {
         $hash_content = $this->generateHash($event);
         if ($hash_content)
@@ -32,34 +32,29 @@ class Sign
     }
 
     /**
+     * Generates an event message.
+     *
+     * @param array $event
+     *   The event to encode, containing id and sign created in sign().
+     *
+     * @return false|string
+     */
+    public function generateEvent(array $event): bool|string
+    {
+        return '["EVENT", ' . json_encode($event, JSON_UNESCAPED_SLASHES) . ']';
+    }
+
+    /**
      * Generate the hash from an array suitable for nostr.
      *
      * @param array $array
      *
-     * @return string
+     * @return bool|string
      */
-    public function generateHash(array $array): string
+    public function generateHash(array $array): bool|string
     {
-        // TODO, I have no idea why this fails, investigate.
-        /*$merged = array_merge([0], array_values($array));
-        return json_encode($merged);*/
-        $hash_content = '[0';
-        foreach ($array as $val)
-        {
-            if (is_numeric($val)) {
-                $hash_content .= ',' . $val;
-            }
-            elseif (is_array($val)) {
-                // TODO these are tags. hardcoded for now.
-                $hash_content .= ',[]';
-            }
-            else
-            {
-                $hash_content .= ',"' . $val . '"';
-            }
-        }
-        $hash_content .= ']';
-        return $hash_content;
+        $merged = array_merge([0], array_values($array));
+        return json_encode($merged, JSON_UNESCAPED_SLASHES);
     }
 
 }

@@ -5,8 +5,8 @@ More info about Nostr: https://github.com/nostr-protocol/nostr
 
 ## Signing an event
 
-Calculates the id and signs an event. The 'id' and 'sig' properties are added
-to the array.
+Generates the id and signature for an event. The 'id' and 'sig' properties are 
+added to the array.
 
 ```
 $private_key = 'yourprivatekey';
@@ -19,7 +19,17 @@ $event = [
   'content' => trim($entity->get('body')->value),
 ];
 $signer = new Sign();
-$event = $signer->sign($event, $private_key);
+$event = $signer->signEvent($event, $private_key);
+```
+
+## Generate event message
+
+Generates ["EVENT", <event JSON as created above with id and sig>]
+
+```
+$signer = new Sign();
+$event = $signer->signEvent($event, $private_key);
+$message = $signer->generateEvent($event);
 ```
 
 ## Converting keys
