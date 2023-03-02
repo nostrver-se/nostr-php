@@ -33,7 +33,7 @@ class Keys
      *
      * @return string
      */
-    public function generatePublicKey($priv_hex)
+    public function getPublicKey($priv_hex)
     {
         $ec = new EC('secp256k1');
         $priv = $ec->keyFromPrivate($priv_hex);
