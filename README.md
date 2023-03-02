@@ -3,6 +3,8 @@
 PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr
 
+To use in your project: `composer require swentel/nostr-php`
+
 ## Signing an event
 
 Generates the id and signature for an event. The 'id' and 'sig' properties are 
