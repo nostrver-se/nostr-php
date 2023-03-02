@@ -39,7 +39,7 @@ class Keys
         $priv = $ec->keyFromPrivate($priv_hex);
         $pub_hex = $priv->getPublic(true, 'hex');
 
-        return $pub_hex;
+        return substr($pub_hex, 2); // remove compression prefix 02 | 03
     }
 
     /**
