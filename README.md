@@ -5,9 +5,21 @@ More info about Nostr: https://github.com/nostr-protocol/nostr
 
 To use in your project: `composer require swentel/nostr-php`
 
+## Generating a private key and a public key
+
+```php
+use Keys;
+
+$keys = new Keys();
+
+$private_key = $keys->generatePrivateKey();
+$public_key  = $keys->getPublicKey($private_key);
+
+```
+
 ## Signing an event
 
-Generates the id and signature for an event. The 'id' and 'sig' properties are 
+Generates the id and signature for an event. The 'id' and 'sig' properties are
 added to the array.
 
 ```
