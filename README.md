@@ -17,7 +17,7 @@ $public_key  = $keys->getPublicKey($private_key);
 
 ```
 
-## Signing an event
+## Creating, signing and preparing events to be published
 
 Generates the id and signature for an event. The 'id' and 'sig' properties are
 added to the array.
@@ -34,8 +34,6 @@ $event = [
 $signer = new Sign();
 $event = $signer->signEvent($event, $private_key);
 ```
-
-## Creating, signing and preparing events to be send
 
 Generates `["EVENT", <event JSON as created above with id and sig>]`
 
