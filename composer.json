@@ -9,7 +9,8 @@
         "ext-xml": "*",
         "public-square/phpecc": "^0.1.0",
         "bitwasp/bech32": "^0.0.1",
-        "simplito/elliptic-php": "^1.0"
+        "simplito/elliptic-php": "^1.0",
+        "textalk/websocket": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^10"
