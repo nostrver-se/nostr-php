@@ -25,13 +25,11 @@ class RelayTest extends TestCase
 
       $signer = new Sign();
       $event = $signer->signEvent($event, $private_key);
-      //  preferring `envelope` over `message`, see https://github.com/jb55/nostril
-      //  method name `generateEvent` may need to be refactored, otherwise the term `event` may be more confusing as it already is
-      $envelope = $signer->generateEvent($event);
+      $message = $signer->generateEvent($event);
 
       $websocket = 'wss://nos.lol';
       $relay = new Relay($websocket);
-      $result = $relay->publish($envelope);
+      $result = $relay->publish($message);
 
       $expectedResult = [
           'OK',

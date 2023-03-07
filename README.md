@@ -8,7 +8,7 @@ To use in your project: `composer require swentel/nostr-php`
 ## Generating a private key and a public key
 
 ```php
-use Keys;
+use swentel\nostr\Keys;
 
 $keys = new Keys();
 
@@ -43,7 +43,7 @@ use swentel\nostr\Sign;
 
 $signer = new Sign();
 $event = $signer->signEvent($event, $private_key);
-$envelope = $signer->generateEvent($event);
+$message = $signer->generateEvent($event);
 ```
 
 ## Interacting with a relay
