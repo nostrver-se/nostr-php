@@ -102,5 +102,5 @@ Usage:
 nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
 ```
 
-Note: the key arguments excepts a file with your private key! Do not paste your
+Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
