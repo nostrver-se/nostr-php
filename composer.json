@@ -19,5 +19,9 @@
         "psr-4": {
             "swentel\\nostr\\": "src/"
         }
-    }
+    },
+    "bin": [
+        "bin/nostr-php"
+    ]
+
 }

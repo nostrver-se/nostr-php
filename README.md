@@ -92,3 +92,15 @@ $key = new Key();
 $bech32_public = $key->convertPublicKeyToBech32($public_key);
 $bech32_private = $key->convertPrivateKeyToBech32($private_key);
 ```
+
+## nostr-php script
+
+The library ships with a simple client to post a text note to the Nostr:
+
+```
+Usage:
+nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
+```
+
+Note: the key arguments excepts a file with your private key! Do not paste your
+private key on command line.
