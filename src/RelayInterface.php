@@ -2,9 +2,13 @@
 
 namespace swentel\nostr;
 
-/**
- *
- */
 interface RelayInterface {
-  public function publish($event);
+
+    /**
+     * Send the message to the relay.
+     *
+     * @return CommandResultInterface
+     */
+    public function send(): CommandResultInterface;
+
 }

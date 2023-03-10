@@ -1,46 +1,42 @@
 <?php
 
-namespace swentel\nostr;
+namespace swentel\nostr\Key;
 
-use Elliptic\EC;
 use BitWasp\Bech32\Exception\Bech32Exception;
+use Elliptic\EC;
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\decode;
 use function BitWasp\Bech32\encode;
 
-
-
-class Keys
+class Key
 {
     /**
      * Generate private key as hex.
      *
      * @return string
      */
-    public function generatePrivateKey()
+    public function generatePrivateKey(): string
     {
         $ec = new EC('secp256k1');
         $key = $ec->genKeyPair();
-        $priv_hex = $key->priv->toString('hex');
-
-        return $priv_hex;
+        return $key->priv->toString('hex');
     }
 
     /**
      * Generate public key from private key as hex.
      *
-     * @param string $priv_hex
+     * @param string $private_hex
      *
      * @return string
      */
-    public function getPublicKey($priv_hex)
+    public function getPublicKey(string $private_hex): string
     {
         $ec = new EC('secp256k1');
-        $priv = $ec->keyFromPrivate($priv_hex);
-        $pub_hex = $priv->getPublic(true, 'hex');
+        $private_key = $ec->keyFromPrivate($private_hex);
+        $public_hex = $private_key->getPublic(true, 'hex');
 
         // remove compression prefix 02 | 03
-        return substr($pub_hex, 2);
+        return substr($public_hex, 2);
     }
 
     /**

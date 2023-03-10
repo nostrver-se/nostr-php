@@ -1,40 +1,37 @@
 <?php
-declare(strict_types=1);
-
-namespace swentel\nostr;
 
 use PHPUnit\Framework\TestCase;
+use swentel\nostr\Event\Event;
+use swentel\nostr\Key\Key;
+use swentel\nostr\Relay\Relay;
+use swentel\nostr\Relay\CommandResult;
+use swentel\nostr\Sign\Sign;
 
 class RelayTest extends TestCase
 {
     /**
-     * Tests publishing message to single relay.
-     *
+     * Tests sending a note to a relay.
      */
-    public function testRelayPublish()
+    public function testSendNoteToRelay()
     {
-        $keys = new Keys();
+        $keys = new Key();
         $private_key = $keys->generatePrivateKey();
-        $public_key = $keys->getPublicKey($private_key);
 
-        $event = [
-          'pubkey' => $public_key,
-          'created_at' => time(),
-          'kind' => 1,
-          'tags' => [],
-          'content' => 'return_success_response',
-        ];
+        $note = new Event();
+        $note->setContent('Hello world');
 
         $signer = new Sign();
-        $event = $signer->signEvent($event, $private_key);
-        $message = $signer->generateEvent($event);
+        $signer->signEvent($note, $private_key);
 
-        $relay = new MockRelay();
-        $result = $relay->publish($message);
+        $relay = $this->createMock(Relay::class);
+        $relay->expects($this->once())
+            ->method('send')
+            ->willReturn(new CommandResult(['OK', $note->getId(), TRUE, '']));
 
+        $response = $relay->send();
         $this->assertTrue(
-            $result->isSuccess()
-          );
+            $response->isSuccess()
+        );
 
     }
 }
