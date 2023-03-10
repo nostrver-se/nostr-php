@@ -95,7 +95,7 @@ $bech32_private = $key->convertPrivateKeyToBech32($private_key);
 
 ## nostr-php script
 
-The library ships with a simple client to post a text note to the Nostr:
+The library ships with a simple client to post a text note to the Nostr
 
 ```
 Usage:

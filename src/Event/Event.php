@@ -36,7 +36,7 @@ class Event implements EventInterface
      *
      * @var string
      */
-    protected string $npub;
+    protected string $pubkey;
 
     /**
      * The event content.
@@ -90,7 +90,7 @@ class Event implements EventInterface
      */
     public function setPublicKey(string $public_key): static
     {
-        $this->npub = $public_key;
+        $this->pubkey = $public_key;
         return $this;
     }
 
@@ -99,7 +99,7 @@ class Event implements EventInterface
      */
     public function getPublicKey(): string
     {
-        return $this->npub;
+        return $this->pubkey;
     }
 
     /**
