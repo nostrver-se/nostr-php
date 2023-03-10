@@ -47,6 +47,6 @@ class Relay implements RelayInterface
         $response = $client->receive();
         $client->close();
 
-        return new CommandResult($response);
+        return new CommandResult(json_decode($response));
     }
 }
