@@ -25,7 +25,7 @@ class Sign
         $hash_content = $this->serializeEvent($event);
         if ($hash_content)
         {
-            $id = hash('sha256', utf8_encode($hash_content));
+            $id = hash('sha256', iconv('ISO-8859-1', 'UTF-8', $hash_content));
             $event->setId($id);
 
             $sign = new SchnorrSignature();
