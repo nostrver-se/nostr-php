@@ -52,7 +52,7 @@ class Sign
             $event->getTags(),
             $event->getContent(),
         ];
-        return json_encode($array, JSON_UNESCAPED_SLASHES);
+        return json_encode($array, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
 }
