@@ -3,7 +3,14 @@
 PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr
 
-To use in your project: `composer require swentel/nostr-php`
+## Install
+
+To use in your project
+
+```console
+$ composer require swentel/nostr-php
+
+```
 
 ## Signing an event
 
