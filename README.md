@@ -23,7 +23,7 @@ use swentel\nostr\Sign\Sign;
 
 $note = new Event();
 $note->setContent('Hello world!');
-$node->setKind(1);
+$note->setKind(1);
 
 $signer = new Sign();
 $signer->signEvent($event, $private_key);
@@ -54,7 +54,7 @@ use swentel\nostr\Relay\Relay;
 
 $note = new Event();
 $note->setContent('Hello world');
-$node->setKind(1);
+$note->setKind(1);
 $signer = new Sign();
 $signer->signEvent($note, $private_key);
 $eventMessage = new EventMessage($event);
