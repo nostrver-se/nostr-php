@@ -35,7 +35,7 @@ class CommandResult implements CommandResultInterface
      */
     public function __construct(array $response)
     {
-        if ($response[0] === 'OK' && $response[2] === FALSE && !str_starts_with($response[3], 'duplicate:')) {
+        if ($response[0] === 'OK' && $response[2] === TRUE && !str_starts_with($response[3], 'duplicate:')) {
             $this->success = TRUE;
             $this->eventId = $response[1];
         } else {
