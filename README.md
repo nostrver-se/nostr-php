@@ -1,11 +1,18 @@
 # nostr-php
 
-PHP Helper library for Nostr.
-More info about Nostr: https://github.com/nostr-protocol/nostr
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/swentel/nostr-php/php)
+![GitHub contributors](https://img.shields.io/github/contributors/swentel/nostr-php)
+![GitHub issues](https://img.shields.io/github/issues/swentel/nostr-php)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/swentel/nostr-php/main)
 
-## Install
+This is a PHP Helper library for Nostr.
+More info about Nostr: https://github.com/nostr-protocol/nostr.
 
-To use in your project
+If you need any help, please join this Telegram group: https://t.me/nostr_php
+
+## Installation
+
+To use in your project with Composer:
 
 ```console
 $ composer require swentel/nostr-php
@@ -104,10 +111,15 @@ $bech32_private = $key->convertPrivateKeyToBech32($private_key);
 
 The library ships with a simple client to post a text note to a Nostr relay.
 
-```
+```bash
 Usage:
 nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
 ```
 
 Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
+
+## Maintainers
+
+* [@swentel](https://github.com/swentel) (original author)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`  
+* [@sebastix](https://github.com/Sebastix)  `npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe`
