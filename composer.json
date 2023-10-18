@@ -1,6 +1,6 @@
 {
     "name": "swentel/nostr-php",
-    "description": "Nostr helper library for PHP ",
+    "description": "Nostr helper library for PHP",
     "homepage": "https://github.com/swentel/nostr-php",
     "license": "GPL-2.0-or-later",
     "require": {
@@ -23,5 +23,4 @@
     "bin": [
         "bin/nostr-php"
     ]
-
 }
