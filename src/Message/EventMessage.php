@@ -24,7 +24,7 @@ class EventMessage implements MessageInterface
      */
     public function generate(): string
     {
-        return '["EVENT", ' . json_encode($this->event->toArray(), JSON_UNESCAPED_SLASHES) . ']';
+        return '["EVENT", ' . json_encode($this->event->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ']';
     }
 
 }
