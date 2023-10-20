@@ -8,7 +8,6 @@ use swentel\nostr\Key\Key;
 
 class Sign
 {
-
     /**
      * Sign an event.
      *
@@ -22,13 +21,12 @@ class Sign
         $key = new Key();
         // Convert to hex if private key is bech32 formatted.
         if (str_starts_with($private_key, 'nsec') === true) {
-          $private_key = $key->convertToHex($private_key);
+            $private_key = $key->convertToHex($private_key);
         }
         $event->setPublicKey($key->getPublicKey($private_key));
 
         $hash_content = $this->serializeEvent($event);
-        if ($hash_content)
-        {
+        if ($hash_content) {
             $id = hash('sha256', $hash_content);
             $event->setId($id);
 
@@ -58,5 +56,4 @@ class Sign
         ];
         return json_encode($array, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
-
 }

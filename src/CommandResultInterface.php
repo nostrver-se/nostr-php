@@ -2,8 +2,8 @@
 
 namespace swentel\nostr;
 
-interface CommandResultInterface {
-
+interface CommandResultInterface
+{
     /**
      * Returns whether the request was successful.
      *
@@ -24,5 +24,4 @@ interface CommandResultInterface {
      * @return string
      */
     public function getEventId(): string;
-
 }

@@ -2,8 +2,8 @@
 
 namespace swentel\nostr;
 
-interface RelayInterface {
-
+interface RelayInterface
+{
     /**
      * Get url of the relay.
      *
@@ -17,5 +17,4 @@ interface RelayInterface {
      * @return CommandResultInterface
      */
     public function send(): CommandResultInterface;
-
 }

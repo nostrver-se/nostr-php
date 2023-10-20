@@ -19,5 +19,4 @@ class GenerateTest extends TestCase
             $keys->getPublicKey($private_key_hex),
         );
     }
-
 }

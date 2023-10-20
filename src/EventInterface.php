@@ -4,7 +4,6 @@ namespace swentel\nostr;
 
 interface EventInterface
 {
-
     /**
      * Set the id.
      *

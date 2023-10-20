@@ -16,11 +16,10 @@ class SerializeTest extends TestCase
 
         $sign = new Sign();
         $arrays = [];
-        $arrays['[0,"' . $public_key . '",'. $time . ',1,[],"Content\n\nwith new lines\nAnd quotes: \'"]'] = ['content' => "Content\n\nwith new lines\nAnd quotes: '"];
-        $arrays['[0,"' . $public_key . '",'. $time . ',1,[],"https://example.com/url"]'] = ['content' => "https://example.com/url"];
+        $arrays['[0,"' . $public_key . '",' . $time . ',1,[],"Content\n\nwith new lines\nAnd quotes: \'"]'] = ['content' => "Content\n\nwith new lines\nAnd quotes: '"];
+        $arrays['[0,"' . $public_key . '",' . $time . ',1,[],"https://example.com/url"]'] = ['content' => "https://example.com/url"];
 
-        foreach ($arrays as $expected => $source)
-        {
+        foreach ($arrays as $expected => $source) {
             $note = new Event();
             $note->setCreatedAt($time);
             $note->setPublicKey($public_key);
@@ -35,5 +34,4 @@ class SerializeTest extends TestCase
             );
         }
     }
-
 }

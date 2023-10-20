@@ -6,13 +6,12 @@ use swentel\nostr\CommandResultInterface;
 
 class CommandResult implements CommandResultInterface
 {
-
     /**
      * Whether the request was successful or not.
      *
      * @var bool
      */
-    protected bool $success = FALSE;
+    protected bool $success = false;
 
     /**
      * The message.
@@ -35,8 +34,8 @@ class CommandResult implements CommandResultInterface
      */
     public function __construct(array $response)
     {
-        if ($response[0] === 'OK' && $response[2] === TRUE && !str_starts_with($response[3], 'duplicate:')) {
-            $this->success = TRUE;
+        if ($response[0] === 'OK' && $response[2] === true && !str_starts_with($response[3], 'duplicate:')) {
+            $this->success = true;
             $this->eventId = $response[1];
         } else {
             $this->message = !empty($response[3]) ? $response[3] : 'Failed with no reason';
@@ -48,7 +47,7 @@ class CommandResult implements CommandResultInterface
      */
     public function isSuccess(): bool
     {
-        return $this->success === TRUE;
+        return $this->success === true;
     }
 
     /**
@@ -66,5 +65,4 @@ class CommandResult implements CommandResultInterface
     {
         return $this->eventId;
     }
-
 }

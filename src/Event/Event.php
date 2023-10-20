@@ -7,7 +7,6 @@ use swentel\nostr\EventInterface;
 
 class Event implements EventInterface
 {
-
     /**
      * The event kind.
      *
@@ -134,7 +133,7 @@ class Event implements EventInterface
      */
     public function getKind(): int
     {
-       return $this->kind;
+        return $this->kind;
     }
 
     /**
@@ -206,8 +205,7 @@ class Event implements EventInterface
     {
         $array = [];
         foreach (get_object_vars($this) as $key => $val) {
-            if (in_array($key, $ignore_properties))
-            {
+            if (in_array($key, $ignore_properties)) {
                 continue;
             }
             $array[$key] = $val;
@@ -273,16 +271,19 @@ class Event implements EventInterface
         }
 
         try {
-            $computedId = hash('sha256', json_encode(
-                [
-                  0,
-                  $event->pubkey,
-                  $event->created_at,
-                  $event->kind,
-                  $event->tags,
-                  $event->content
-                ],
-                \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE)
+            $computedId = hash(
+                'sha256',
+                json_encode(
+                    [
+                      0,
+                      $event->pubkey,
+                      $event->created_at,
+                      $event->kind,
+                      $event->tags,
+                      $event->content
+                    ],
+                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                )
             );
         } catch (\JsonException) {
             return false;

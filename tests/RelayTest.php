@@ -26,12 +26,11 @@ class RelayTest extends TestCase
         $relay = $this->createMock(Relay::class);
         $relay->expects($this->once())
             ->method('send')
-            ->willReturn(new CommandResult(['OK', $note->getId(), TRUE, '']));
+            ->willReturn(new CommandResult(['OK', $note->getId(), true, '']));
 
         $response = $relay->send();
         $this->assertTrue(
             $response->isSuccess()
         );
-
     }
 }

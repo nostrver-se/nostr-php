@@ -36,7 +36,5 @@ class ConvertTest extends TestCase
             $private_key_bech32,
             $keys->convertPrivateKeyToBech32($private_key_hex),
         );
-
     }
-
 }
