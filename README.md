@@ -1,5 +1,6 @@
 # nostr-php
 
+![CI](https://github.com/swentel/nostr-php/actions/workflows/ci.yml/badge.svg)
 ![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/swentel/nostr-php/php)
 ![GitHub contributors](https://img.shields.io/github/contributors/swentel/nostr-php)
 ![GitHub issues](https://img.shields.io/github/issues/swentel/nostr-php)
