@@ -20,6 +20,10 @@ class Sign
     public function signEvent(EventInterface $event, string $private_key): void
     {
         $key = new Key();
+        // Convert to hex if private key is bech32 formatted.
+        if (str_starts_with($private_key, 'nsec') === true) {
+          $private_key = $key->convertToHex($private_key);
+        }
         $event->setPublicKey($key->getPublicKey($private_key));
 
         $hash_content = $this->serializeEvent($event);
