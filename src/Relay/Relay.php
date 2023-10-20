@@ -42,11 +42,20 @@ class Relay implements RelayInterface
      */
     public function send(): CommandResultInterface
     {
+      try {
         $client = new WebSocket\Client($this->url);
         $client->text($this->payload);
         $response = $client->receive();
         $client->close();
-
-        return new CommandResult(json_decode($response));
+        $response = json_decode($response);
+      } catch (WebSocket\ConnectionException $e) {
+        $response = [
+          'OK',
+          '',
+          false,
+          $e->getMessage()
+        ];
+      }
+      return new CommandResult($response);
     }
 }
