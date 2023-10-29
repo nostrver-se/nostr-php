@@ -34,7 +34,7 @@ $note->setContent('Hello world!');
 $note->setKind(1);
 
 $signer = new Sign();
-$signer->signEvent($event, $private_key);
+$signer->signEvent($note, $private_key);
 ```
 
 ## Generating a message
