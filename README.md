@@ -33,7 +33,7 @@ $note->setContent('Hello world!');
 $note->setKind(1);
 
 $signer = new Sign();
-$signer->signEvent($event, $private_key);
+$signer->signEvent($note, $private_key);
 ```
 
 ## Generating a message
@@ -45,8 +45,8 @@ use swentel\nostr\Sign\Sign;
 use swentel\nostr\Message\EventMessage;
 
 $signer = new Sign();
-$signer->signEvent($event, $private_key);
-$eventMessage = new EventMessage($event);
+$signer->signEvent($note, $private_key);
+$eventMessage = new EventMessage($note);
 $message_string = $eventMessage->generate();
 ```
 
@@ -64,7 +64,7 @@ $note->setContent('Hello world');
 $note->setKind(1);
 $signer = new Sign();
 $signer->signEvent($note, $private_key);
-$eventMessage = new EventMessage($event);
+$eventMessage = new EventMessage($note);
 
 $websocket = 'wss://nostr-websocket.tld';
 $relay = new Relay($websocket, $eventMessage);
