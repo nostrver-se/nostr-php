@@ -1,0 +1,19 @@
+name: CI
+
+on: push
+
+jobs:
+  run-tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1", "8.2"]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - run: composer install
+      - run: php vendor/bin/phpunit
