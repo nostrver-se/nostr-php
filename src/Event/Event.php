@@ -70,60 +70,6 @@ class Event implements EventInterface
     }
 
     /**
-     * Returns true if $json encodes a valid Nostr event.
-     */
-    public static function verify(string $json): bool
-    {
-        try {
-            $event = json_decode($json, flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
-        } catch (\JsonException) {
-            return false;
-        }
-
-        if (!$event instanceof \stdClass
-            || !property_exists($event, 'id')
-            || !property_exists($event, 'pubkey')
-            || !property_exists($event, 'created_at')
-            || !property_exists($event, 'kind')
-            || !property_exists($event, 'tags')
-            || !property_exists($event, 'content')
-            || !property_exists($event, 'sig')
-            || !is_string($event->id)
-            || !is_string($event->pubkey)
-            || !is_int($event->created_at)
-            || !is_int($event->kind)
-            || !is_array($event->tags)
-            || !is_string($event->content)
-            || !is_string($event->sig)
-        ) {
-            return false;
-        }
-
-        foreach ($event->tags as $tag) {
-            if (!is_array($tag)) {
-                return false;
-            }
-
-            foreach ($tag as $value) {
-                if (!is_string($value)) {
-                    return false;
-                }
-            }
-        }
-
-        $computedId = hash('sha256', json_encode(
-            [0, $event->pubkey, $event->created_at, $event->kind, $event->tags, $event->content],
-            \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-        ));
-
-        if (!hash_equals($computedId, $event->id)) {
-            return false;
-        }
-
-        return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function setId(string $id): static
@@ -213,16 +159,18 @@ class Event implements EventInterface
      */
     public function setTags(array $tags): static
     {
-        $this->tags = $tags;
+        foreach($tags as $tag) {
+            $this->tags[] = $tag;
+        }
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addTag($key, $value): static
+    public function addTag(array $tag): static
     {
-        $this->tags[$key] = $value;
+        $this->tags[] = $tag;
         return $this;
     }
 
@@ -265,6 +213,86 @@ class Event implements EventInterface
             $array[$key] = $val;
         }
         return $array;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->toArray(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function verify(string $json = ''): bool
+    {
+        try {
+            if ($json === '') {
+                $json = $this->toJson();
+                $event = json_decode($json, flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
+            } else {
+                $event = json_decode($json, flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
+            }
+        } catch (\JsonException) {
+            return false;
+        }
+
+        if (!$event instanceof \stdClass
+            || !property_exists($event, 'id')
+            || !property_exists($event, 'pubkey')
+            || !property_exists($event, 'created_at')
+            || !property_exists($event, 'kind')
+            || !property_exists($event, 'tags')
+            || !property_exists($event, 'content')
+            || !property_exists($event, 'sig')
+            || !is_string($event->id)
+            || !is_string($event->pubkey)
+            || !is_int($event->created_at)
+            || !is_int($event->kind)
+            || !is_array($event->tags)
+            || !is_string($event->content)
+            || !is_string($event->sig)
+        ) {
+            return false;
+        }
+
+        if (!empty($event->tags)) {
+            foreach ($event->tags as $tag) {
+                if (!is_array($tag)) {
+                    return false;
+                }
+
+                foreach ($tag as $value) {
+                    if (!is_string($value)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        try {
+            $computedId = hash('sha256', json_encode(
+                [
+                  0,
+                  $event->pubkey,
+                  $event->created_at,
+                  $event->kind,
+                  $event->tags,
+                  $event->content
+                ],
+                \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE)
+            );
+        } catch (\JsonException) {
+            return false;
+        }
+
+        if (!hash_equals($computedId, $event->id)) {
+            return false;
+        }
+
+      return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
     }
 
 }
