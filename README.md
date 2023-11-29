@@ -17,7 +17,31 @@ To use in your project with Composer:
 
 ```console
 $ composer require swentel/nostr-php
+```
 
+Install dependencies if you would like to test / code some things out for yourself with the code example snippets below. 
+
+```console
+$ composer install
+```
+
+## Create an event
+
+This will create an event object with a short text message (kind 1).
+
+```php
+use swentel\nostr\Event\Event;
+
+$note = new Event();
+$note->setKind(1);
+$note->setContent('Hello world!');
+$note->setTags([
+  ['e', $relayUrl],
+  ['p', $public_key, $relayUrl],
+  ['r', $relayUrl],
+]);
+// or use addTag()
+$note->addTag(['p', $public_key, $relayUrl]);
 ```
 
 ## Signing an event
@@ -47,13 +71,14 @@ use swentel\nostr\Message\EventMessage;
 
 $signer = new Sign();
 $signer->signEvent($note, $private_key);
+
 $eventMessage = new EventMessage($note);
 $message_string = $eventMessage->generate();
 ```
 
 ## Interacting with a relay
 
-Publish a note that has been prepared for sending to a Relay.
+Publish a event with a note that has been prepared for sending to a relay.
 
 ```php
 use swentel\nostr\Event\Event;
@@ -63,12 +88,14 @@ use swentel\nostr\Relay\Relay;
 $note = new Event();
 $note->setContent('Hello world');
 $note->setKind(1);
+
 $signer = new Sign();
 $signer->signEvent($note, $private_key);
+
 $eventMessage = new EventMessage($note);
 
-$websocket = 'wss://nostr-websocket.tld';
-$relay = new Relay($websocket, $eventMessage);
+$relayUrl = 'wss://nostr-websocket.tld';
+$relay = new Relay($websocketUrl, $relayMessage);
 $result = $relay->send();
 ```
 
@@ -108,13 +135,21 @@ $bech32_public = $key->convertPublicKeyToBech32($public_key);
 $bech32_private = $key->convertPrivateKeyToBech32($private_key);
 ```
 
+## Run tests
+
+All tests can be found in `tests`.
+
+```console
+$ php vendor/bin/phpunit
+```
+
 ## nostr-php script
 
-The library ships with a simple client to post a text note to a Nostr relay.
+The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
 
-```bash
+```console
 Usage:
-nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
+$ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
 ```
 
 Note: the key arguments expects a file with your private key! Do not paste your
@@ -122,5 +157,5 @@ private key on command line.
 
 ## Maintainers
 
-* [@swentel](https://github.com/swentel) (original author)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`  
+* [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`  
 * [@sebastix](https://github.com/Sebastix)  `npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe`

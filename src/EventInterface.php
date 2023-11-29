@@ -24,11 +24,11 @@ interface EventInterface
     /**
      * Set the signature.
      *
-     * @param string $signature
+     * @param string $sig
      *
      * @return $this
      */
-    public function setSignature(string $signature): static;
+    public function setSignature(string $sig): static;
 
     /**
      * Get the signature.
@@ -102,9 +102,13 @@ interface EventInterface
     public function getCreatedAt(): int;
 
     /**
-     * Set the event tags.
+     * Set the event tags with values.
      *
-     * @param array $tags
+     * @param array $tags[]
+     *   [
+     *     ["e", "..."],
+     *     ["p", "...", "..."],
+     *   ]
      *
      * @return $this
      */
@@ -113,12 +117,11 @@ interface EventInterface
     /**
      * Add an event tag.
      *
-     * @param $key
-     * @param $value
+     * @param array $tag
      *
      * @return $this
      */
-    public function addTag($key, $value): static;
+    public function addTag(array $tag): static;
 
     /**
      * Get the event tags.
@@ -136,5 +139,17 @@ interface EventInterface
      * @return array
      */
     public function toArray(array $ignore_properties = []): array;
+
+    /**
+     * Convert the event object to a JSON string.
+     */
+    public function toJson(): string;
+
+    /**
+     * Returns true if event object encodes to a valid Nostr event JSON string.
+     *
+     * @return bool
+     */
+    public function verify(): bool;
 
 }
