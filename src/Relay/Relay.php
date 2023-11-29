@@ -40,6 +40,14 @@ class Relay implements RelayInterface
     /**
      * {@inheritdoc}
      */
+    public function getUrl(): string
+    {
+      return $this->url;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function send(): CommandResultInterface
     {
       try {
@@ -48,9 +56,12 @@ class Relay implements RelayInterface
         $response = $client->receive();
         $client->close();
         $response = json_decode($response);
+        if ($response[0] === 'NOTICE') {
+          throw new \RuntimeException($response[1]);
+        }
       } catch (WebSocket\ConnectionException $e) {
         $response = [
-          'OK',
+          'ERROR',
           '',
           false,
           $e->getMessage()
