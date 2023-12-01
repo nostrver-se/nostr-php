@@ -95,7 +95,7 @@ $signer->signEvent($note, $private_key);
 $eventMessage = new EventMessage($note);
 
 $relayUrl = 'wss://nostr-websocket.tld';
-$relay = new Relay($websocketUrl, $relayMessage);
+$relay = new Relay($relayUrl, $eventMessage);
 $result = $relay->send();
 ```
 
