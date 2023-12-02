@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Key;
 
 use BitWasp\Bech32\Exception\Bech32Exception;

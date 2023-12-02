@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Application;
 
 use swentel\nostr\Event\Event;

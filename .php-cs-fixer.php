@@ -15,4 +15,5 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@PER-CS' => true,
         '@PER-CS:risky' => true,
+        'declare_strict_types' => true,
     ]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Sign;
 
 use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
