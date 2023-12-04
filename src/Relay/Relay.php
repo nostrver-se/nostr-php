@@ -54,7 +54,7 @@ class Relay implements RelayInterface
         $client = new WebSocket\Client($this->url);
         $client->text($this->payload);
         $response = $client->receive();
-        $client->close();
+        $client->disconnect();
         $response = json_decode($response);
         if ($response[0] === 'NOTICE') {
           throw new \RuntimeException($response[1]);
