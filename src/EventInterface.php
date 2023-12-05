@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr;
 
 interface EventInterface
 {
-
     /**
      * Set the id.
      *

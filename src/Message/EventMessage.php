@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Message;
 
 use swentel\nostr\EventInterface;
@@ -7,7 +9,6 @@ use swentel\nostr\MessageInterface;
 
 class EventMessage implements MessageInterface
 {
-
     /**
      * The event.
      *
@@ -15,7 +16,8 @@ class EventMessage implements MessageInterface
      */
     protected EventInterface $event;
 
-    public function __construct(EventInterface $event) {
+    public function __construct(EventInterface $event)
+    {
         $this->event = $event;
     }
 
@@ -26,5 +28,4 @@ class EventMessage implements MessageInterface
     {
         return '["EVENT", ' . json_encode($this->event->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ']';
     }
-
 }

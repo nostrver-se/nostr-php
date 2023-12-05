@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Key;
 
 use BitWasp\Bech32\Exception\Bech32Exception;
 use Elliptic\EC;
+
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\decode;
 use function BitWasp\Bech32\encode;
@@ -52,13 +55,12 @@ class Key
         try {
             $decoded = decode($key);
             $data = $decoded[1];
-            $bytes = convertBits($data, count($data), 5, 8, FALSE);
-            foreach ($bytes as $item)
-            {
+            $bytes = convertBits($data, count($data), 5, 8, false);
+            foreach ($bytes as $item) {
                 $str .= str_pad(dechex($item), 2, '0', STR_PAD_LEFT);
             }
+        } catch (Bech32Exception) {
         }
-        catch (Bech32Exception) {}
 
         return $str;
     }
@@ -107,10 +109,9 @@ class Key
             }
             $bytes = convertBits($dec, count($dec), 8, 5);
             $str = encode($prefix, $bytes);
+        } catch (Bech32Exception) {
         }
-        catch (Bech32Exception) {}
 
         return $str;
     }
-
 }

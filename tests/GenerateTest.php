@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use swentel\nostr\Key\Key;
 
@@ -19,5 +21,4 @@ class GenerateTest extends TestCase
             $keys->getPublicKey($private_key_hex),
         );
     }
-
 }

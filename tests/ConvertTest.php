@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use swentel\nostr\Key\Key;
 
@@ -36,7 +38,5 @@ class ConvertTest extends TestCase
             $private_key_bech32,
             $keys->convertPrivateKeyToBech32($private_key_hex),
         );
-
     }
-
 }
