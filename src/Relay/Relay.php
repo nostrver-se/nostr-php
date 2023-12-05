@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Relay;
 
 use swentel\nostr\MessageInterface;
@@ -9,7 +11,6 @@ use WebSocket;
 
 class Relay implements RelayInterface
 {
-
     /**
      * The relay URL.
      *
@@ -30,7 +31,7 @@ class Relay implements RelayInterface
      * @param string $websocket
      *   The socket URL.
      */
-    function __construct(string $websocket, MessageInterface $message)
+    public function __construct(string $websocket, MessageInterface $message)
     {
         // TODO validate URL.
         $this->url = $websocket;
@@ -42,7 +43,7 @@ class Relay implements RelayInterface
      */
     public function getUrl(): string
     {
-      return $this->url;
+        return $this->url;
     }
 
     /**
@@ -50,23 +51,23 @@ class Relay implements RelayInterface
      */
     public function send(): CommandResultInterface
     {
-      try {
-        $client = new WebSocket\Client($this->url);
-        $client->text($this->payload);
-        $response = $client->receive();
-        $client->disconnect();
-        $response = json_decode($response);
-        if ($response[0] === 'NOTICE') {
-          throw new \RuntimeException($response[1]);
+        try {
+            $client = new WebSocket\Client($this->url);
+            $client->text($this->payload);
+            $response = $client->receive();
+            $client->disconnect();
+            $response = json_decode($response);
+            if ($response[0] === 'NOTICE') {
+                throw new \RuntimeException($response[1]);
+            }
+        } catch (WebSocket\ConnectionException $e) {
+            $response = [
+              'ERROR',
+              '',
+              false,
+              $e->getMessage()
+            ];
         }
-      } catch (WebSocket\ConnectionException $e) {
-        $response = [
-          'ERROR',
-          '',
-          false,
-          $e->getMessage()
-        ];
-      }
-      return new CommandResult($response);
+        return new CommandResult($response);
     }
 }

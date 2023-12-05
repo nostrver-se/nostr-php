@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
@@ -26,12 +28,11 @@ class RelayTest extends TestCase
         $relay = $this->createMock(Relay::class);
         $relay->expects($this->once())
             ->method('send')
-            ->willReturn(new CommandResult(['OK', $note->getId(), TRUE, '']));
+            ->willReturn(new CommandResult(['OK', $note->getId(), true, '']));
 
         $response = $relay->send();
         $this->assertTrue(
             $response->isSuccess()
         );
-
     }
 }

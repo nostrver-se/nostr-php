@@ -1,5 +1,6 @@
-/vendor
-.phpunit.cache
+.idea/
+.php-cs-fixer.cache
+.phpunit.cache/
 composer.lock
 test.php
-.idea
+vendor/

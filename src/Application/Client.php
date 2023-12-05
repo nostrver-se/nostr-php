@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace swentel\nostr\Application;
 
 use swentel\nostr\Event\Event;
@@ -7,8 +9,8 @@ use swentel\nostr\Message\EventMessage;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Sign\Sign;
 
-Class Client {
-
+class Client
+{
     /**
      * Run the Nostr Client.
      *
@@ -23,18 +25,15 @@ Class Client {
 
         $content = $socket = $private_key_file = '';
 
-        if (count($args) != 7)
-        {
+        if (count($args) !== 7) {
             $this->showHelp('Missing arguments');
             return;
         }
 
-        foreach ($args as $current_key => $value)
-        {
-            switch ($value)
-            {
+        foreach ($args as $current_key => $value) {
+            switch ($value) {
                 case '--content':
-                    $array_key = $current_key+1;
+                    $array_key = $current_key + 1;
                     $content = trim($args[$array_key]);
                     break;
                 case '--relay':
@@ -48,33 +47,28 @@ Class Client {
             }
         }
 
-        if (empty($content))
-        {
+        if (empty($content)) {
             $this->showHelp('The content is empty');
             return;
         }
 
-        if (empty($socket))
-        {
+        if (empty($socket)) {
             $this->showHelp('The relay is empty');
             return;
         }
 
-        if (empty($private_key_file))
-        {
+        if (empty($private_key_file)) {
             $this->showHelp('The path to the private key is empty');
             return;
         }
 
-        if (!file_exists($private_key_file))
-        {
+        if (!file_exists($private_key_file)) {
             $this->showHelp('The private key file does not exist');
             return;
         }
 
         $private_key = trim(file_get_contents($private_key_file));
-        if (empty($private_key))
-        {
+        if (empty($private_key)) {
             $this->showHelp('The private key file is empty');
             return;
         }
@@ -89,15 +83,11 @@ Class Client {
         $eventMessage = new EventMessage($event);
         $relay = new Relay($socket, $eventMessage);
         $result = $relay->send();
-        if ($result->isSuccess())
-        {
+        if ($result->isSuccess()) {
             print "Send to Nostr!\n";
-        }
-        else
-        {
+        } else {
             print "Something went wrong: " . $result->message() . "\n";
         }
-
     }
 
     protected function showHelp($message): void
