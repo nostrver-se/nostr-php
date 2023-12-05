@@ -20,7 +20,7 @@ class VerifyTest extends TestCase
         $event->setId('ac21a6c4cb128a27c0b9a229bc1fa8e7167660664354d5e5a481825d01188108');
         $event->setPublicKey('7543c184ff776be3c13d2437894494173cfea4e9919d48fb2934216a13a53c58');
         $event->setKind(1);
-        $event->setCreatedAt('1697800339');
+        $event->setCreatedAt(1697800339);
         $event->setTags([
           ['e', '5361bb83c899cf75589a25c32cea5b868d4990da41fd4dba84144eede5ad1359'],
           ['p', 'd4dea80c64ebd3f9bc8271893191dbc851ecd2b7bcb811bb87386b5158ee735d']
