@@ -78,7 +78,7 @@ $message_string = $eventMessage->generate();
 
 ## Interacting with a relay
 
-Publish a event with a note that has been prepared for sending to a relay.
+Publish an event with a note that has been prepared for sending to a relay.
 
 ```php
 use swentel\nostr\Event\Event;
@@ -143,7 +143,7 @@ All tests can be found in `tests`.
 $ php vendor/bin/phpunit
 ```
 
-## nostr-php script
+## nostr-php script (cli client)
 
 The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
 
@@ -155,7 +155,22 @@ $ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key -
 Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
 
-## Maintainers
+## Roadmap
 
-* [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`  
+- [x] Keypair generation and validation
+  - [x] Convert from hex to bech32-encoded keys
+- [x] Event signing with Schnorr signatures (`secp256k1`)
+- [x] Event validation
+- [ ] Support NIP-01 basic protocol flow description
+  - [x] Publish events
+  - [ ] Request events
+- [ ] Improve handling relay responses
+- [ ] Support NIP-19 bech32-encoded identifiers
+- [ ] Support NIP-42 authentication of clients to relays
+- [ ] Support NIP-45 event counts
+- [ ] Support NIP-50 search capability
+
+## Maintainers
+ 
 * [@sebastix](https://github.com/Sebastix)  `npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe`
+* [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`
