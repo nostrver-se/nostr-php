@@ -160,15 +160,17 @@ private key on command line.
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation
+- [x] Event validation (issue [#17](https://github.com/swentel/nostr-php/issues/17))
 - [ ] Support NIP-01 basic protocol flow description
   - [x] Publish events
-  - [ ] Request events
+  - [ ] Request events (pr [#48](https://github.com/swentel/nostr-php/pull/48))
 - [ ] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
 - [ ] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
+- [ ] Add PHP 8.0 compatibility
+- [ ] Support multi-threading for handling requests simultaneously
 
 ## Maintainers
  
