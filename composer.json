@@ -27,7 +27,8 @@
         "public-square/phpecc": "^0.1.0",
         "bitwasp/bech32": "^0.0.1",
         "simplito/elliptic-php": "^1.0",
-        "phrity/websocket": "^2.1.0"
+        "phrity/websocket": "^2.1.0",
+        "uma/secp256k1-nostr": "^0.1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^10",

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Event;
 
-use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
 use swentel\nostr\EventInterface;
 
 class Event implements EventInterface
@@ -295,7 +294,7 @@ class Event implements EventInterface
             return false;
         }
 
-      return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
+        return secp256k1_nostr_verify($event->pubkey, $event->id, $event->sig);
     }
 
 }
