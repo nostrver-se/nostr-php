@@ -295,7 +295,7 @@ class Event implements EventInterface
             return false;
         }
 
-      return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
+        return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
     }
 
 }
