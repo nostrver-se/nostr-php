@@ -169,7 +169,6 @@ private key on command line.
 - [ ] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Add PHP 8.0 compatibility
 - [ ] Support multi-threading for handling requests simultaneously
 
 ## Maintainers
