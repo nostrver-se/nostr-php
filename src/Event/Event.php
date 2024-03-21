@@ -277,12 +277,12 @@ class Event implements EventInterface
                 'sha256',
                 json_encode(
                     [
-                      0,
-                      $event->pubkey,
-                      $event->created_at,
-                      $event->kind,
-                      $event->tags,
-                      $event->content
+                        0,
+                        $event->pubkey,
+                        $event->created_at,
+                        $event->kind,
+                        $event->tags,
+                        $event->content
                     ],
                     \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
                 )

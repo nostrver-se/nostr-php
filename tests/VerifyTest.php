@@ -22,8 +22,8 @@ class VerifyTest extends TestCase
         $event->setKind(1);
         $event->setCreatedAt(1697800339);
         $event->setTags([
-          ['e', '5361bb83c899cf75589a25c32cea5b868d4990da41fd4dba84144eede5ad1359'],
-          ['p', 'd4dea80c64ebd3f9bc8271893191dbc851ecd2b7bcb811bb87386b5158ee735d']
+            ['e', '5361bb83c899cf75589a25c32cea5b868d4990da41fd4dba84144eede5ad1359'],
+            ['p', 'd4dea80c64ebd3f9bc8271893191dbc851ecd2b7bcb811bb87386b5158ee735d']
         ]);
         $event->setContent('Gm ☕️⚡️🌅');
         $event->setSignature('46a9d4f4470bdf685d4fc4f664d1d4c8576e501cfe0ccf044ba65d36c3ee66eab3f261d524a4bdbde71bc2d921c13829a5ac596538ded74125f5060d4f3f805d');
