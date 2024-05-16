@@ -65,7 +65,7 @@ class Relay implements RelayInterface
                 'ERROR',
                 '',
                 false,
-                $e->getMessage()
+                $e->getMessage(),
             ];
         }
         return new CommandResult($response);

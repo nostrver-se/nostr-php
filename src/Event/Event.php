@@ -282,10 +282,10 @@ class Event implements EventInterface
                         $event->created_at,
                         $event->kind,
                         $event->tags,
-                        $event->content
+                        $event->content,
                     ],
-                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-                )
+                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
+                ),
             );
         } catch (\JsonException) {
             return false;
