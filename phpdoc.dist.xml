@@ -4,9 +4,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://www.phpdoc.org"
 >
-    <title>phpDocumentor</title>
+    <title>nostr-php</title>
     <paths>
         <output>docs</output>
     </paths>
-
+    <version number="3">
+        <api format="php">
+            <source dsn=".">
+                <path>bin</path>
+                <path>src</path>
+                <path>tests</path>
+            </source>
+        </api>
+    </version>
 </phpdocumentor>
