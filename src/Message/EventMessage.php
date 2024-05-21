@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Message;
+namespace nostrverse\nostr\Message;
 
-use swentel\nostr\EventInterface;
-use swentel\nostr\MessageInterface;
+use nostrverse\nostr\EventInterface;
+use nostrverse\nostr\MessageInterface;
 
 class EventMessage implements MessageInterface
 {

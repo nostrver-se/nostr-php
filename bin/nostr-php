@@ -44,4 +44,4 @@ else {
 
 require NOSTR_COMPOSER_INSTALL;
 
-exit((new swentel\nostr\Application\Client)->run($_SERVER['argv']));
+exit((new nostrverse\nostr\Application\Client)->run($_SERVER['argv']));

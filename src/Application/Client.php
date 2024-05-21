@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Application;
+namespace nostrverse\nostr\Application;
 
-use swentel\nostr\Event\Event;
-use swentel\nostr\Message\EventMessage;
-use swentel\nostr\Relay\Relay;
-use swentel\nostr\Sign\Sign;
+use nostrverse\nostr\Event\Event;
+use nostrverse\nostr\Message\EventMessage;
+use nostrverse\nostr\Relay\Relay;
+use nostrverse\nostr\Sign\Sign;
 
 class Client
 {

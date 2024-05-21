@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Relay;
+namespace nostrverse\nostr\Relay;
 
-use swentel\nostr\CommandResultInterface;
+use nostrverse\nostr\CommandResultInterface;
 
 class CommandResult implements CommandResultInterface
 {

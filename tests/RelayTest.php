@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Event\Event;
-use swentel\nostr\Key\Key;
-use swentel\nostr\Relay\Relay;
-use swentel\nostr\Relay\CommandResult;
-use swentel\nostr\Sign\Sign;
+use nostrverse\nostr\Event\Event;
+use nostrverse\nostr\Key\Key;
+use nostrverse\nostr\Relay\Relay;
+use nostrverse\nostr\Relay\CommandResult;
+use nostrverse\nostr\Sign\Sign;
 
 class RelayTest extends TestCase
 {

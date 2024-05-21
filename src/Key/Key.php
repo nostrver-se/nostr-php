@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Key;
+namespace nostrverse\nostr\Key;
 
 use BitWasp\Bech32\Exception\Bech32Exception;
 use Elliptic\EC;

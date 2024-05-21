@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Key\Key;
+use nostrverse\nostr\Key\Key;
 
 class ConvertTest extends TestCase
 {

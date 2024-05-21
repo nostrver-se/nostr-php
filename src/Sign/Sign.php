@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Sign;
+namespace nostrverse\nostr\Sign;
 
 use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
-use swentel\nostr\EventInterface;
-use swentel\nostr\Key\Key;
+use nostrverse\nostr\EventInterface;
+use nostrverse\nostr\Key\Key;
 
 class Sign
 {

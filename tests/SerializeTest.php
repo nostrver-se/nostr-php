@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Event\Event;
-use swentel\nostr\Sign\Sign;
+use nostrverse\nostr\Event\Event;
+use nostrverse\nostr\Sign\Sign;
 
 class SerializeTest extends TestCase
 {

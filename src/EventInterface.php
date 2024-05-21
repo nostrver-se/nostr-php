@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr;
+namespace nostrverse\nostr;
 
 interface EventInterface
 {
