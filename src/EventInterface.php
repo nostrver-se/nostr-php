@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace swentel\nostr;
 
+/**
+ * Nostr Event interface.
+ */
 interface EventInterface
 {
     /**
-     * Set the id.
+     * Set the event id.
      *
      * @param string $id
      *
@@ -16,7 +19,7 @@ interface EventInterface
     public function setId(string $id): static;
 
     /**
-     * Get the Id.
+     * Get the event id.
      *
      * @return string
      */
@@ -88,6 +91,7 @@ interface EventInterface
 
     /**
      * Set the event created time.
+     * Format is a unix timestamp in seconds.
      *
      * @param int $time
      *
@@ -116,7 +120,7 @@ interface EventInterface
     public function setTags(array $tags): static;
 
     /**
-     * Add an event tag.
+     * Add a single tag to the event.
      *
      * @param array $tag
      *
@@ -143,6 +147,8 @@ interface EventInterface
 
     /**
      * Convert the event object to a JSON string.
+     *
+     * @return string
      */
     public function toJson(): string;
 

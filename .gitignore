@@ -1,6 +1,7 @@
 .idea/
 .php-cs-fixer.cache
 .phpunit.cache/
+.phpdoc/
 composer.lock
 test*.php
 vendor/

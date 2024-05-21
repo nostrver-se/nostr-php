@@ -33,7 +33,7 @@ class Relay implements RelayInterface
      */
     public function __construct(string $websocket, MessageInterface $message)
     {
-        // TODO validate URL.
+        // TODO validate URL which has to be a websocket URL starting with ws:// or wss://.
         $this->url = $websocket;
         $this->payload = $message->generate();
     }
