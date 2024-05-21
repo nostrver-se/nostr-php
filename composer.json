@@ -1,8 +1,9 @@
 {
   "name": "swentel/nostr-php",
   "description": "Nostr helper library for PHP",
-  "homepage": "https://github.com/swentel/nostr-php",
-  "license": "GPL-2.0-or-later",
+  "keywords": ["nostr", "library", "dev"],
+  "homepage": "https://nostr-php.dev",
+  "license": "MIT",
   "authors": [
     {
       "name": "Sebastian Hagens",

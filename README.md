@@ -9,8 +9,6 @@
 This is a PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr.
 
-If you need any help, please join this Telegram group: https://t.me/nostr_php
-
 ## Installation
 
 To use in your project with Composer:
@@ -170,6 +168,14 @@ private key on command line.
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
 - [ ] Support multi-threading for handling requests simultaneously
+
+## Community
+
+If you need any help, please join this Telegram group: https://t.me/nostr_php
+
+## Funding
+
+In May 2024 OpenSats granted Sebastian Hagens for further development of this library for one year. If you would like to support this project with a donation, you could send some lightning sats to `sebastian@lnd.sebastix.com` or on-chain to `bc1p3p6jq2sxsf650lgllv57st9h97xj37fflg5t8d265saz6yqzcdyqd7pzun`. 
 
 ## Maintainers
  
