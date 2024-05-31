@@ -511,6 +511,11 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/swentel-nostr-event.html"
         },                {
+            "fqsen": "\\swentel\\nostr\\Examples",
+            "name": "Examples",
+            "summary": "",
+            "url": "namespaces/swentel-nostr-examples.html"
+        },                {
             "fqsen": "\\swentel\\nostr\\Key",
             "name": "Key",
             "summary": "",

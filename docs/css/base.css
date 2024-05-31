@@ -720,8 +720,7 @@ is too big a fix and needs to be done in a new design iteration.
     .phpdocumentor-title__link {
         transform: scale(1);
     }
-}
-.phpdocumentor-topnav {
+}.phpdocumentor-topnav {
     display: flex;
     align-items: center;
     margin: 0;

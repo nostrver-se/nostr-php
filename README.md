@@ -141,6 +141,18 @@ All tests can be found in `tests`.
 $ php vendor/bin/phpunit
 ```
 
+## phpDocumentor
+
+Generate documentation.
+
+```console
+$ phpdoc 
+```
+
+All documentation is saved in the `docs` directory where the `index.html` can be opened in any browser.
+
+All documentation can be find at https://docs.phpdoc.org/.
+
 ## nostr-php script (cli client)
 
 The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
