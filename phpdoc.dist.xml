@@ -6,7 +6,7 @@
 >
     <title>nostr-php</title>
     <paths>
-        <output>docs</output>
+        <output>phpdoc.nostr-php.dev</output>
     </paths>
     <version number="3">
         <api format="php">

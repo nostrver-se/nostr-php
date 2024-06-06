@@ -141,17 +141,18 @@ All tests can be found in `tests`.
 $ php vendor/bin/phpunit
 ```
 
-## phpDocumentor
+## Documentation with phpDocumentor
 
-Generate documentation.
+Generate documentation with [phpDocumentor](https://phpdoc.org/).
 
 ```console
 $ phpdoc 
 ```
 
-All documentation is saved in the `docs` directory where the `index.html` can be opened in any browser.
+All documentation is saved in the `phpdoc.nostr-php.dev` directory where the `index.html` can be opened in any browser.
+This directory also serves as the root directory for https://phpdoc.nostr-php.dev. 
 
-All documentation can be find at https://docs.phpdoc.org/.
+The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 
 ## nostr-php script (cli client)
 
