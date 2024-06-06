@@ -11,7 +11,7 @@ More info about Nostr: https://github.com/nostr-protocol/nostr.
 
 ## Installation
 
-To use in your project with Composer:
+To use the package in your PHP project with Composer:
 
 ```console
 $ composer require nostrverse/nostr-php
