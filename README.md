@@ -9,8 +9,6 @@
 This is a PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr.
 
-If you need any help, please join this Telegram group: https://t.me/nostr_php
-
 ## Installation
 
 To use in your project with Composer:
@@ -160,15 +158,24 @@ private key on command line.
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation
+- [x] Event validation (issue [#17](https://github.com/swentel/nostr-php/issues/17))
 - [ ] Support NIP-01 basic protocol flow description
   - [x] Publish events
-  - [ ] Request events
+  - [ ] Request events (pr [#48](https://github.com/swentel/nostr-php/pull/48))
 - [ ] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
 - [ ] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
+- [ ] Support multi-threading for handling requests simultaneously
+
+## Community
+
+If you need any help, please join this Telegram group: https://t.me/nostr_php
+
+## Funding
+
+In May 2024 OpenSats granted Sebastian Hagens for further development of this library for one year. If you would like to support this project with a donation, you could send some lightning sats to `sebastian@lnd.sebastix.com` or on-chain to `bc1p3p6jq2sxsf650lgllv57st9h97xj37fflg5t8d265saz6yqzcdyqd7pzun`. 
 
 ## Maintainers
  

@@ -62,10 +62,10 @@ class Relay implements RelayInterface
             }
         } catch (WebSocket\ConnectionException $e) {
             $response = [
-              'ERROR',
-              '',
-              false,
-              $e->getMessage()
+                'ERROR',
+                '',
+                false,
+                $e->getMessage(),
             ];
         }
         return new CommandResult($response);

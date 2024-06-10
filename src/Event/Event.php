@@ -277,15 +277,15 @@ class Event implements EventInterface
                 'sha256',
                 json_encode(
                     [
-                      0,
-                      $event->pubkey,
-                      $event->created_at,
-                      $event->kind,
-                      $event->tags,
-                      $event->content
+                        0,
+                        $event->pubkey,
+                        $event->created_at,
+                        $event->kind,
+                        $event->tags,
+                        $event->content,
                     ],
-                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-                )
+                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
+                ),
             );
         } catch (\JsonException) {
             return false;
@@ -295,7 +295,7 @@ class Event implements EventInterface
             return false;
         }
 
-      return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
+        return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
     }
 
 }
