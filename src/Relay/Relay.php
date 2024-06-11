@@ -56,7 +56,7 @@ class Relay implements RelayInterface
             $client->text($this->payload);
             $response = $client->receive();
             $client->disconnect();
-            $response = json_decode($response);
+            $response = json_decode($response->getContent());
             if ($response[0] === 'NOTICE') {
                 throw new \RuntimeException($response[1]);
             }
