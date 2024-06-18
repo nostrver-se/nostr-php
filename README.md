@@ -93,7 +93,21 @@ $signer->signEvent($note, $private_key);
 $eventMessage = new EventMessage($note);
 
 $relayUrl = 'wss://nostr-websocket.tld';
-$relay = new Relay($relayUrl, $eventMessage);
+$relay = new Relay($relayUrl);
+$relay->setMessage($eventMessage);
+$result = $relay->send();
+```
+
+If you would like to publish the event to multiple relays, you can use the `RelaySet` class.
+
+```php
+$relay1 = new Relay(''wss://nostr-websocket1.tld'');
+$relay2 = new Relay(''wss://nostr-websocket2.tld'');
+$relay3 = new Relay(''wss://nostr-websocket3.tld'');
+$relay4 = new Relay(''wss://nostr-websocket4.tld'');
+$relaySet = new RelaySet();
+$relaySet->setRelays([$relay1, $relay2, $relay3, $relay4]);
+$relaySet->setMessage($eventMessage);
 $result = $relay->send();
 ```
 
