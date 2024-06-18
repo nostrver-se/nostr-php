@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use swentel\nostr\Relay\Relay;
 use swentel\nostr\Subscription\Subscription;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
@@ -27,13 +28,15 @@ class RequestTest extends TestCase
 
         $filters = [$filter];
 
+        $relay = new Relay($relayUrl);
+
         // Mocking the WebSocket\Client
         $mockClient = $this->getMockBuilder(Client::class)
-            ->setConstructorArgs([$relayUrl])
+            ->setConstructorArgs([$relay->getUrl()])
             ->getMock();
 
         $requestMessage = new RequestMessage($subscriptionId, $filters);
-        $request = new Request($relayUrl, $requestMessage, $mockClient);
+        $request = new Request($relay, $requestMessage, $mockClient);
 
         $result = $request->send();
 
