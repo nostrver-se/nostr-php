@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace nostrverse\nostr\Event;
+namespace swentel\nostr\Event;
 
 use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
-use nostrverse\nostr\EventInterface;
+use swentel\nostr\EventInterface;
 
 class Event implements EventInterface
 {

@@ -1,5 +1,5 @@
 {
-  "name": "nostrverse/nostr-php",
+  "name": "swentel/nostr-php",
   "description": "Nostr helper library for PHP",
   "keywords": ["nostr", "library", "dev"],
   "homepage": "https://nostr-php.dev",
@@ -18,7 +18,7 @@
     }
   ],
   "support": {
-    "issue": "https://github.com/nostrver-se/nostr-php/issues",
+    "issue": "https://github.com/swentel/nostr-php/issues",
     "chat": "https://t.me/nostr_php"
   },
   "require": {
@@ -36,7 +36,7 @@
   },
   "autoload": {
     "psr-4": {
-      "nostrverse\\nostr\\": "src/"
+      "swentel\\nostr\\": "src/"
     }
   },
   "bin": [

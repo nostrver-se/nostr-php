@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace nostrverse\nostr\Relay;
+namespace swentel\nostr\Relay;
 
-use nostrverse\nostr\MessageInterface;
-use nostrverse\nostr\RelayInterface;
-use nostrverse\nostr\CommandResultInterface;
+use swentel\nostr\MessageInterface;
+use swentel\nostr\RelayInterface;
+use swentel\nostr\CommandResultInterface;
 use WebSocket;
 
 class Relay implements RelayInterface

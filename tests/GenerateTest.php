@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use nostrverse\nostr\Key\Key;
+use swentel\nostr\Key\Key;
 
 class GenerateTest extends TestCase
 {

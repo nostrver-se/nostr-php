@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use nostrverse\nostr\Event\Event;
-use nostrverse\nostr\Message\EventMessage;
+use swentel\nostr\Event\Event;
+use swentel\nostr\Message\EventMessage;
 
 class VerifyTest extends TestCase
 {

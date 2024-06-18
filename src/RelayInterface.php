@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace nostrverse\nostr;
+namespace swentel\nostr;
 
 interface RelayInterface
 {

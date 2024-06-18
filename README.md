@@ -1,10 +1,10 @@
 # nostr-php
 
-![CI](https://github.com/nostrverse/nostr-php/actions/workflows/ci.yml/badge.svg)
-![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/nostrverse/nostr-php/php)
-![GitHub contributors](https://img.shields.io/github/contributors/nostrverse/nostr-php)
-![GitHub issues](https://img.shields.io/github/issues/nostrverse/nostr-php)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/nostrverse/nostr-php/main)
+![CI](https://github.com/swentel/nostr-php/actions/workflows/ci.yml/badge.svg)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/swentel/nostr-php/php)
+![GitHub contributors](https://img.shields.io/github/contributors/swentel/nostr-php)
+![GitHub issues](https://img.shields.io/github/issues/swentel/nostr-php)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/swentel/nostr-php/main)
 
 This is a PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr.
@@ -14,7 +14,7 @@ More info about Nostr: https://github.com/nostr-protocol/nostr.
 To use the package in your PHP project with Composer:
 
 ```console
-$ composer require nostrverse/nostr-php
+$ composer require swentel/nostr-php
 ```
 
 Install dependencies if you would like to test / code some things out for yourself with the code example snippets below. 
@@ -28,7 +28,7 @@ $ composer install
 This will create an event object with a short text message (kind 1).
 
 ```php
-use nostrverse\nostr\Event\Event;
+use swentel\nostr\Event\Event;
 
 $note = new Event();
 $note->setKind(1);
@@ -48,8 +48,8 @@ Generates the id and signature for an event. The 'pubkey', 'id' and 'sig'
 properties are added to the event object.
 
 ```php
-use nostrverse\nostr\Event\Event;
-use nostrverse\nostr\Sign\Sign;
+use swentel\nostr\Event\Event;
+use swentel\nostr\Sign\Sign;
 
 $note = new Event();
 $note->setContent('Hello world!');
@@ -64,8 +64,8 @@ $signer->signEvent($note, $private_key);
 Generate an event message : `["EVENT", <event JSON as created above with id and sig>]`
 
 ```php
-use nostrverse\nostr\Sign\Sign;
-use nostrverse\nostr\Message\EventMessage;
+use swentel\nostr\Sign\Sign;
+use swentel\nostr\Message\EventMessage;
 
 $signer = new Sign();
 $signer->signEvent($note, $private_key);
@@ -79,9 +79,9 @@ $message_string = $eventMessage->generate();
 Publish an event with a note that has been prepared for sending to a relay.
 
 ```php
-use nostrverse\nostr\Event\Event;
-use nostrverse\nostr\Message\EventMessage;
-use nostrverse\nostr\Relay\Relay;
+use swentel\nostr\Event\Event;
+use swentel\nostr\Message\EventMessage;
+use swentel\nostr\Relay\Relay;
 
 $note = new Event();
 $note->setContent('Hello world');
@@ -100,7 +100,7 @@ $result = $relay->send();
 ## Generating a private key and a public key
 
 ```php
-use nostrverse\nostr\Key\Key;
+use swentel\nostr\Key\Key;
 
 $key = new Key();
 
@@ -114,7 +114,7 @@ $public_key  = $key->getPublicKey($private_key);
 Convert bech32 encoded keys (npub, nsec) to hex.
 
 ```php
-use nostrverse\nostr\Key\Key;
+use swentel\nostr\Key\Key;
 
 $public_key = 'npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg';
 $key = new Key();
@@ -124,7 +124,7 @@ $hex = $key->convertToHex($public_key);
 Convert hex keys to bech32 (npub, nsec).
 
 ```php
-use nostrverse\nostr\Key\Key;
+use swentel\nostr\Key\Key;
 
 $public_key = '7e7e9c42a91bfef19fa929e5fda1b72e0ebc1a4c1141673e2794234d86addf4e';
 $private_key = '67dea2ed018072d675f5415ecfaed7d2597555e202d85b3d65ea4e58d2d92ffa';
@@ -158,10 +158,10 @@ private key on command line.
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation (issue [#17](https://github.com/nostrverse/nostr-php/issues/17))
+- [x] Event validation (issue [#17](https://github.com/swentel/nostr-php/issues/17))
 - [ ] Support NIP-01 basic protocol flow description
   - [x] Publish events
-  - [ ] Request events (pr [#48](https://github.com/nostrverse/nostr-php/pull/48))
+  - [ ] Request events (pr [#48](https://github.com/swentel/nostr-php/pull/48))
 - [ ] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
 - [ ] Support NIP-42 authentication of clients to relays
