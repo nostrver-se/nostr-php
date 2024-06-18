@@ -25,15 +25,14 @@ interface FilterInterface
      *
      * @param array $tag The array of tag to set.
      */
-    public function setETag(array $tag): static;
-
+    public function setLowercaseETags(array $tag): static;
 
     /**
      * Set the #p tag for the Filter object.
      *
      * @param array $ptag The array of tag to set.
      */
-    public function setPTag(array $ptag): static;
+    public function setLowercasePTags(array $ptag): static;
 
     /**
      * Set the since for the Filter object.
@@ -48,13 +47,13 @@ interface FilterInterface
      * @param int $until The limit to set.
      */
     public function setUntil(int $until): static;
-   
+
     /**
      * Set the limit for the Filter object.
      *
      * @param int $limit The limit to set.
      */
-    public function setLimit(int $limit):static;
+    public function setLimit(int $limit): static;
 
     /**
      * Check if a given string is a 64-character lowercase hexadecimal value.
@@ -78,5 +77,4 @@ interface FilterInterface
      * @return array The array representation of the object.
      */
     public function toArray(): array;
-
 }

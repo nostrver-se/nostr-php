@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Request;
 
-use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\RequestInterface;
 use WebSocket;
 
@@ -45,13 +44,12 @@ class Request implements RequestInterface
 
             /**
              * When sending 'CLOSE' request to close a subscription, it is not guaranteed that we
-             * will receive a response confirming that the subscription with the given ID is closed 
+             * will receive a response confirming that the subscription with the given ID is closed
              * as the protocol does not mandate a specific response for a "CLOSE" request
-             * 
-             * We can handle this either by: 
+             * We can handle this either by:
              *  - closing connection upon sending the request
              *  - waiting for a certain period to see if further events are received for that subscription ID
-             *  - waiting for ping from server to close connection (in which case the server indicates the 
+             *  - waiting for ping from server to close connection (in which case the server indicates the
              *    connection is still alive, but it does not confirm the closure of the subscription)
              */
             while ($response = $client->receive()) {
@@ -73,10 +71,10 @@ class Request implements RequestInterface
             $client->disconnect();
         } catch (WebSocket\ConnectionException $e) {
             $result = [
-              'ERROR',
-              '',
-              false,
-              $e->getMessage()
+                'ERROR',
+                '',
+                false,
+                $e->getMessage(),
             ];
         }
 

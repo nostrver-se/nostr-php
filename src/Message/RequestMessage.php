@@ -29,7 +29,7 @@ class RequestMessage implements MessageInterface
     public function __construct(string $subscriptionId, array $filters)
     {
         $this->subscriptionId = $subscriptionId;
-        foreach($filters as $filter){
+        foreach($filters as $filter) {
             $this->filters[] = $filter->toArray();
         }
     }

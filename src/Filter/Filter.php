@@ -39,7 +39,7 @@ class Filter implements FilterInterface
     public int $since;
 
     /**
-     * An integer unix timestamp in seconds, events must be older than this to pass 
+     * An integer unix timestamp in seconds, events must be older than this to pass
      */
     public int $until;
 
@@ -55,8 +55,8 @@ class Filter implements FilterInterface
      */
     public function setAuthors(array $pubkeys): static
     {
-        foreach($pubkeys as $key){
-            if(!$this->isLowercaseHex($key)){
+        foreach($pubkeys as $key) {
+            if(!$this->isLowercaseHex($key)) {
                 throw new \RuntimeException("Author pubkeys must be an array of 64-character lowercase hex values");
             }
         }
@@ -80,10 +80,10 @@ class Filter implements FilterInterface
      *
      * @param array $etag The array of tag to set.
      */
-    public function setETag(array $etags): static
+    public function setLowercaseETags(array $etags): static
     {
-        foreach($etags as $tag){
-            if(!$this->isLowercaseHex($tag)){
+        foreach($etags as $tag) {
+            if(!$this->isLowercaseHex($tag)) {
                 throw new \RuntimeException("#e tags must be an array of 64-character lowercase hex values");
             }
         }
@@ -96,12 +96,12 @@ class Filter implements FilterInterface
      *
      * @param array $ptag The array of tag to set.
      */
-    public function setPTag(array $ptags): static
+    public function setLowercasePTags(array $ptags): static
     {
         // Check IF array contain exact 64-character lowercase hex values
-        foreach($ptags as $tag){
-            if(!$this->isLowercaseHex($tag)){
-                throw new \RuntimeException("#e tags must be an array of 64-character lowercase hex values");
+        foreach($ptags as $tag) {
+            if(!$this->isLowercaseHex($tag)) {
+                throw new \RuntimeException("#p tags must be an array of 64-character lowercase hex values");
             }
         }
         $this->ptags = $ptags;
@@ -147,11 +147,10 @@ class Filter implements FilterInterface
      * @param string $string The string to check.
      * @return bool True if the string is a 64-character lowercase hexadecimal value, false otherwise.
      */
-    public function isLowercaseHex($string): bool 
+    public function isLowercaseHex($string): bool
     {
         // Regular expression to match 64-character lowercase hexadecimal value
         $pattern = '/^[a-f0-9]{64}$/';
-    
         // Check if the string matches the pattern
         return preg_match($pattern, $string) === 1;
     }
@@ -166,7 +165,6 @@ class Filter implements FilterInterface
     {
         // Convert the timestamp to seconds
         $timestamp = (int) $timestamp;
-    
         // Check if the timestamp is valid
         return ($timestamp !== 0 && $timestamp !== false && $timestamp !== -1);
     }
@@ -180,11 +178,11 @@ class Filter implements FilterInterface
     {
         $array = [];
         foreach (get_object_vars($this) as $key => $val) {
-            if($key === 'etags'){
+            if($key === 'etags') {
                 $array['#e'] = $val;
-            }elseif($key === 'ptags'){
+            } elseif($key === 'ptags') {
                 $array['#p'] = $val;
-            }else{
+            } else {
                 $array[$key] = $val;
             }
         }
