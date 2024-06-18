@@ -1,0 +1,29 @@
+{
+  "name": "nostr-php-website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev content",
+    "docs:build": "vitepress build content",
+    "docs:preview": "vitepress preview content"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nostrver-se/nostr-php.git"
+  },
+  "keywords": [
+    "nostr",
+    "php"
+  ],
+  "author": "Sebastian Hagens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nostrver-se/nostr-php/issues"
+  },
+  "homepage": "https://github.com/nostrver-se/nostr-php#readme",
+  "description": "A website for a PHP helper library for Nostr",
+  "devDependencies": {
+    "vitepress": "^1.2.3"
+  }
+}
