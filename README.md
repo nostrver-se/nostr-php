@@ -74,7 +74,7 @@ $eventMessage = new EventMessage($note);
 $message_string = $eventMessage->generate();
 ```
 
-## Interacting with a relay
+## Publish an event to a relay
 
 Publish an event with a note that has been prepared for sending to a relay.
 
@@ -95,6 +95,97 @@ $eventMessage = new EventMessage($note);
 $relayUrl = 'wss://nostr-websocket.tld';
 $relay = new Relay($relayUrl, $eventMessage);
 $result = $relay->send();
+```
+
+## Read events from a relay
+
+Fetch events from a relay. 
+
+```php
+$subscription = new Subscription();
+$subscriptionId = $subscription->setId();
+
+$filter1 = new Filter();
+$filter1->setKinds([1, 3]); // You can add multiple kind numbers
+$filter1->setLimit(25); // Limit to fetch only a maximum of 25 events
+$filters = [$filter1]; // You can add multiple filters.
+
+$requestMessage = new RequestMessage($subscriptionId, $filters);
+
+$relayUrl = 'wss://nostr-websocket.tld';
+$relay = new Relay($relayUrl);
+$relay->setMessage($requestMessage);
+
+$request = new Request($relayUrl, $requestMessage);
+$response = $request->send();
+```
+
+`$response` is an multidimensional array with elements containing each a response message (JSON string) decoded to an array from the relay and sorted by the relay.
+Output example:
+```php
+[
+  'wss://nostr-websocket.tld' => [
+    0 => [
+      "EVENT",
+      "A8kWzjCVUHSD1rmuwGqyK2PxsolZMO9YXditbg05fch6p3Q4eT7vRFLEJINBna",
+      [
+        'id' => '1e8534623845629d40f7761c0577edf10f778c490e7b95a524845d9280c7c25a',
+        'kind' => 1,
+        'pubkey' => '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71',
+        'created_at' => 1718723787,
+        'content' => 'Losing your social graph can feel the same for some I think 😮 ',
+        'tags' => [
+          ['e', 'f754a238947b7f32168f872650a8dd0b9376493e58005d7e0b8be52f6f229364', 'wss://nos.lol/', 'root'],
+          ['e', 'fe7dd6ba22fa0aa39370aa160226b8bc2413460621c8d67ce862205ad5a02c24', 'wss://nos.lol/', 'reply'],
+          ['p', 'fb1366abd5e4c92a8a950791bc72d51bde291a83555cb2c629a92fedd78068ac', '', 'mention']
+        ],
+        'sig' => '888c9b5d9e0b69eba3510dd2b5d03eddcf0a680ab0e7673820fb36a56448ad80701042a669c7ef9918593c5a41c8b3ccc1d82ade50f32b62dd843144f32df403'
+    ],
+    1 => [
+      "EVENT",
+      "A8kWzjCVUHSD1rmuwGqyK2PxsolZMO9YXditbg05fch6p3Q4eT7vRFLEJINBna",
+      [
+        ...Nostr event
+      ]
+    ],
+    2 => [
+      ...
+    ],
+    3 => [
+      ...
+    ],
+    4 => [
+      ...
+    ]
+  ]
+]
+
+```
+
+## Read events from a set of relays
+
+Read events from a set of relays with the `RelaySet` class.
+It's basically the same snippet as above with the difference you create a `RelaySet` class and pass it through the `Request` object.
+
+```php
+$subscription = new Subscription();
+$subscriptionId = $subscription->setId();
+
+$filter1 = new Filter();
+$filter1->setKinds([1]);
+$filter1->setLimit(5);
+$filters = [$filter1];
+$requestMessage = new RequestMessage($subscriptionId, $filters);
+$relays = [
+    new Relay('wss://nostr-websocket-1.tld'),
+    new Relay('wss://nostr-websocket-2.tld'),
+    new Relay('wss://nostr-websocket-3.tld'),
+];
+$relaySet = new RelaySet();
+$relaySet->setRelays($relays);
+
+$request = new Request($relaySet, $requestMessage);
+$response = $request->send();
 ```
 
 ## Generating a private key and a public key
@@ -161,13 +252,20 @@ private key on command line.
 - [x] Event validation (issue [#17](https://github.com/swentel/nostr-php/issues/17))
 - [ ] Support NIP-01 basic protocol flow description
   - [x] Publish events
-  - [ ] Request events (pr [#48](https://github.com/swentel/nostr-php/pull/48))
+  - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
+  - [ ] Implement all types of relay responses
+    - [ ] EVENT - sends events requested by the client
+    - [ ] OK - indicate an acceptance or denial of an EVENT message
+    - [ ] EOSE - end of stored events
+    - [ ] CLOSED - subscription is ended on the server side
+    - [ ] NOTICE - used to send human-readable messages (like errors) to clients
 - [ ] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
 - [ ] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Support multi-threading for handling requests simultaneously
+- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
+- [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
 
 ## Community
 

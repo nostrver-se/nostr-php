@@ -9,7 +9,7 @@ interface RequestInterface
     /**
      * Send the request to the relay.
      *
-     * @return CommandResultInterface
+     * @return array
      */
     public function send(): array;
 }
