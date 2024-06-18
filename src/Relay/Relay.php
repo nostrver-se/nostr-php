@@ -19,23 +19,37 @@ class Relay implements RelayInterface
     private string $url;
 
     /**
-     * the payload to send.
+     * The message to be sent.
+     *
+     * @var MessageInterface
+     */
+    protected MessageInterface $message;
+
+    /**
+     * The payload to be sent.
      *
      * @var string
      */
     private string $payload;
 
     /**
-     * Constructs the Relay.
+     * Relay constructor.
      *
      * @param string $websocket
      *   The socket URL.
      */
-    public function __construct(string $websocket, MessageInterface $message)
+    public function __construct(string $websocket)
     {
-        // TODO validate URL.
         $this->url = $websocket;
-        $this->payload = $message->generate();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUrl(string $url): void
+    {
+        // TODO validate this URL which has to start with a prefix ws:// or wss://.
+        $this->url = $url;
     }
 
     /**
@@ -44,6 +58,23 @@ class Relay implements RelayInterface
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMessage(MessageInterface $message): void
+    {
+        $this->setPayload($message->generate());
+        $this->message = $message;
+    }
+
+    /**
+     * @param string $payload
+     */
+    private function setPayload(string $payload): void
+    {
+        $this->payload = $payload;
     }
 
     /**
@@ -60,7 +91,7 @@ class Relay implements RelayInterface
             if ($response[0] === 'NOTICE') {
                 throw new \RuntimeException($response[1]);
             }
-        } catch (WebSocket\ConnectionException $e) {
+        } catch (WebSocket\Exception\ClientException $e) {
             $response = [
                 'ERROR',
                 '',

@@ -10,6 +10,13 @@ use swentel\nostr\Filter;
 class RequestMessage implements MessageInterface
 {
     /**
+     * Message type.
+     *
+     * @var string
+     */
+    private string $type;
+
+    /**
      * An arbitrary, non-empty string of max length 64 chars
      */
     protected string $subscriptionId;
@@ -29,9 +36,21 @@ class RequestMessage implements MessageInterface
     public function __construct(string $subscriptionId, array $filters)
     {
         $this->subscriptionId = $subscriptionId;
-        foreach($filters as $filter) {
+        $this->setType(MessageTypeEnum::REQUEST);
+        foreach ($filters as $filter) {
             $this->filters[] = $filter->toArray();
         }
+    }
+
+    /**
+     * Set message type.
+     *
+     * @param MessageTypeEnum $type
+     * @return void
+     */
+    public function setType(MessageTypeEnum $type): void
+    {
+        $this->type = $type->value;
     }
 
     /**
@@ -41,7 +60,7 @@ class RequestMessage implements MessageInterface
      */
     public function generate(): string
     {
-        $requestArray = array_merge(["REQ", $this->subscriptionId], $this->filters);
+        $requestArray = array_merge([$this->type, $this->subscriptionId], $this->filters);
         return json_encode($requestArray, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }

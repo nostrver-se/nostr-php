@@ -9,6 +9,11 @@ use swentel\nostr\MessageInterface;
 class CloseMessage implements MessageInterface
 {
     /**
+     * @var string $type
+     */
+    private string $type;
+
+    /**
      * Subscription ID
      */
     protected string $subscriptionId;
@@ -16,6 +21,18 @@ class CloseMessage implements MessageInterface
     public function __construct(string $subscriptionId)
     {
         $this->subscriptionId = $subscriptionId;
+        $this->setType(MessageTypeEnum::CLOSE);
+    }
+
+    /**
+     * Set message type.
+     *
+     * @param MessageTypeEnum $type
+     * @return void
+     */
+    public function setType(MessageTypeEnum $type): void
+    {
+        $this->type = $type->value;
     }
 
     /**
@@ -23,6 +40,6 @@ class CloseMessage implements MessageInterface
      */
     public function generate(): string
     {
-        return '["CLOSE", "' . $this->subscriptionId . '"]';
+        return '["' . $this->type . '", "' . $this->subscriptionId . '"]';
     }
 }
