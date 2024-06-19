@@ -130,7 +130,7 @@ $relayUrl = 'wss://nostr-websocket.tld';
 $relay = new Relay($relayUrl);
 $relay->setMessage($requestMessage);
 
-$request = new Request($relayUrl, $requestMessage);
+$request = new Request($relay, $requestMessage);
 $response = $request->send();
 ```
 

@@ -20,6 +20,8 @@ class Request implements RequestInterface
 
     /**
      * Request message sent to relay.
+     *
+     * @var string
      */
     private string $payload;
 
@@ -41,16 +43,14 @@ class Request implements RequestInterface
     }
 
     /**
-     * Method to send a request using WebSocket client, receive responses, and handle errors.
-     *
-     * @return array The array of responses received or an error message if connection fails.
+     * @inheritDoc
      */
     public function send(): array
     {
         try {
             // TODO work out a nice solution with different RelayResponses.
             $result = [];
-            // Send message to each relay defined in this set in $this->relays).
+            // Send message to each relay defined in this set in $this->relays.
             /** @var Relay $relay */
             foreach ($this->relays->getRelays() as $relay) {
                 $result[$relay->getUrl()] = $this->getResponseFromRelay($relay);
@@ -67,6 +67,12 @@ class Request implements RequestInterface
         return $result;
     }
 
+    /**
+     * Method to send a request using WebSocket client, receive responses, and handle errors.
+     *
+     * @param Relay $relay
+     * @return array
+     */
     private function getResponseFromRelay(Relay $relay): array
     {
         $client = new WebSocket\Client($relay->getUrl());

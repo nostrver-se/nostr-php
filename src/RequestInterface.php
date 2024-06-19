@@ -7,7 +7,7 @@ namespace swentel\nostr;
 interface RequestInterface
 {
     /**
-     * Send the request to the relay.
+     * Method to send all data to the Websocket client which will connect to the relay(s).
      *
      * @return array
      */
