@@ -134,7 +134,7 @@ $request = new Request($relay, $requestMessage);
 $response = $request->send();
 ```
 
-`$response` is an multidimensional array with elements containing each a response message (JSON string) decoded to an array from the relay and sorted by the relay.
+`$response` is a multidimensional array with elements containing each a response message (JSON string) decoded to an array from the relay and sorted by the relay.
 Output example:
 ```php
 [
