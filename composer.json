@@ -26,7 +26,7 @@
     "ext-gmp": "*",
     "ext-xml": "*",
     "bitwasp/bech32": "^0.0.1",
-    "phrity/websocket": "^2.1",
+    "phrity/websocket": "^3.0",
     "simplito/elliptic-php": "^1.0",
     "uma/phpecc": "^0.1.3"
   },
