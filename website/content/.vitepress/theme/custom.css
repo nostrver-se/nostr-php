@@ -1,0 +1,34 @@
+/* https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css */
+:root {
+    --nostrphp-purple: #603d98;
+    --nostrphp-orange: #f26724;
+    --vp-home-hero-name-color: var(--nostrphp-orange);
+    /*--vp-home-hero-name-background: -webkit-linear-gradient( 120deg, var(--nostrphp-purple) 30%, var(--nostrphp-orange) );*/
+    --vp-home-hero-image-background-image: linear-gradient( -45deg, #bd34fe 60%, var(--nostrphp-orange) 50% );
+    --vp-home-hero-image-filter: blur(70px);
+    --docsearch-primary-color: var(--nostrphp-orange);
+    --docsearch-logo-color: var(--nostrphp-orange);
+    --vp-c-brand-1: var(--nostrphp-orange);
+    --vp-button-brand-bg: var(--nostrphp-orange);
+    --vp-button-brand-hover-bg: var(--nostrphp-purple);
+    --vp-button-brand-active-bg: var(--nostrphp-purple);
+}
+
+footer {
+    margin: 30px 0;
+}
+.text-center {
+    text-align: center;
+}
+
+.image-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    width: 280px !important;
+    height: 280px !important;
+    background-image: var(--vp-home-hero-image-background-image);
+    filter: var(--vp-home-hero-image-filter);
+    transform: translate(-50%, -50%);
+}

@@ -3,37 +3,44 @@
 layout: home
 
 hero:
-  name: "nostr-php"
+  name: "Nostr-PHP"
   text: "A PHP helper library for Nostr"
-#  tagline: My great project tagline
+  tagline: Empower your 🐘 PHP project with Nostr.
+  image:
+    src: /assets/nostr-php_hero-splash.png
+    alt: Nostr-PHP
   actions:
-#    - theme: brand
-#      text: Markdown Examples
-#      link: /markdown-examples
+    - theme: brand
+      text: Get started
+      link: /guides/get-started
     - theme: alt
       text: Chat
       link: https://t.me/nostr_php    
     - theme: alt
-      text: View source code
+      text: Source Code
       link: https://github.com/nostrver-se/nostr-php
     
 
 features:
   - title: Publish events
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Create, sign and publish Nostr events to relays.
+    link: /guides/publish-events
   - title: Read events
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Request Nostr events from relays.
+    link: /guides/read-events
   - title: Examples
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit  
+    details: Learn how to use this PHP helper library for Nostr.  
 ---
 
-Add the nostr-php to your PHP project with Composer
+## Get started
+
+Add the nostr-php package to your PHP project with Composer
 
 ```bash
 composer require nostrverse/nostr-php
 ```
 
-Here is very simple example:
+Here is an example how to create and publish an event to a relay:
 
 ```php
 <?php
@@ -52,17 +59,24 @@ function send($message) {
         $private_key = $key->generatePrivateKey(); // this will generate a private key
         $private_key_hex = $key->convertToHex($private_key);
         $public_key = $key->getPublicKey($private_key_hex);
+        
         $relayUrl = 'wss://relay.damus.io';
+        
         $note = new Event();
         $note->setKind(1);
         $note->addTag(['p', $public_key]);
         $note->addTag(['r', $relayUrl]);
         $note->setContent($message);
+        
         $signer = new Sign();
         $signer->signEvent($note, $private_key);        
+        
         $eventMessage = new EventMessage($note);
-        $relay = new Relay($relayUrl, $eventMessage);        
+        
+        $relay = new Relay($relayUrl);  
+        $relay->setMessage($eventMessage);      
         $result = $relay->send();
+        
         if ($result->isSuccess()) {
             print "The event has been sent to Nostr!\n";
         } else {
@@ -77,3 +91,4 @@ $message = 'Hello world ' . date('Y-m-d H:i:s');
 send($message);
 
 ```
+For more examples please check this [README](https://github.com/nostrver-se/nostr-php/blob/main/README.md).
