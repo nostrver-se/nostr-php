@@ -31,7 +31,7 @@ interface RelayInterface
     /**
      * Sends the message to the relay.
      *
-     * @return CommandResultInterface
+     * @return RelayResponse
      */
-    public function send(): CommandResultInterface;
+    public function send(): RelayResponseInterface | RelayResponseOk | RelayResponseNotice;
 }
