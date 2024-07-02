@@ -11,7 +11,7 @@ class Filter implements FilterInterface
     /**
      * A list of event ids
      */
-    public array $id;
+    public array $ids;
 
     /**
      * A list of lowercase pubkeys, the pubkey of an event must be one of these
@@ -49,14 +49,26 @@ class Filter implements FilterInterface
     public int $limit;
 
     /**
+     * Set the ids for filtering multiple events.
+     *
+     * @param array $ids
+     * @return $this
+     */
+    public function setIds(array $ids): static
+    {
+        $this->ids = $ids;
+        return $this;
+    }
+
+    /**
      * Set the authors for the Filter object.
      *
      * @param array $pubkey The array of authors to set.
      */
     public function setAuthors(array $pubkeys): static
     {
-        foreach($pubkeys as $key) {
-            if(!$this->isLowercaseHex($key)) {
+        foreach ($pubkeys as $key) {
+            if (!$this->isLowercaseHex($key)) {
                 throw new \RuntimeException("Author pubkeys must be an array of 64-character lowercase hex values");
             }
         }
@@ -82,8 +94,8 @@ class Filter implements FilterInterface
      */
     public function setLowercaseETags(array $etags): static
     {
-        foreach($etags as $tag) {
-            if(!$this->isLowercaseHex($tag)) {
+        foreach ($etags as $tag) {
+            if (!$this->isLowercaseHex($tag)) {
                 throw new \RuntimeException("#e tags must be an array of 64-character lowercase hex values");
             }
         }
@@ -99,8 +111,8 @@ class Filter implements FilterInterface
     public function setLowercasePTags(array $ptags): static
     {
         // Check IF array contain exact 64-character lowercase hex values
-        foreach($ptags as $tag) {
-            if(!$this->isLowercaseHex($tag)) {
+        foreach ($ptags as $tag) {
+            if (!$this->isLowercaseHex($tag)) {
                 throw new \RuntimeException("#p tags must be an array of 64-character lowercase hex values");
             }
         }
@@ -178,9 +190,9 @@ class Filter implements FilterInterface
     {
         $array = [];
         foreach (get_object_vars($this) as $key => $val) {
-            if($key === 'etags') {
+            if ($key === 'etags') {
                 $array['#e'] = $val;
-            } elseif($key === 'ptags') {
+            } elseif ($key === 'ptags') {
                 $array['#p'] = $val;
             } else {
                 $array[$key] = $val;
