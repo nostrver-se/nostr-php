@@ -19,6 +19,14 @@ class RequestTest extends TestCase
     {
         $relayUrl = 'wss://relay.damus.io';
 
+        $relay = new Relay($relayUrl);
+
+        // Mocking the WebSocket\Client
+        $mockClient = $this->getMockBuilder(Client::class)
+            ->setConstructorArgs([$relay->getUrl()])
+            ->getMock();
+
+        // Test retriving events from relay
         $subscription = new Subscription();
         $subscriptionId = $subscription->setId();
 
@@ -27,13 +35,6 @@ class RequestTest extends TestCase
         $filter->setLimit(3);
 
         $filters = [$filter];
-
-        $relay = new Relay($relayUrl);
-
-        // Mocking the WebSocket\Client
-        $mockClient = $this->getMockBuilder(Client::class)
-            ->setConstructorArgs([$relay->getUrl()])
-            ->getMock();
 
         $requestMessage = new RequestMessage($subscriptionId, $filters);
         $request = new Request($relay, $requestMessage, $mockClient);

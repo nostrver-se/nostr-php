@@ -6,6 +6,7 @@ namespace swentel\nostr\Request;
 
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
+use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\RequestInterface;
 use WebSocket;
 
@@ -48,7 +49,6 @@ class Request implements RequestInterface
     public function send(): array
     {
         try {
-            // TODO work out a nice solution with different RelayResponses.
             $result = [];
             // Send message to each relay defined in this set in $this->relays.
             /** @var Relay $relay */
@@ -73,11 +73,8 @@ class Request implements RequestInterface
      * @param Relay $relay
      * @return array
      */
-    private function getResponseFromRelay(Relay $relay): array
+    private function getResponseFromRelay(Relay $relay): array | RelayResponse
     {
-        $client = new WebSocket\Client($relay->getUrl());
-        $client->text($this->payload);
-        $result = [];
         /**
          * When sending 'CLOSE' request to close a subscription, it is not guaranteed that we
          * will receive a response confirming that the subscription with the given ID is closed
@@ -88,21 +85,29 @@ class Request implements RequestInterface
          *  - waiting for ping from server to close connection (in which case the server indicates the
          *    connection is still alive, but it does not confirm the closure of the subscription)
          */
+
+        $client = new WebSocket\Client($relay->getUrl());
+        $client->text($this->payload);
+        $result = [];
+        
         while ($response = $client->receive()) {
-            if ($response instanceof WebSocket\Message\Ping) {
+            if ($response === null) {
+                $response = [
+                    'ERROR',
+                    'Invalid response',
+                ];
+                $client->disconnect();
+                return RelayResponse::create($response);
+            } elseif ($response instanceof WebSocket\Message\Ping) {
                 $client->disconnect();
                 return $result;
-            }
-            if ($response instanceof WebSocket\Message\Text) {
-                $response = json_decode($response->getContent());
-                if ($response[0] === 'NOTICE' || $response[0] === 'CLOSED') {
-                    $client->disconnect();
-                    throw new \RuntimeException($response[0] === 'NOTICE' ? $response[1] : $response[2]);
-                }
-                if ($response[0] === 'EOSE') {
+            } elseif ($response instanceof WebSocket\Message\Text) {
+                $relayResponse = RelayResponse::create(json_decode($response->getContent()));
+                if($relayResponse->type === 'EOSE') {
                     break;
                 }
-                $result[] = $response;
+               
+                $result[] = $relayResponse;
             }
         }
         $client->disconnect();

@@ -6,7 +6,10 @@ namespace swentel\nostr\Relay;
 
 use swentel\nostr\MessageInterface;
 use swentel\nostr\RelayInterface;
-use swentel\nostr\CommandResultInterface;
+use swentel\nostr\RelayResponse\RelayResponseOk;
+use swentel\nostr\RelayResponse\RelayResponseNotice;
+use swentel\nostr\RelayResponse\RelayResponse;
+use swentel\nostr\RelayResponseInterface;
 use WebSocket;
 
 class Relay implements RelayInterface
@@ -43,12 +46,19 @@ class Relay implements RelayInterface
         $this->url = $websocket;
     }
 
+    private function validateUrl(): void 
+    {
+        if (!preg_match('/^(ws|wss):\/\//', $this->url)) {
+            throw new \InvalidArgumentException('Invalid URL format. URL must start with ws:// or wss://');
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
     public function setUrl(string $url): void
     {
-        // TODO validate this URL which has to start with a prefix ws:// or wss://.
+        $this->validateUrl();
         $this->url = $url;
     }
 
@@ -78,18 +88,28 @@ class Relay implements RelayInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sends a message using WebSocket and returns a RelayResponseInterface object.
+     *
+     * @return RelayResponseInterface|RelayResponseOk|RelayResponseNotice The response object.
      */
-    public function send(): CommandResultInterface
+    public function send(): RelayResponseInterface | RelayResponseOk | RelayResponseNotice
     {
+        $this->validateUrl();
+
         try {
             $client = new WebSocket\Client($this->url);
             $client->text($this->payload);
             $response = $client->receive();
             $client->disconnect();
-            $response = json_decode($response);
-            if ($response[0] === 'NOTICE') {
-                throw new \RuntimeException($response[1]);
+
+            if ($response === null) {
+                $response = [
+                    'ERROR',
+                    'Invalid response',
+                ];
+                $relayResponse = RelayResponse::create($response);
+            } else {
+                $relayResponse = RelayResponse::create(json_decode($response->getContent()));
             }
         } catch (WebSocket\Exception\ClientException $e) {
             $response = [
@@ -99,6 +119,7 @@ class Relay implements RelayInterface
                 $e->getMessage(),
             ];
         }
-        return new CommandResult($response);
+        
+        return $relayResponse;
     }
 }
