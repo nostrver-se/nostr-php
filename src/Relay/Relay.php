@@ -38,9 +38,13 @@ class Relay implements RelayInterface
      * @param string $websocket
      *   The socket URL.
      */
-    public function __construct(string $websocket)
+    public function __construct(string $websocket, MessageInterface $message = null)
     {
         $this->url = $websocket;
+        // Backwards compatibility for version <1.2.4
+        if ($message !== null) {
+            $this->setMessage($message);
+        }
     }
 
     /**
@@ -87,7 +91,7 @@ class Relay implements RelayInterface
             $client->text($this->payload);
             $response = $client->receive();
             $client->disconnect();
-            $response = json_decode($response);
+            $response = json_decode($response->getContent());
             if ($response[0] === 'NOTICE') {
                 throw new \RuntimeException($response[1]);
             }

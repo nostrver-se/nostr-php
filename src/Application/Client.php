@@ -93,6 +93,6 @@ class Client
     protected function showHelp($message): void
     {
         print "\n[error] " . $message . "\n\nUsage:\n";
-        print "nostr-php --content \"Hello world!\" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network\n\n";
+        print "bin/nostr-php --content \"Hello world!\" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network\n\n";
     }
 }
