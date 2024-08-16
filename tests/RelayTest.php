@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Relay\Relay;
-use swentel\nostr\Relay\CommandResult;
+use swentel\nostr\RelayResponse\RelayResponseOk;
 use swentel\nostr\Sign\Sign;
 
 class RelayTest extends TestCase
@@ -28,11 +28,11 @@ class RelayTest extends TestCase
         $relay = $this->createMock(Relay::class);
         $relay->expects($this->once())
             ->method('send')
-            ->willReturn(new CommandResult(['OK', $note->getId(), true, '']));
+            ->willReturn(new RelayResponseOk(['OK', $note->getId(), true, '']));
 
         $response = $relay->send();
         $this->assertTrue(
-            $response->isSuccess(),
+            $response->status,
         );
     }
 }
