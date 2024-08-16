@@ -89,7 +89,7 @@ class Request implements RequestInterface
         $client = new WebSocket\Client($relay->getUrl());
         $client->text($this->payload);
         $result = [];
-        
+
         while ($response = $client->receive()) {
             if ($response === null) {
                 $response = [
@@ -106,7 +106,7 @@ class Request implements RequestInterface
                 if($relayResponse->type === 'EOSE') {
                     break;
                 }
-               
+
                 $result[] = $relayResponse;
             }
         }
