@@ -1,10 +1,10 @@
 # nostr-php
 
-![CI](https://github.com/swentel/nostr-php/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/nostrver-se/nostr-php/actions/workflows/ci.yml/badge.svg)
 ![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/swentel/nostr-php/php)
-![GitHub contributors](https://img.shields.io/github/contributors/swentel/nostr-php)
-![GitHub issues](https://img.shields.io/github/issues/swentel/nostr-php)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/swentel/nostr-php/main)
+![GitHub contributors](https://img.shields.io/github/contributors/nostrver-se/nostr-php)
+![GitHub issues](https://img.shields.io/github/issues/nostrver-se/nostr-php)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/nostrver-se/nostr-php/main)
 
 This is a PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr.
@@ -263,7 +263,7 @@ private key on command line.
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation (issue [#17](https://github.com/swentel/nostr-php/issues/17))
+- [x] Event validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17))
 - [ ] Support NIP-01 basic protocol flow description
   - [x] Publish events
   - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
@@ -293,3 +293,6 @@ In May 2024 OpenSats granted Sebastian Hagens for further development of this li
  
 * [@sebastix](https://github.com/Sebastix)  `npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe`
 * [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`
+
+## Contributors
+
