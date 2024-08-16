@@ -3,31 +3,27 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Relay\Relay;
-use swentel\nostr\RelayResponse\RelayResponseEvent;
-use swentel\nostr\Subscription\Subscription;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
+use swentel\nostr\Relay\Relay;
+use swentel\nostr\RelayResponse\RelayResponseAuth;
 use swentel\nostr\Request\Request;
+use swentel\nostr\Subscription\Subscription;
 
-class RequestTest extends TestCase
+class RelayResponseTest extends TestCase
 {
-    /**
-     * Tests sending a request to a relay.
-     */
-    public function testSendRequestToRelay()
+    public function testSendRequestToRelayAndResultAuth()
     {
-        $relayUrl = 'wss://relay.damus.io';
+        $relayUrl = 'wss://nostr.sebastix.social';
 
         $relay = new Relay($relayUrl);
 
-        // Test retrieving events from relay
         $subscription = new Subscription();
         $subscriptionId = $subscription->setId();
 
         $filter = new Filter();
         $filter->setKinds([1]);
-        $filter->setLimit(3);
+        $filter->setLimit(1);
 
         $filters = [$filter];
 
@@ -36,7 +32,6 @@ class RequestTest extends TestCase
 
         $result = $request->send();
 
-        $this->assertInstanceOf(RelayResponseEvent::class, $result[$relayUrl][0]);
-        $this->assertNotEmpty($result, 'Request send result should not be empty');
+        $this->assertInstanceOf(RelayResponseAuth::class, $result[$relayUrl][0]);
     }
 }

@@ -9,10 +9,14 @@ namespace swentel\nostr\RelayResponse;
  */
 enum RelayResponseEnum: string
 {
-    case ERROR = 'ERROR';
     case EVENT = 'EVENT';
     case OK = 'OK';
     case EOSE = 'EOSE';
     case CLOSED = 'CLOSED';
     case NOTICE = 'NOTICE';
+    /**
+     * NIP-42 support - Authentication of clients to relays
+     * https://github.com/nostr-protocol/nips/blob/master/42.md
+     */
+    case AUTH = 'AUTH';
 }

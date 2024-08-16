@@ -8,7 +8,8 @@ class RelayResponseEose extends RelayResponse
 {
     public string $subscriptionId;
 
-    public function __construct($response){
+    public function __construct($response)
+    {
         parent::__construct($response);
         $this->subscriptionId = $response[1];
     }

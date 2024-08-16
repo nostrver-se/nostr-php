@@ -8,7 +8,8 @@ class RelayResponseNotice extends RelayResponse
 {
     public string $message;
 
-    public function __construct($response){
+    public function __construct($response)
+    {
         parent::__construct($response);
         $this->message = $response[1];
     }

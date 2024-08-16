@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace swentel\nostr;
 
+use swentel\nostr\Relay\CommandResult;
 use swentel\nostr\Relay\Relay;
 
 interface RelaySetInterface
@@ -72,7 +73,8 @@ interface RelaySetInterface
     /**
      *  Sends the message to all the relays in this set.
      *
-     * @return CommandResultInterface
+     * @return array
+     *   Return an array with the results of each relay.
      */
-    public function send(): CommandResultInterface;
+    public function send(): array;
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Relay;
 
-use swentel\nostr\CommandResultInterface;
 use swentel\nostr\MessageInterface;
+use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\RelaySetInterface;
 use WebSocket;
 
@@ -112,7 +112,7 @@ class RelaySet implements RelaySetInterface
     /**
      * @inheritDoc
      */
-    public function send(): CommandResultInterface
+    public function send(): array
     {
         try {
             // Send message to each relay defined in this set.
@@ -123,19 +123,22 @@ class RelaySet implements RelaySetInterface
                 $client->text($payload);
                 $response = $client->receive();
                 $client->disconnect();
-                $response = json_decode($response->getContent());
-                if ($response[0] === 'NOTICE') {
-                    throw new \RuntimeException($response[1]);
+                if ($response->getOpcode() === 'ping') {
+                    continue;
                 }
+                if ($response === null) {
+                    throw new \RuntimeException('Websocket client response is null');
+                }
+                $result[$relay->getUrl()] = RelayResponse::create(json_decode($response->getContent()));
             }
         } catch (WebSocket\Exception\ClientException $e) {
-            $response = [
+            $result = [
                 'ERROR',
                 '',
                 false,
                 $e->getMessage(),
             ];
         }
-        return new CommandResult($response);
+        return $result;
     }
 }

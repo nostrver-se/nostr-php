@@ -32,7 +32,7 @@ class RelayTest extends TestCase
 
         $response = $relay->send();
         $this->assertTrue(
-            $response->status,
+            $response->isSuccess(),
         );
     }
 }

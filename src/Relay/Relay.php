@@ -93,11 +93,9 @@ class Relay implements RelayInterface
     }
 
     /**
-     * Sends a message using WebSocket and returns a RelayResponseInterface object.
-     *
-     * @return RelayResponseInterface|RelayResponseOk|RelayResponseNotice The response object.
+     * @inheritDoc
      */
-    public function send(): RelayResponseInterface | RelayResponseOk | RelayResponseNotice
+    public function send(): RelayResponse
     {
         $this->validateUrl();
 
@@ -106,25 +104,18 @@ class Relay implements RelayInterface
             $client->text($this->payload);
             $response = $client->receive();
             $client->disconnect();
-
             if ($response === null) {
-                $response = [
-                    'ERROR',
-                    'Invalid response',
-                ];
-                $relayResponse = RelayResponse::create($response);
-            } else {
-                $relayResponse = RelayResponse::create(json_decode($response->getContent()));
+                throw new \RuntimeException('Websocket client response is null');
             }
+            $result = RelayResponse::create(json_decode($response->getContent()));
         } catch (WebSocket\Exception\ClientException $e) {
-            $response = [
+            $result = [
                 'ERROR',
                 '',
                 false,
                 $e->getMessage(),
             ];
         }
-
-        return $relayResponse;
+        return $result;
     }
 }

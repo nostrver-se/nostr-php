@@ -6,7 +6,23 @@ namespace swentel\nostr;
 
 interface RelayResponseInterface
 {
-    public static function createResponse(array $response, string $type);
+    /**
+     * @param array $response
+     * @param string $type
+     * @return mixed
+     */
+    public static function createResponse(array $response, string $type): mixed;
 
-    public static function create(array $response);
+    /**
+     * @param array $response
+     * @return mixed
+     */
+    public static function create(array $response): mixed;
+
+    /**
+     * Returns whether the request was successful.
+     *
+     * @return bool
+     */
+    public function isSuccess(): bool;
 }
