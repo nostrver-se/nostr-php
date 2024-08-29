@@ -264,18 +264,18 @@ private key on command line.
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
 - [x] Event validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17))
-- [ ] Support NIP-01 basic protocol flow description
+- [x] Support NIP-01 basic protocol flow description
   - [x] Publish events
   - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
-  - [ ] Implement all types of relay responses
-    - [ ] EVENT - sends events requested by the client
-    - [ ] OK - indicate an acceptance or denial of an EVENT message
-    - [ ] EOSE - end of stored events
-    - [ ] CLOSED - subscription is ended on the server side
-    - [ ] NOTICE - used to send human-readable messages (like errors) to clients
-- [ ] Improve handling relay responses
+  - [x] Implement all types of relay responses 
+    - [x] `EVENT` - sends events requested by the client
+    - [x] `OK` - indicate an acceptance or denial of an EVENT message
+    - [x] `EOSE` - end of stored events
+    - [x] `CLOSED` - subscription is ended on the server side
+    - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
+- [x] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
-- [ ] Support NIP-42 authentication of clients to relays
+- [ ] Support NIP-42 authentication of clients to relays => AUTH relay response
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
@@ -296,3 +296,4 @@ In May 2024 OpenSats granted Sebastian Hagens for further development of this li
 
 ## Contributors
 
+See https://github.com/nostrver-se/nostr-php/graphs/contributors

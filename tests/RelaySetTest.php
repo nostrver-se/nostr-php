@@ -7,7 +7,7 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
-use swentel\nostr\Relay\CommandResult;
+use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\Sign\Sign;
 
 class RelaySetTest extends TestCase
@@ -34,11 +34,11 @@ class RelaySetTest extends TestCase
         $relaySet->setRelays([$relay1, $relay2, $relay3]);
         $relaySet->expects($this->once())
             ->method('send')
-            ->willReturn(new CommandResult(['OK', $note->getId(), true, '']));
+            ->willReturn([
+                $relaySet->getRelays(),
+            ]);
 
         $response = $relaySet->send();
-        $this->assertTrue(
-            $response->isSuccess(),
-        );
+        $this->assertIsArray($response);
     }
 }
