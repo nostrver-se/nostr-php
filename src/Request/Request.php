@@ -103,7 +103,7 @@ class Request implements RequestInterface
                 return $result;
             } elseif ($response instanceof WebSocket\Message\Text) {
                 $relayResponse = RelayResponse::create(json_decode($response->getContent()));
-                if($relayResponse->type === 'EOSE') {
+                if ($relayResponse->type === 'EOSE') {
                     break;
                 }
 

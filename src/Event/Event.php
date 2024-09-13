@@ -165,7 +165,7 @@ class Event implements EventInterface
      */
     public function setTags(array $tags): static
     {
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
             $this->tags[] = $tag;
         }
         return $this;
