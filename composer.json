@@ -1,7 +1,7 @@
 {
   "name": "swentel/nostr-php",
   "description": "Nostr helper library for PHP",
-  "keywords": ["nostr", "library", "dev"],
+  "keywords": ["nostr", "library"],
   "homepage": "https://nostr-php.dev",
   "license": "MIT",
   "authors": [
