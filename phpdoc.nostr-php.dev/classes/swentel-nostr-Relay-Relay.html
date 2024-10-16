@@ -149,7 +149,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">12</span>
+    <span class="phpdocumentor-element-found-in__line">16</span>
 
     </aside>
 
@@ -186,12 +186,19 @@
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/swentel-nostr-Relay-Relay.html#property_message">$message</a>
+    <span>
+                        &nbsp;: <a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a>            </span>
+</dt>
+<dd>The message to be sent.</dd>
+
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/swentel-nostr-Relay-Relay.html#property_payload">$payload</a>
     <span>
                         &nbsp;: string            </span>
 </dt>
-<dd>the payload to send.</dd>
+<dd>The payload to be sent.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/swentel-nostr-Relay-Relay.html#property_url">$url</a>
@@ -213,26 +220,54 @@
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Constructs the Relay.</dd>
+<dd>Relay constructor.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/swentel-nostr-Relay-Relay.html#method_getUrl">getUrl()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Get url of the relay.</dd>
+<dd>Get URL of the relay.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/swentel-nostr-Relay-Relay.html#method_send">send()</a>
     <span>
-                                &nbsp;: <a href="classes/swentel-nostr-CommandResultInterface.html"><abbr title="\swentel\nostr\CommandResultInterface">CommandResultInterface</abbr></a>    </span>
+                                &nbsp;: <a href="classes/swentel-nostr-RelayResponseInterface.html"><abbr title="\swentel\nostr\RelayResponseInterface">RelayResponseInterface</abbr></a>    </span>
 </dt>
-<dd>Send the message to the relay.</dd>
+<dd>Sends the message to the relay.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/swentel-nostr-Relay-Relay.html#method_setMessage">setMessage()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Set message that will be sent to the relay.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/swentel-nostr-Relay-Relay.html#method_setUrl">setUrl()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Set URL of the relay.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/swentel-nostr-Relay-Relay.html#method_setPayload">setPayload()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/swentel-nostr-Relay-Relay.html#method_validateUrl">validateUrl()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
 
     </dl>
 
 
 
+
+        
 
         
 
@@ -243,6 +278,40 @@
             <a href="classes/swentel-nostr-Relay-Relay.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_message">
+        $message
+        <a href="classes/swentel-nostr-Relay-Relay.html#property_message" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">30</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">The message to be sent.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a></span>
+    <span class="phpdocumentor-signature__name">$message</span>
+    </code>
+
+    
+    
+    
+
+</article>
                     <article
         class="
             phpdocumentor-element
@@ -260,11 +329,11 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">37</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">the payload to send.</p>
+        <p class="phpdocumentor-summary">The payload to be sent.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -294,7 +363,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -333,15 +402,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Constructs the Relay.</p>
+        <p class="phpdocumentor-summary">Relay constructor.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$websocket</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$message</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$websocket</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$message</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -353,14 +422,12 @@
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The socket URL.</p>
-</section>
-
+                
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$message</span>
                 : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a></span>
-                            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
@@ -384,11 +451,11 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">73</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get url of the relay.</p>
+        <p class="phpdocumentor-summary">Get URL of the relay.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -420,15 +487,189 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">52</span>
+    <span class="phpdocumentor-element-found-in__line">98</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Send the message to the relay.</p>
+        <p class="phpdocumentor-summary">Sends the message to the relay.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">send</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/swentel-nostr-CommandResultInterface.html"><abbr title="\swentel\nostr\CommandResultInterface">CommandResultInterface</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">send</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/swentel-nostr-RelayResponseInterface.html"><abbr title="\swentel\nostr\RelayResponseInterface">RelayResponseInterface</abbr></a></span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/swentel-nostr-Relay-Relay.html#method_send#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">inheritDoc</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                             
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/swentel-nostr-RelayResponseInterface.html"><abbr title="\swentel\nostr\RelayResponseInterface">RelayResponseInterface</abbr></a></span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setMessage">
+        setMessage()
+        <a href="classes/swentel-nostr-Relay-Relay.html#method_setMessage" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">81</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set message that will be sent to the relay.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">setMessage</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$message</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$message</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/swentel-nostr-MessageInterface.html"><abbr title="\swentel\nostr\MessageInterface">MessageInterface</abbr></a></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setUrl">
+        setUrl()
+        <a href="classes/swentel-nostr-Relay-Relay.html#method_setUrl" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">64</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set URL of the relay.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">setUrl</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$url</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setPayload">
+        setPayload()
+        <a href="classes/swentel-nostr-Relay-Relay.html#method_setPayload" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">90</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">setPayload</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$payload</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$payload</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_validateUrl">
+        validateUrl()
+        <a href="classes/swentel-nostr-Relay-Relay.html#method_validateUrl" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Relay/Relay.php"><a href="files/src-relay-relay.html"><abbr title="src/Relay/Relay.php">Relay.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">54</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">validateUrl</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -436,11 +677,7 @@
     
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/swentel-nostr-CommandResultInterface.html"><abbr title="\swentel\nostr\CommandResultInterface">CommandResultInterface</abbr></a></span>
-            </section>
-
+    
 </article>
             </section>
 
@@ -555,6 +792,7 @@
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/swentel-nostr-Relay-Relay.html#property_message">$message<a href="classes/swentel-nostr-Relay-Relay.html"></li>
                                                     <li><a href="classes/swentel-nostr-Relay-Relay.html#property_payload">$payload<a href="classes/swentel-nostr-Relay-Relay.html"></li>
                                                     <li><a href="classes/swentel-nostr-Relay-Relay.html#property_url">$url<a href="classes/swentel-nostr-Relay-Relay.html"></li>
                                             </ul>
@@ -566,6 +804,10 @@
                                             <li><a href="classes/swentel-nostr-Relay-Relay.html#method___construct">__construct()</a></li>
                                             <li><a href="classes/swentel-nostr-Relay-Relay.html#method_getUrl">getUrl()</a></li>
                                             <li><a href="classes/swentel-nostr-Relay-Relay.html#method_send">send()</a></li>
+                                            <li><a href="classes/swentel-nostr-Relay-Relay.html#method_setMessage">setMessage()</a></li>
+                                            <li><a href="classes/swentel-nostr-Relay-Relay.html#method_setUrl">setUrl()</a></li>
+                                            <li><a href="classes/swentel-nostr-Relay-Relay.html#method_setPayload">setPayload()</a></li>
+                                            <li><a href="classes/swentel-nostr-Relay-Relay.html#method_validateUrl">validateUrl()</a></li>
                                     </ul>
             </li>
                     </ul>

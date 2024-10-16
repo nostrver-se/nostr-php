@@ -266,6 +266,161 @@ Search.appendIndex(
             "summary": "Returns\u0020true\u0020if\u0020event\u0020object\u0020encodes\u0020to\u0020a\u0020valid\u0020Nostr\u0020event\u0020JSON\u0020string.",
             "url": "classes/swentel-nostr-EventInterface.html#method_verify"
         },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter",
+            "name": "Filter",
+            "summary": "",
+            "url": "classes/swentel-nostr-Filter-Filter.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetIds\u0028\u0029",
+            "name": "setIds",
+            "summary": "Set\u0020the\u0020ids\u0020for\u0020filtering\u0020multiple\u0020events.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setIds"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetAuthors\u0028\u0029",
+            "name": "setAuthors",
+            "summary": "Set\u0020the\u0020authors\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setAuthors"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetKinds\u0028\u0029",
+            "name": "setKinds",
+            "summary": "Set\u0020the\u0020kinds\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setKinds"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetLowercaseETags\u0028\u0029",
+            "name": "setLowercaseETags",
+            "summary": "Set\u0020the\u0020\u0023e\u0020tag\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setLowercaseETags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetLowercasePTags\u0028\u0029",
+            "name": "setLowercasePTags",
+            "summary": "Set\u0020the\u0020\u0023p\u0020tag\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setLowercasePTags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetSince\u0028\u0029",
+            "name": "setSince",
+            "summary": "Set\u0020since\u0020parameter\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setSince"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetUntil\u0028\u0029",
+            "name": "setUntil",
+            "summary": "Set\u0020the\u0020until\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setUntil"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AsetLimit\u0028\u0029",
+            "name": "setLimit",
+            "summary": "Set\u0020the\u0020limit\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_setLimit"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AisLowercaseHex\u0028\u0029",
+            "name": "isLowercaseHex",
+            "summary": "Check\u0020if\u0020a\u0020given\u0020string\u0020is\u0020a\u002064\u002Dcharacter\u0020lowercase\u0020hexadecimal\u0020value.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_isLowercaseHex"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AisValidTimestamp\u0028\u0029",
+            "name": "isValidTimestamp",
+            "summary": "Check\u0020if\u0020a\u0020given\u0020timestamp\u0020is\u0020valid.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_isValidTimestamp"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003AtoArray\u0028\u0029",
+            "name": "toArray",
+            "summary": "Return\u0020an\u0020array\u0020representation\u0020of\u0020the\u0020object\u0020by\u0020iterating\u0020through\u0020its\u0020properties.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#method_toArray"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024ids",
+            "name": "ids",
+            "summary": "A\u0020list\u0020of\u0020event\u0020ids",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_ids"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024authors",
+            "name": "authors",
+            "summary": "A\u0020list\u0020of\u0020lowercase\u0020pubkeys,\u0020the\u0020pubkey\u0020of\u0020an\u0020event\u0020must\u0020be\u0020one\u0020of\u0020these",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_authors"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024kinds",
+            "name": "kinds",
+            "summary": "A\u0020list\u0020of\u0020a\u0020kind\u0020numbers",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_kinds"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024etags",
+            "name": "etags",
+            "summary": "A\u0020list\u0020of\u0020\u0023e\u0020tag\u0020values\u0020\u0028list\u0020of\u0020event\u0020ids\u0029",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_etags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024ptags",
+            "name": "ptags",
+            "summary": "A\u0020list\u0020of\u0020\u0023p\u0020tag\u0020values\u0020\u0028list\u0020of\u0020pubkeys\u0029.",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_ptags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024since",
+            "name": "since",
+            "summary": "An\u0020integer\u0020unix\u0020timestamp\u0020in\u0020seconds,\u0020events\u0020must\u0020be\u0020newer\u0020than\u0020this\u0020to\u0020pass",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_since"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024until",
+            "name": "until",
+            "summary": "An\u0020integer\u0020unix\u0020timestamp\u0020in\u0020seconds,\u0020events\u0020must\u0020be\u0020older\u0020than\u0020this\u0020to\u0020pass",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_until"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Filter\\Filter\u003A\u003A\u0024limit",
+            "name": "limit",
+            "summary": "Maximum\u0020number\u0020of\u0020events\u0020relays\u0020SHOULD\u0020return\u0020in\u0020the\u0020initial\u0020query",
+            "url": "classes/swentel-nostr-Filter-Filter.html#property_limit"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface",
+            "name": "FilterInterface",
+            "summary": "",
+            "url": "classes/swentel-nostr-FilterInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetAuthors\u0028\u0029",
+            "name": "setAuthors",
+            "summary": "Set\u0020the\u0020authors\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setAuthors"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetKinds\u0028\u0029",
+            "name": "setKinds",
+            "summary": "Set\u0020the\u0020kinds\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setKinds"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetLowercaseETags\u0028\u0029",
+            "name": "setLowercaseETags",
+            "summary": "Set\u0020the\u0020tag\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setLowercaseETags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetLowercasePTags\u0028\u0029",
+            "name": "setLowercasePTags",
+            "summary": "Set\u0020the\u0020\u0023p\u0020tag\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setLowercasePTags"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetSince\u0028\u0029",
+            "name": "setSince",
+            "summary": "Set\u0020the\u0020since\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setSince"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetUntil\u0028\u0029",
+            "name": "setUntil",
+            "summary": "Set\u0020the\u0020until\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setUntil"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AsetLimit\u0028\u0029",
+            "name": "setLimit",
+            "summary": "Set\u0020the\u0020limit\u0020for\u0020the\u0020Filter\u0020object.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_setLimit"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AisLowercaseHex\u0028\u0029",
+            "name": "isLowercaseHex",
+            "summary": "Check\u0020if\u0020a\u0020given\u0020string\u0020is\u0020a\u002064\u002Dcharacter\u0020lowercase\u0020hexadecimal\u0020value.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_isLowercaseHex"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AisValidTimestamp\u0028\u0029",
+            "name": "isValidTimestamp",
+            "summary": "Check\u0020if\u0020a\u0020given\u0020timestamp\u0020is\u0020valid.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_isValidTimestamp"
+        },                {
+            "fqsen": "\\swentel\\nostr\\FilterInterface\u003A\u003AtoArray\u0028\u0029",
+            "name": "toArray",
+            "summary": "Return\u0020an\u0020array\u0020representation\u0020of\u0020the\u0020object\u0020by\u0020iterating\u0020through\u0020its\u0020properties.",
+            "url": "classes/swentel-nostr-FilterInterface.html#method_toArray"
+        },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key",
             "name": "Key",
             "summary": "",
@@ -278,28 +433,58 @@ Search.appendIndex(
         },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key\u003A\u003AgetPublicKey\u0028\u0029",
             "name": "getPublicKey",
-            "summary": "Generate\u0020public\u0020key\u0020from\u0020private\u0020key\u0020as\u0020hex.",
+            "summary": "Generate\u0020public\u0020hex\u0020key\u0020from\u0020private\u0020hex\u0020key.",
             "url": "classes/swentel-nostr-Key-Key.html#method_getPublicKey"
         },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key\u003A\u003AconvertToHex\u0028\u0029",
             "name": "convertToHex",
-            "summary": "Convert\u0020a\u0020key\u0020to\u0020hex.",
+            "summary": "Convert\u0020a\u0020bech32\u0020encoded\u0020key\u0020to\u0020hex\u0020key.",
             "url": "classes/swentel-nostr-Key-Key.html#method_convertToHex"
         },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key\u003A\u003AconvertPublicKeyToBech32\u0028\u0029",
             "name": "convertPublicKeyToBech32",
-            "summary": "Convert\u0020a\u0020public\u0020hex\u0020key\u0020to\u0020bech32.",
+            "summary": "Convert\u0020a\u0020public\u0020hex\u0020key\u0020to\u0020a\u0020bech32\u0020encoded\u0020string\u0020\u0028npub\u0029.",
             "url": "classes/swentel-nostr-Key-Key.html#method_convertPublicKeyToBech32"
         },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key\u003A\u003AconvertPrivateKeyToBech32\u0028\u0029",
             "name": "convertPrivateKeyToBech32",
-            "summary": "Convert\u0020a\u0020private\u0020hex\u0020key\u0020to\u0020bech32.",
+            "summary": "Convert\u0020a\u0020private\u0020hex\u0020key\u0020to\u0020bech32\u0020encoded\u0020string\u0020\u0028nsec\u0029.",
             "url": "classes/swentel-nostr-Key-Key.html#method_convertPrivateKeyToBech32"
         },                {
             "fqsen": "\\swentel\\nostr\\Key\\Key\u003A\u003AconvertToBech32\u0028\u0029",
             "name": "convertToBech32",
-            "summary": "Convert\u0020a\u0020hex\u0020key\u0020to\u0020bech32.",
+            "summary": "Convert\u0020a\u0020hex\u0020key\u0020to\u0020bech32\u0020encoded\u0020string.",
             "url": "classes/swentel-nostr-Key-Key.html#method_convertToBech32"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage",
+            "name": "CloseMessage",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage\u003A\u003AsetType\u0028\u0029",
+            "name": "setType",
+            "summary": "Set\u0020message\u0020type.",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html#method_setType"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage\u003A\u003Agenerate\u0028\u0029",
+            "name": "generate",
+            "summary": "Generate\u0020the\u0020message\u0020ready\u0020to\u0020be\u0020sent\u0020to\u0020a\u0020relay.",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html#method_generate"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage\u003A\u003A\u0024type",
+            "name": "type",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html#property_type"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\CloseMessage\u003A\u003A\u0024subscriptionId",
+            "name": "subscriptionId",
+            "summary": "Subscription\u0020ID",
+            "url": "classes/swentel-nostr-Message-CloseMessage.html#property_subscriptionId"
         },                {
             "fqsen": "\\swentel\\nostr\\Message\\EventMessage",
             "name": "EventMessage",
@@ -311,20 +496,95 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/swentel-nostr-Message-EventMessage.html#method___construct"
         },                {
+            "fqsen": "\\swentel\\nostr\\Message\\EventMessage\u003A\u003AsetType\u0028\u0029",
+            "name": "setType",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-EventMessage.html#method_setType"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\EventMessage\u003A\u003AgetType\u0028\u0029",
+            "name": "getType",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-EventMessage.html#method_getType"
+        },                {
             "fqsen": "\\swentel\\nostr\\Message\\EventMessage\u003A\u003Agenerate\u0028\u0029",
             "name": "generate",
             "summary": "Generate\u0020the\u0020message\u0020ready\u0020to\u0020be\u0020sent\u0020to\u0020a\u0020relay.",
             "url": "classes/swentel-nostr-Message-EventMessage.html#method_generate"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\EventMessage\u003A\u003A\u0024type",
+            "name": "type",
+            "summary": "Message\u0020type.",
+            "url": "classes/swentel-nostr-Message-EventMessage.html#property_type"
         },                {
             "fqsen": "\\swentel\\nostr\\Message\\EventMessage\u003A\u003A\u0024event",
             "name": "event",
             "summary": "The\u0020event.",
             "url": "classes/swentel-nostr-Message-EventMessage.html#property_event"
         },                {
+            "fqsen": "\\swentel\\nostr\\Message\\MessageTypeEnum",
+            "name": "MessageTypeEnum",
+            "summary": "Enum\u0020with\u0020message\u0020types.",
+            "url": "classes/swentel-nostr-Message-MessageTypeEnum.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\MessageTypeEnum\u003A\u003AEVENT",
+            "name": "EVENT",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-MessageTypeEnum.html#enumcase_EVENT"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\MessageTypeEnum\u003A\u003AREQUEST",
+            "name": "REQUEST",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-MessageTypeEnum.html#enumcase_REQUEST"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\MessageTypeEnum\u003A\u003ACLOSE",
+            "name": "CLOSE",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-MessageTypeEnum.html#enumcase_CLOSE"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage",
+            "name": "RequestMessage",
+            "summary": "",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020the\u0020RequestMessage\u0020class.",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003AsetType\u0028\u0029",
+            "name": "setType",
+            "summary": "Set\u0020message\u0020type.",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#method_setType"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003Agenerate\u0028\u0029",
+            "name": "generate",
+            "summary": "Generates\u0020a\u0020JSON\u002Dencoded\u0020request\u0020array\u0020by\u0020merging\u0020the\u0020subscription\u0020ID\u0020and\u0020filters\u0020array.",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#method_generate"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003A\u0024type",
+            "name": "type",
+            "summary": "Message\u0020type.",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#property_type"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003A\u0024subscriptionId",
+            "name": "subscriptionId",
+            "summary": "An\u0020arbitrary,\u0020non\u002Dempty\u0020string\u0020of\u0020max\u0020length\u002064\u0020chars",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#property_subscriptionId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Message\\RequestMessage\u003A\u003A\u0024filters",
+            "name": "filters",
+            "summary": "Array\u0020of\u0020filters",
+            "url": "classes/swentel-nostr-Message-RequestMessage.html#property_filters"
+        },                {
             "fqsen": "\\swentel\\nostr\\MessageInterface",
             "name": "MessageInterface",
             "summary": "",
             "url": "classes/swentel-nostr-MessageInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\MessageInterface\u003A\u003AsetType\u0028\u0029",
+            "name": "setType",
+            "summary": "",
+            "url": "classes/swentel-nostr-MessageInterface.html#method_setType"
         },                {
             "fqsen": "\\swentel\\nostr\\MessageInterface\u003A\u003Agenerate\u0028\u0029",
             "name": "generate",
@@ -373,17 +633,37 @@ Search.appendIndex(
         },                {
             "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructs\u0020the\u0020Relay.",
+            "summary": "Relay\u0020constructor.",
             "url": "classes/swentel-nostr-Relay-Relay.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003AvalidateUrl\u0028\u0029",
+            "name": "validateUrl",
+            "summary": "",
+            "url": "classes/swentel-nostr-Relay-Relay.html#method_validateUrl"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003AsetUrl\u0028\u0029",
+            "name": "setUrl",
+            "summary": "Set\u0020URL\u0020of\u0020the\u0020relay.",
+            "url": "classes/swentel-nostr-Relay-Relay.html#method_setUrl"
         },                {
             "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003AgetUrl\u0028\u0029",
             "name": "getUrl",
-            "summary": "Get\u0020url\u0020of\u0020the\u0020relay.",
+            "summary": "Get\u0020URL\u0020of\u0020the\u0020relay.",
             "url": "classes/swentel-nostr-Relay-Relay.html#method_getUrl"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003AsetMessage\u0028\u0029",
+            "name": "setMessage",
+            "summary": "Set\u0020message\u0020that\u0020will\u0020be\u0020sent\u0020to\u0020the\u0020relay.",
+            "url": "classes/swentel-nostr-Relay-Relay.html#method_setMessage"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003AsetPayload\u0028\u0029",
+            "name": "setPayload",
+            "summary": "",
+            "url": "classes/swentel-nostr-Relay-Relay.html#method_setPayload"
         },                {
             "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003Asend\u0028\u0029",
             "name": "send",
-            "summary": "Send\u0020the\u0020message\u0020to\u0020the\u0020relay.",
+            "summary": "Sends\u0020the\u0020message\u0020to\u0020the\u0020relay.",
             "url": "classes/swentel-nostr-Relay-Relay.html#method_send"
         },                {
             "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003A\u0024url",
@@ -391,25 +671,400 @@ Search.appendIndex(
             "summary": "The\u0020relay\u0020URL.",
             "url": "classes/swentel-nostr-Relay-Relay.html#property_url"
         },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "The\u0020message\u0020to\u0020be\u0020sent.",
+            "url": "classes/swentel-nostr-Relay-Relay.html#property_message"
+        },                {
             "fqsen": "\\swentel\\nostr\\Relay\\Relay\u003A\u003A\u0024payload",
             "name": "payload",
-            "summary": "the\u0020payload\u0020to\u0020send.",
+            "summary": "The\u0020payload\u0020to\u0020be\u0020sent.",
             "url": "classes/swentel-nostr-Relay-Relay.html#property_payload"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet",
+            "name": "RelaySet",
+            "summary": "",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AsetRelays\u0028\u0029",
+            "name": "setRelays",
+            "summary": "Set\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_setRelays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AgetRelays\u0028\u0029",
+            "name": "getRelays",
+            "summary": "Get\u0020all\u0020relays.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_getRelays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AaddRelay\u0028\u0029",
+            "name": "addRelay",
+            "summary": "Add\u0020relay\u0020to\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_addRelay"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AremoveRelay\u0028\u0029",
+            "name": "removeRelay",
+            "summary": "Remove\u0020relay\u0020from\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_removeRelay"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AcreateFromUrls\u0028\u0029",
+            "name": "createFromUrls",
+            "summary": "Create\u0020a\u0020relay\u0020set\u0020from\u0020a\u0020list\u0020of\u0020relay\u0020URLs.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_createFromUrls"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003AsetMessage\u0028\u0029",
+            "name": "setMessage",
+            "summary": "The\u0020message\u0020to\u0020be\u0020sent\u0020to\u0020the\u0020relays.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_setMessage"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003Aconnect\u0028\u0029",
+            "name": "connect",
+            "summary": "Connect\u0020to\u0020all\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_connect"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003Adisconnect\u0028\u0029",
+            "name": "disconnect",
+            "summary": "Disconnect\u0020all\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_disconnect"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003A\u0024isConnected",
+            "name": "isConnected",
+            "summary": "Are\u0020all\u0020relays\u0020connected\u0020in\u0020this\u0020relay\u0020set\u003F",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#property_isConnected"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "Sends\u0020the\u0020message\u0020to\u0020all\u0020the\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#method_send"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003A\u0024relays",
+            "name": "relays",
+            "summary": "Array\u0020with\u0020Relay\u0020objects.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#property_relays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Relay\\RelaySet\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "The\u0020message\u0020to\u0020be\u0020sent\u0020to\u0020all\u0020relays.",
+            "url": "classes/swentel-nostr-Relay-RelaySet.html#property_message"
         },                {
             "fqsen": "\\swentel\\nostr\\RelayInterface",
             "name": "RelayInterface",
             "summary": "",
             "url": "classes/swentel-nostr-RelayInterface.html"
         },                {
+            "fqsen": "\\swentel\\nostr\\RelayInterface\u003A\u003AsetUrl\u0028\u0029",
+            "name": "setUrl",
+            "summary": "Set\u0020URL\u0020of\u0020the\u0020relay.",
+            "url": "classes/swentel-nostr-RelayInterface.html#method_setUrl"
+        },                {
             "fqsen": "\\swentel\\nostr\\RelayInterface\u003A\u003AgetUrl\u0028\u0029",
             "name": "getUrl",
-            "summary": "Get\u0020url\u0020of\u0020the\u0020relay.",
+            "summary": "Get\u0020URL\u0020of\u0020the\u0020relay.",
             "url": "classes/swentel-nostr-RelayInterface.html#method_getUrl"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayInterface\u003A\u003AsetMessage\u0028\u0029",
+            "name": "setMessage",
+            "summary": "Set\u0020message\u0020that\u0020will\u0020be\u0020sent\u0020to\u0020the\u0020relay.",
+            "url": "classes/swentel-nostr-RelayInterface.html#method_setMessage"
         },                {
             "fqsen": "\\swentel\\nostr\\RelayInterface\u003A\u003Asend\u0028\u0029",
             "name": "send",
-            "summary": "Send\u0020the\u0020message\u0020to\u0020the\u0020relay.",
+            "summary": "Sends\u0020the\u0020message\u0020to\u0020the\u0020relay.",
             "url": "classes/swentel-nostr-RelayInterface.html#method_send"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse",
+            "name": "RelayResponse",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003AcreateResponse\u0028\u0029",
+            "name": "createResponse",
+            "summary": "Create\u0020a\u0020response\u0020object\u0020based\u0020on\u0020the\u0020given\u0020type\u0020using\u0020a\u0020match\u0020expression.",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#method_createResponse"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "Static\u0020method\u0020to\u0020create\u0020a\u0020response\u0020object\u0020based\u0020on\u0020the\u0020given\u0020type\u0020using\u0020a\u0020match\u0020expression.",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#method_create"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003A\u0024isSuccess",
+            "name": "isSuccess",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#property_isSuccess"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#property_message"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponse\u003A\u003A\u0024type",
+            "name": "type",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponse.html#property_type"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseAuth",
+            "name": "RelayResponseAuth",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseAuth.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseAuth\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseAuth.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseAuth\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseAuth.html#property_message"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseClosed",
+            "name": "RelayResponseClosed",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseClosed.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseClosed\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseClosed.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseClosed\u003A\u003A\u0024subscriptionId",
+            "name": "subscriptionId",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseClosed.html#property_subscriptionId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseClosed\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseClosed.html#property_message"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum",
+            "name": "RelayResponseEnum",
+            "summary": "Enum\u0020with\u0020response\u0020types.",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003AEVENT",
+            "name": "EVENT",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_EVENT"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003AOK",
+            "name": "OK",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_OK"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003AEOSE",
+            "name": "EOSE",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_EOSE"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003ACLOSED",
+            "name": "CLOSED",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_CLOSED"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003ANOTICE",
+            "name": "NOTICE",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_NOTICE"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEnum\u003A\u003AAUTH",
+            "name": "AUTH",
+            "summary": "NIP\u002D42\u0020support\u0020\u002D\u0020Authentication\u0020of\u0020clients\u0020to\u0020relays\nhttps\u003A\/\/github.com\/nostr\u002Dprotocol\/nips\/blob\/master\/42.md",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEnum.html#enumcase_AUTH"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEose",
+            "name": "RelayResponseEose",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEose.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEose\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEose.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEose\u003A\u003A\u0024subscriptionId",
+            "name": "subscriptionId",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEose.html#property_subscriptionId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEvent",
+            "name": "RelayResponseEvent",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEvent.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEvent\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEvent.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEvent\u003A\u003A\u0024subscriptionId",
+            "name": "subscriptionId",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEvent.html#property_subscriptionId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseEvent\u003A\u003A\u0024event",
+            "name": "event",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseEvent.html#property_event"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseNotice",
+            "name": "RelayResponseNotice",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseNotice.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseNotice\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseNotice.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseNotice\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseNotice.html#property_message"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseOk",
+            "name": "RelayResponseOk",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseOk.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseOk\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseOk.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseOk\u003A\u003A\u0024eventId",
+            "name": "eventId",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseOk.html#property_eventId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseOk\u003A\u003A\u0024status",
+            "name": "status",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseOk.html#property_status"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse\\RelayResponseOk\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponse-RelayResponseOk.html#property_message"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponseInterface",
+            "name": "RelayResponseInterface",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponseInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponseInterface\u003A\u003AcreateResponse\u0028\u0029",
+            "name": "createResponse",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponseInterface.html#method_createResponse"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponseInterface\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelayResponseInterface.html#method_create"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponseInterface\u003A\u003AisSuccess\u0028\u0029",
+            "name": "isSuccess",
+            "summary": "Returns\u0020whether\u0020the\u0020request\u0020was\u0020successful.",
+            "url": "classes/swentel-nostr-RelayResponseInterface.html#method_isSuccess"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface",
+            "name": "RelaySetInterface",
+            "summary": "",
+            "url": "classes/swentel-nostr-RelaySetInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AsetRelays\u0028\u0029",
+            "name": "setRelays",
+            "summary": "Set\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_setRelays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AgetRelays\u0028\u0029",
+            "name": "getRelays",
+            "summary": "Get\u0020all\u0020relays.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_getRelays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AaddRelay\u0028\u0029",
+            "name": "addRelay",
+            "summary": "Add\u0020relay\u0020to\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_addRelay"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AremoveRelay\u0028\u0029",
+            "name": "removeRelay",
+            "summary": "Remove\u0020relay\u0020from\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_removeRelay"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AsetMessage\u0028\u0029",
+            "name": "setMessage",
+            "summary": "The\u0020message\u0020to\u0020be\u0020sent\u0020to\u0020the\u0020relays.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_setMessage"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AcreateFromUrls\u0028\u0029",
+            "name": "createFromUrls",
+            "summary": "Create\u0020a\u0020relay\u0020set\u0020from\u0020a\u0020list\u0020of\u0020relay\u0020URLs.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_createFromUrls"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003Aconnect\u0028\u0029",
+            "name": "connect",
+            "summary": "Connect\u0020to\u0020all\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_connect"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003Adisconnect\u0028\u0029",
+            "name": "disconnect",
+            "summary": "Disconnect\u0020all\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_disconnect"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003AisConnected\u0028\u0029",
+            "name": "isConnected",
+            "summary": "All\u0020are\u0020relays\u0020connected\u003F",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_isConnected"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RelaySetInterface\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "Sends\u0020the\u0020message\u0020to\u0020all\u0020the\u0020relays\u0020in\u0020this\u0020set.",
+            "url": "classes/swentel-nostr-RelaySetInterface.html#method_send"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request",
+            "name": "Request",
+            "summary": "",
+            "url": "classes/swentel-nostr-Request-Request.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020the\u0020Request\u0020class.",
+            "url": "classes/swentel-nostr-Request-Request.html#method___construct"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "Method\u0020to\u0020send\u0020all\u0020data\u0020to\u0020the\u0020Websocket\u0020client\u0020which\u0020will\u0020connect\u0020to\u0020the\u0020relay\u0028s\u0029.",
+            "url": "classes/swentel-nostr-Request-Request.html#method_send"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request\u003A\u003AgetResponseFromRelay\u0028\u0029",
+            "name": "getResponseFromRelay",
+            "summary": "Method\u0020to\u0020send\u0020a\u0020request\u0020using\u0020WebSocket\u0020client,\u0020receive\u0020responses,\u0020and\u0020handle\u0020errors.",
+            "url": "classes/swentel-nostr-Request-Request.html#method_getResponseFromRelay"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request\u003A\u003A\u0024relays",
+            "name": "relays",
+            "summary": "RelaySet.",
+            "url": "classes/swentel-nostr-Request-Request.html#property_relays"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request\\Request\u003A\u003A\u0024payload",
+            "name": "payload",
+            "summary": "Request\u0020message\u0020sent\u0020to\u0020relay.",
+            "url": "classes/swentel-nostr-Request-Request.html#property_payload"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RequestInterface",
+            "name": "RequestInterface",
+            "summary": "",
+            "url": "classes/swentel-nostr-RequestInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\RequestInterface\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "Method\u0020to\u0020send\u0020all\u0020data\u0020to\u0020the\u0020Websocket\u0020client\u0020which\u0020will\u0020connect\u0020to\u0020the\u0020relay\u0028s\u0029.",
+            "url": "classes/swentel-nostr-RequestInterface.html#method_send"
         },                {
             "fqsen": "\\swentel\\nostr\\Sign\\Sign",
             "name": "Sign",
@@ -425,6 +1080,26 @@ Search.appendIndex(
             "name": "serializeEvent",
             "summary": "Serialize\u0020the\u0020event\u0020so\u0020the\u0020id\u0020can\u0020be\u0020created.",
             "url": "classes/swentel-nostr-Sign-Sign.html#method_serializeEvent"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Subscription\\Subscription",
+            "name": "Subscription",
+            "summary": "",
+            "url": "classes/swentel-nostr-Subscription-Subscription.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Subscription\\Subscription\u003A\u003AsetId\u0028\u0029",
+            "name": "setId",
+            "summary": "",
+            "url": "classes/swentel-nostr-Subscription-Subscription.html#method_setId"
+        },                {
+            "fqsen": "\\swentel\\nostr\\SubscriptionInterface",
+            "name": "SubscriptionInterface",
+            "summary": "",
+            "url": "classes/swentel-nostr-SubscriptionInterface.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\SubscriptionInterface\u003A\u003AsetId\u0028\u0029",
+            "name": "setId",
+            "summary": "",
+            "url": "classes/swentel-nostr-SubscriptionInterface.html#method_setId"
         },                {
             "fqsen": "\\ConvertTest",
             "name": "ConvertTest",
@@ -446,6 +1121,26 @@ Search.appendIndex(
             "summary": "Tests\u0020getting\u0020public\u0020key\u0020from\u0020private\u0020key.",
             "url": "classes/GenerateTest.html#method_testGetPublicKey"
         },                {
+            "fqsen": "\\RelayResponseTest",
+            "name": "RelayResponseTest",
+            "summary": "",
+            "url": "classes/RelayResponseTest.html"
+        },                {
+            "fqsen": "\\RelayResponseTest\u003A\u003AtestSendRequestToRelayAndResultAuth\u0028\u0029",
+            "name": "testSendRequestToRelayAndResultAuth",
+            "summary": "",
+            "url": "classes/RelayResponseTest.html#method_testSendRequestToRelayAndResultAuth"
+        },                {
+            "fqsen": "\\RelaySetTest",
+            "name": "RelaySetTest",
+            "summary": "",
+            "url": "classes/RelaySetTest.html"
+        },                {
+            "fqsen": "\\RelaySetTest\u003A\u003AtestSendNoteToRelaySet\u0028\u0029",
+            "name": "testSendNoteToRelaySet",
+            "summary": "Tests\u0020sending\u0020a\u0020note\u0020to\u0020a\u0020set\u0020of\u0020relays.",
+            "url": "classes/RelaySetTest.html#method_testSendNoteToRelaySet"
+        },                {
             "fqsen": "\\RelayTest",
             "name": "RelayTest",
             "summary": "",
@@ -455,6 +1150,16 @@ Search.appendIndex(
             "name": "testSendNoteToRelay",
             "summary": "Tests\u0020sending\u0020a\u0020note\u0020to\u0020a\u0020relay.",
             "url": "classes/RelayTest.html#method_testSendNoteToRelay"
+        },                {
+            "fqsen": "\\RequestTest",
+            "name": "RequestTest",
+            "summary": "",
+            "url": "classes/RequestTest.html"
+        },                {
+            "fqsen": "\\RequestTest\u003A\u003AtestSendRequestToRelay\u0028\u0029",
+            "name": "testSendRequestToRelay",
+            "summary": "Tests\u0020sending\u0020a\u0020request\u0020to\u0020a\u0020relay.",
+            "url": "classes/RequestTest.html#method_testSendRequestToRelay"
         },                {
             "fqsen": "\\SerializeTest",
             "name": "SerializeTest",
@@ -511,10 +1216,10 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/swentel-nostr-event.html"
         },                {
-            "fqsen": "\\swentel\\nostr\\Examples",
-            "name": "Examples",
+            "fqsen": "\\swentel\\nostr\\Filter",
+            "name": "Filter",
             "summary": "",
-            "url": "namespaces/swentel-nostr-examples.html"
+            "url": "namespaces/swentel-nostr-filter.html"
         },                {
             "fqsen": "\\swentel\\nostr\\Key",
             "name": "Key",
@@ -531,9 +1236,24 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/swentel-nostr-relay.html"
         },                {
+            "fqsen": "\\swentel\\nostr\\RelayResponse",
+            "name": "RelayResponse",
+            "summary": "",
+            "url": "namespaces/swentel-nostr-relayresponse.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Request",
+            "name": "Request",
+            "summary": "",
+            "url": "namespaces/swentel-nostr-request.html"
+        },                {
             "fqsen": "\\swentel\\nostr\\Sign",
             "name": "Sign",
             "summary": "",
             "url": "namespaces/swentel-nostr-sign.html"
+        },                {
+            "fqsen": "\\swentel\\nostr\\Subscription",
+            "name": "Subscription",
+            "summary": "",
+            "url": "namespaces/swentel-nostr-subscription.html"
         }            ]
 );
