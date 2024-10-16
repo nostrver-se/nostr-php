@@ -1,6 +1,15 @@
 .idea/
 .php-cs-fixer.cache
 .phpunit.cache/
+.phpdoc/cache
 composer.lock
 test*.php
 vendor/
+
+/.phpdoc/cache/
+
+/website/content/.vitepress/dist/
+/website/content/.vitepress/cache/
+/website/node_modules/
+/private
+/test*.*

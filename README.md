@@ -1,19 +1,17 @@
 # nostr-php
 
-![CI](https://github.com/swentel/nostr-php/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/nostrver-se/nostr-php/actions/workflows/ci.yml/badge.svg)
 ![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/swentel/nostr-php/php)
-![GitHub contributors](https://img.shields.io/github/contributors/swentel/nostr-php)
-![GitHub issues](https://img.shields.io/github/issues/swentel/nostr-php)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/swentel/nostr-php/main)
+![GitHub contributors](https://img.shields.io/github/contributors/nostrver-se/nostr-php)
+![GitHub issues](https://img.shields.io/github/issues/nostrver-se/nostr-php)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/nostrver-se/nostr-php/main)
 
 This is a PHP Helper library for Nostr.
 More info about Nostr: https://github.com/nostr-protocol/nostr.
 
-If you need any help, please join this Telegram group: https://t.me/nostr_php
-
 ## Installation
 
-To use in your project with Composer:
+To use the package in your PHP project with Composer:
 
 ```console
 $ composer require swentel/nostr-php
@@ -76,9 +74,9 @@ $eventMessage = new EventMessage($note);
 $message_string = $eventMessage->generate();
 ```
 
-## Interacting with a relay
+## Publish an event to a relay
 
-Publish a event with a note that has been prepared for sending to a relay.
+Publish an event with a note that has been prepared for sending to a relay.
 
 ```php
 use swentel\nostr\Event\Event;
@@ -95,8 +93,113 @@ $signer->signEvent($note, $private_key);
 $eventMessage = new EventMessage($note);
 
 $relayUrl = 'wss://nostr-websocket.tld';
-$relay = new Relay($relayUrl, $eventMessage);
+$relay = new Relay($relayUrl);
+$relay->setMessage($eventMessage);
 $result = $relay->send();
+```
+
+If you would like to publish the event to multiple relays, you can use the `RelaySet` class.
+
+```php
+$relay1 = new Relay(''wss://nostr-websocket1.tld'');
+$relay2 = new Relay(''wss://nostr-websocket2.tld'');
+$relay3 = new Relay(''wss://nostr-websocket3.tld'');
+$relay4 = new Relay(''wss://nostr-websocket4.tld'');
+$relaySet = new RelaySet();
+$relaySet->setRelays([$relay1, $relay2, $relay3, $relay4]);
+$relaySet->setMessage($eventMessage);
+$result = $relay->send();
+```
+
+## Read events from a relay
+
+Fetch events from a relay. 
+
+```php
+$subscription = new Subscription();
+$subscriptionId = $subscription->setId();
+
+$filter1 = new Filter();
+$filter1->setKinds([1, 3]); // You can add multiple kind numbers
+$filter1->setLimit(25); // Limit to fetch only a maximum of 25 events
+$filters = [$filter1]; // You can add multiple filters.
+
+$requestMessage = new RequestMessage($subscriptionId, $filters);
+
+$relayUrl = 'wss://nostr-websocket.tld';
+$relay = new Relay($relayUrl);
+$relay->setMessage($requestMessage);
+
+$request = new Request($relay, $requestMessage);
+$response = $request->send();
+```
+
+`$response` is a multidimensional array with elements containing each a response message (JSON string) decoded to an array from the relay and sorted by the relay.
+Output example:
+```php
+[
+  'wss://nostr-websocket.tld' => [
+    0 => [
+      "EVENT",
+      "A8kWzjCVUHSD1rmuwGqyK2PxsolZMO9YXditbg05fch6p3Q4eT7vRFLEJINBna",
+      [
+        'id' => '1e8534623845629d40f7761c0577edf10f778c490e7b95a524845d9280c7c25a',
+        'kind' => 1,
+        'pubkey' => '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71',
+        'created_at' => 1718723787,
+        'content' => 'Losing your social graph can feel the same for some I think 😮 ',
+        'tags' => [
+          ['e', 'f754a238947b7f32168f872650a8dd0b9376493e58005d7e0b8be52f6f229364', 'wss://nos.lol/', 'root'],
+          ['e', 'fe7dd6ba22fa0aa39370aa160226b8bc2413460621c8d67ce862205ad5a02c24', 'wss://nos.lol/', 'reply'],
+          ['p', 'fb1366abd5e4c92a8a950791bc72d51bde291a83555cb2c629a92fedd78068ac', '', 'mention']
+        ],
+        'sig' => '888c9b5d9e0b69eba3510dd2b5d03eddcf0a680ab0e7673820fb36a56448ad80701042a669c7ef9918593c5a41c8b3ccc1d82ade50f32b62dd843144f32df403'
+    ],
+    1 => [
+      "EVENT",
+      "A8kWzjCVUHSD1rmuwGqyK2PxsolZMO9YXditbg05fch6p3Q4eT7vRFLEJINBna",
+      [
+        ...Nostr event
+      ]
+    ],
+    2 => [
+      ...
+    ],
+    3 => [
+      ...
+    ],
+    4 => [
+      ...
+    ]
+  ]
+]
+
+```
+
+## Read events from a set of relays
+
+Read events from a set of relays with the `RelaySet` class.
+It's basically the same snippet as above with the difference you create a `RelaySet` class and pass it through the `Request` object.
+
+```php
+$subscription = new Subscription();
+$subscriptionId = $subscription->setId();
+
+$filter1 = new Filter();
+$filter1->setKinds([1]);
+$filter1->setLimit(5);
+$filters = [$filter1];
+$requestMessage = new RequestMessage($subscriptionId, $filters);
+$relays = [
+    new Relay('wss://nostr-websocket-1.tld'),
+    new Relay('wss://nostr-websocket-2.tld'),
+    new Relay('wss://nostr-websocket-3.tld'),
+];
+$relaySet = new RelaySet();
+$relaySet->setRelays($relays);
+
+$request = new Request($relaySet, $requestMessage);
+$response = $request->send();
 ```
 
 ## Generating a private key and a public key
@@ -143,7 +246,20 @@ All tests can be found in `tests`.
 $ php vendor/bin/phpunit
 ```
 
-## nostr-php script
+## Documentation with phpDocumentor
+
+Generate documentation with [phpDocumentor](https://phpdoc.org/).
+
+```console
+$ phpdoc 
+```
+
+All documentation is saved in the `phpdoc.nostr-php.dev` directory where the `index.html` can be opened in any browser.
+This directory also serves as the root directory for https://phpdoc.nostr-php.dev. 
+
+The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
+
+## nostr-php script (cli client)
 
 The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
 
@@ -155,7 +271,42 @@ $ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key -
 Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
 
-## Maintainers
+## Roadmap
 
-* [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`  
+- [x] Keypair generation and validation
+  - [x] Convert from hex to bech32-encoded keys
+- [x] Event signing with Schnorr signatures (`secp256k1`)
+- [x] Event validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17))
+- [x] Support NIP-01 basic protocol flow description
+  - [x] Publish events
+  - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
+  - [x] Implement all types of relay responses 
+    - [x] `EVENT` - sends events requested by the client
+    - [x] `OK` - indicate an acceptance or denial of an EVENT message
+    - [x] `EOSE` - end of stored events
+    - [x] `CLOSED` - subscription is ended on the server side
+    - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
+- [x] Improve handling relay responses
+- [ ] Support NIP-19 bech32-encoded identifiers
+- [ ] Support NIP-42 authentication of clients to relays => AUTH relay response
+- [ ] Support NIP-45 event counts
+- [ ] Support NIP-50 search capability
+- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
+- [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
+
+## Community
+
+If you need any help, please join this Telegram group: https://t.me/nostr_php
+
+## Funding
+
+In May 2024 OpenSats granted Sebastian Hagens for further development of this library for one year. If you would like to support this project with a donation, you could send some lightning sats to `sebastian@lnd.sebastix.com` or on-chain to `bc1p3p6jq2sxsf650lgllv57st9h97xj37fflg5t8d265saz6yqzcdyqd7pzun`. 
+
+## Maintainers
+ 
 * [@sebastix](https://github.com/Sebastix)  `npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe`
+* [@swentel](https://github.com/swentel) (original author, inactive)  `npub1z8n2zt0vzkefhrhpf60face4wwq2nx87sz7wlgcvuk4adddkkycqknzjk5`
+
+## Contributors
+
+See https://github.com/nostrver-se/nostr-php/graphs/contributors

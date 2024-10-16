@@ -7,16 +7,31 @@ namespace swentel\nostr;
 interface RelayInterface
 {
     /**
-     * Get url of the relay.
+     * Set URL of the relay.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function setUrl(string $url): void;
+    /**
+     * Get URL of the relay.
      *
      * @return string
      */
     public function getUrl(): string;
 
     /**
-     * Send the message to the relay.
+     * Set message that will be sent to the relay.
      *
-     * @return CommandResultInterface
+     * @param MessageInterface $message
+     * @return void
      */
-    public function send(): CommandResultInterface;
+    public function setMessage(MessageInterface $message): void;
+
+    /**
+     * Sends the message to the relay.
+     *
+     * @return RelayResponseInterface
+     */
+    public function send(): RelayResponseInterface;
 }

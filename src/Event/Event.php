@@ -7,10 +7,13 @@ namespace swentel\nostr\Event;
 use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
 use swentel\nostr\EventInterface;
 
+/**
+ * Generic Nostr event class.
+ */
 class Event implements EventInterface
 {
     /**
-     * The event kind.
+     * The event kind which is an integer between 0 and 65535.
      *
      * Override this property in your custom events to set the value
      * immediately.
@@ -21,20 +24,22 @@ class Event implements EventInterface
 
     /**
      * The event id.
+     * 32-bytes lowercase hex-encoded sha256 of the serialized event data.
      *
-     * @var string
+     * @var string $id
      */
     protected string $id = '';
 
     /**
      * The event signature.
+     * 64-bytes lowercase hex of the signature of the sha256 hash of the serialized event data, which is the same as the "id" field.
      *
      * @var string
      */
     protected string $sig = '';
 
     /**
-     * The public key.
+     * 32-bytes lowercase hex-encoded public key of the event creator.
      *
      * @var string
      */
@@ -48,14 +53,14 @@ class Event implements EventInterface
     protected string $content = '';
 
     /**
-     * The created at timestamp.
+     * The created at unix timestamp in seconds.
      *
      * @var int
      */
     protected int $created_at = 0;
 
     /**
-     * The event tags.
+     * Tags of the event.
      *
      * @var array
      */
@@ -160,7 +165,7 @@ class Event implements EventInterface
      */
     public function setTags(array $tags): static
     {
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
             $this->tags[] = $tag;
         }
         return $this;
@@ -277,15 +282,15 @@ class Event implements EventInterface
                 'sha256',
                 json_encode(
                     [
-                      0,
-                      $event->pubkey,
-                      $event->created_at,
-                      $event->kind,
-                      $event->tags,
-                      $event->content
+                        0,
+                        $event->pubkey,
+                        $event->created_at,
+                        $event->kind,
+                        $event->tags,
+                        $event->content,
                     ],
-                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-                )
+                    \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
+                ),
             );
         } catch (\JsonException) {
             return false;
@@ -295,7 +300,7 @@ class Event implements EventInterface
             return false;
         }
 
-      return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
+        return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
     }
 
 }

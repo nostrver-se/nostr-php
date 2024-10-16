@@ -10,6 +10,13 @@ use swentel\nostr\MessageInterface;
 class EventMessage implements MessageInterface
 {
     /**
+     * Message type.
+     *
+     * @var string
+     */
+    private string $type;
+
+    /**
      * The event.
      *
      * @var EventInterface
@@ -19,6 +26,17 @@ class EventMessage implements MessageInterface
     public function __construct(EventInterface $event)
     {
         $this->event = $event;
+        $this->setType(MessageTypeEnum::EVENT);
+    }
+
+    public function setType(MessageTypeEnum $type): void
+    {
+        $this->type = $type->value;
+    }
+
+    private function getType(): string
+    {
+        return $this->type;
     }
 
     /**
@@ -26,6 +44,7 @@ class EventMessage implements MessageInterface
      */
     public function generate(): string
     {
-        return '["EVENT", ' . json_encode($this->event->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ']';
+        $event = json_encode($this->event->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return '["' . $this->type . '", ' . $event . ']';
     }
 }

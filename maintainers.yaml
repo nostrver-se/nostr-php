@@ -1,0 +1,13 @@
+identifier: nostr-php
+maintainers:
+- npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe
+relays:
+- wss://nostr.sebastix.dev/
+- wss://offchain.pub/
+- wss://relay.damus.io/
+- wss://nos.lol/
+- wss://nostr.wine/
+- wss://nostr.fmt.wiz.biz/
+- wss://nostr.sebastix.social/
+- wss://nostr.mutinywallet.com/
+- wss://pyramid.fiatjaf.com/
