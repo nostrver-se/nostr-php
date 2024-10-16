@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>phpdoc</name>
+    <author>Sebastian Hagens</author>
+    <email>info@sebastix.nl</email>
+    <version>1.0.0</version>
+    <extends>default</extends>
+    <transformations>
+        <!-- Add your transformations here -->
+        <transformation writer="twig" source="homepage.html.twig" artifact="homepage.html"/>
+    </transformations>
+</template>

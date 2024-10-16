@@ -26,7 +26,7 @@ class Key
     }
 
     /**
-     * Generate public key from private key as hex.
+     * Generate public hex key from private hex key.
      *
      * @param string $private_hex
      *
@@ -43,7 +43,7 @@ class Key
     }
 
     /**
-     * Convert a key to hex.
+     * Convert a bech32 encoded key to hex key.
      *
      * @param string $key
      *
@@ -59,14 +59,15 @@ class Key
             foreach ($bytes as $item) {
                 $str .= str_pad(dechex($item), 2, '0', STR_PAD_LEFT);
             }
-        } catch (Bech32Exception) {
+        } catch (Bech32Exception $e) {
+            throw new \Exception($e->getMessage());
         }
 
         return $str;
     }
 
     /**
-     * Convert a public hex key to bech32.
+     * Convert a public hex key to a bech32 encoded string (npub).
      *
      * @param string $key
      *
@@ -78,7 +79,7 @@ class Key
     }
 
     /**
-     * Convert a private hex key to bech32.
+     * Convert a private hex key to bech32 encoded string (nsec).
      *
      * @param string $key
      *
@@ -90,7 +91,7 @@ class Key
     }
 
     /**
-     * Convert a hex key to bech32.
+     * Convert a hex key to bech32 encoded string.
      *
      * @param string $key
      * @param string $prefix

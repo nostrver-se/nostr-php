@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace swentel\nostr\Filter;
 
 use swentel\nostr\FilterInterface;
+use swentel\nostr\Key\Key;
 
 class Filter implements FilterInterface
 {
@@ -63,23 +64,36 @@ class Filter implements FilterInterface
     /**
      * Set the authors for the Filter object.
      *
-     * @param array $pubkey The array of authors to set.
+     * @param array $pubkeys
+     *   The array of authors to set.
      */
     public function setAuthors(array $pubkeys): static
     {
-        foreach ($pubkeys as $key) {
+        // Loop over given values in the pubkeys array.
+        foreach ($pubkeys as $index => $key) {
+            // If $pubkey string starts with `npub` let's try to convert it to a pubkey.
+            if (str_starts_with($key, 'npub')) {
+                $npub = new Key();
+                $key = $npub->convertToHex($key);
+                $pubkeys[$index] = $key;
+            }
             if (!$this->isLowercaseHex($key)) {
                 throw new \RuntimeException("Author pubkeys must be an array of 64-character lowercase hex values");
             }
+            if (count($pubkeys) !== count(array_unique($pubkeys))) {
+                throw new \RuntimeException("There are duplicate author pubkeys in the filter.");
+            }
+            // Add key to array.
+            $this->authors[] = $key;
         }
-        $this->authors = $pubkeys;
         return $this;
     }
 
     /**
      * Set the kinds for the Filter object.
      *
-     * @param array $kinds The array of kinds to set.
+     * @param array $kinds
+     *   The array of kinds to set.
      */
     public function setKinds(array $kinds): static
     {
@@ -90,7 +104,9 @@ class Filter implements FilterInterface
     /**
      * Set the #e tag for the Filter object.
      *
-     * @param array $etag The array of tag to set.
+     * @param array $etags
+     *   The array of tag to set.
+     * @return Filter
      */
     public function setLowercaseETags(array $etags): static
     {
@@ -106,7 +122,9 @@ class Filter implements FilterInterface
     /**
      * Set the #p tag for the Filter object.
      *
-     * @param array $ptag The array of tag to set.
+     * @param array $ptags
+     *   The array of tag to set.
+     * @return Filter
      */
     public function setLowercasePTags(array $ptags): static
     {
@@ -121,9 +139,10 @@ class Filter implements FilterInterface
     }
 
     /**
-     * Set the since for the Filter object.
+     * Set since parameter for the Filter object.
      *
-     * @param int $since The limit to set.
+     * @param int $since
+     *   The limit to set.
      */
     public function setSince(int $since): static
     {
@@ -134,7 +153,8 @@ class Filter implements FilterInterface
     /**
      * Set the until for the Filter object.
      *
-     * @param int $until The limit to set.
+     * @param int $until
+     *   The limit to set.
      */
     public function setUntil(int $until): static
     {
@@ -145,7 +165,8 @@ class Filter implements FilterInterface
     /**
      * Set the limit for the Filter object.
      *
-     * @param int $limit The limit to set.
+     * @param int $limit
+     *   The limit to set.
      */
     public function setLimit(int $limit): static
     {
@@ -156,8 +177,10 @@ class Filter implements FilterInterface
     /**
      * Check if a given string is a 64-character lowercase hexadecimal value.
      *
-     * @param string $string The string to check.
-     * @return bool True if the string is a 64-character lowercase hexadecimal value, false otherwise.
+     * @param string $string
+     *   The string to check.
+     * @return bool
+     *   True if the string is a 64-character lowercase hexadecimal value, false otherwise.
      */
     public function isLowercaseHex($string): bool
     {
@@ -170,8 +193,10 @@ class Filter implements FilterInterface
     /**
      * Check if a given timestamp is valid.
      *
-     * @param mixed $timestamp The timestamp to check.
-     * @return bool True if the timestamp is valid, false otherwise.
+     * @param mixed $timestamp
+     *   The timestamp to check.
+     * @return bool
+     *   True if the timestamp is valid, false otherwise.
      */
     public function isValidTimestamp($timestamp): bool
     {
@@ -184,7 +209,8 @@ class Filter implements FilterInterface
     /**
      * Return an array representation of the object by iterating through its properties.
      *
-     * @return array The array representation of the object.
+     * @return array
+     *   The array representation of the object.
      */
     public function toArray(): array
     {
