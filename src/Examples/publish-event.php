@@ -32,10 +32,10 @@ try {
     $response = $relay->send();
     // Handle response.
     if ($response->isSuccess) {
-        print 'The event has been transmitted to the relay.';
+        print 'The event has been transmitted to the relay' . PHP_EOL;
         $eventId = $response->eventId;
         // Now we could request the event with this id.
     }
 } catch (Exception $e) {
-    print 'Exception error: ' . $e->getMessage() . "\n";
+    print 'Exception error: ' . $e->getMessage() . PHP_EOL;
 }
