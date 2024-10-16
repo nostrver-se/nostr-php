@@ -32,6 +32,7 @@ try {
     $response = $relay->send();
     // Handle response.
     if ($response->isSuccess) {
+        print 'The event has been transmitted to the relay.';
         $eventId = $response->eventId;
         // Now we could request the event with this id.
     }
