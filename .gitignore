@@ -7,9 +7,6 @@ test*.php
 vendor/
 
 /.phpdoc/cache/
-
-/website/content/.vitepress/dist/
-/website/content/.vitepress/cache/
-/website/node_modules/
+/phpdoc.nostr-php.dev
 /private
 /test*.*
