@@ -31,10 +31,12 @@ try {
      *   Each message will also contain the event.
      */
     foreach ($response as $relayUrl => $relayResponses) {
-        print 'Received ' . count($response[$relayUrl]) . ' message(s) found from relay ' . $relayUrl . PHP_EOL;
+        print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
         /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $message */
         foreach ($relayResponses as $message) {
-            print $message->event->content . PHP_EOL;
+            if (isset($message->event->content)) {
+                print $message->event->content . PHP_EOL;
+            }
         }
     }
 } catch (Exception $e) {

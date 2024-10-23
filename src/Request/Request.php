@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Request;
 
+use swentel\nostr\Event\Event;
+use swentel\nostr\Message\AuthMessage;
+use swentel\nostr\Nip42\AuthEvent;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
 use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\RequestInterface;
+use swentel\nostr\Sign\Sign;
 use WebSocket;
+use WebSocket\Client;
+use WebSocket\Connection;
+use WebSocket\Message\Text;
 
 class Request implements RequestInterface
 {
@@ -25,6 +32,13 @@ class Request implements RequestInterface
      * @var string
      */
     private string $payload;
+
+    /**
+     * Array with all responses received from the relay.
+     *
+     * @var array
+     */
+    protected array $responses;
 
     /**
      * Constructor for the Request class.
@@ -71,7 +85,8 @@ class Request implements RequestInterface
      * Method to send a request using WebSocket client, receive responses, and handle errors.
      *
      * @param Relay $relay
-     * @return array
+     * @return array|RelayResponse
+     * @throws \Throwable
      */
     private function getResponseFromRelay(Relay $relay): array | RelayResponse
     {
@@ -86,9 +101,9 @@ class Request implements RequestInterface
          *    connection is still alive, but it does not confirm the closure of the subscription)
          */
 
-        $client = new WebSocket\Client($relay->getUrl());
+        $client = new Client($relay->getUrl());
+        $client->setTimeout(60);
         $client->text($this->payload);
-        $result = [];
 
         while ($response = $client->receive()) {
             if ($response === null) {
@@ -100,17 +115,75 @@ class Request implements RequestInterface
                 return RelayResponse::create($response);
             } elseif ($response instanceof WebSocket\Message\Ping) {
                 $client->disconnect();
-                return $result;
-            } elseif ($response instanceof WebSocket\Message\Text) {
+                return $this->responses;
+            } elseif ($response instanceof Text) {
                 $relayResponse = RelayResponse::create(json_decode($response->getContent()));
+                $this->responses[] = $relayResponse;
                 if ($relayResponse->type === 'EOSE') {
+                    $client->disconnect();
                     break;
                 }
-
-                $result[] = $relayResponse;
+                if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
+                    $client->disconnect();
+                    throw new \Exception($relayResponse->message);
+                }
+                // NIP-42
+                if ($relayResponse->type === 'AUTH') {
+                    // Save challenge string in session.
+                    $_SESSION['challenge'] = $relayResponse->message;
+                }
+                if ($relayResponse->type === 'CLOSED') {
+                    // NIP-42
+                    // We do need to broadcast a signed event verification here to the relay.
+                    if (str_starts_with($relayResponse->message, 'auth-required:')) {
+                        if (!isset($_SESSION['challenge'])) {
+                            $client->disconnect();
+                            throw new \Exception('No challenge set in $_SESSION');
+                        }
+                        $aa = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
+                        $authEvent = new Event();
+                        $authEvent->setKind(22242);
+                        $authEvent->setTags([
+                            ['relay', $relay->getUrl()],
+                            ['challenge', $_SESSION['challenge']],
+                        ]);
+                        $sec = '0000000000000000000000000000000000000000000000000000000000000001';
+                        // todo: use client defined secret key here instead of this default one
+                        $signer = new Sign();
+                        $signer->signEvent($aa, $sec);
+                        $authMessage = new AuthMessage($aa);
+                        $initialMessage = $this->payload;
+                        $this->payload = $authMessage->generate();
+                        $client->text($this->payload);
+                        // Set listener.
+                        $client->onText(function (Client $client, Connection $connection, Text $message) {
+                            $this->responses[] = RelayResponse::create(json_decode($message->getContent()));
+                            $client->stop();
+                        })->start();
+                        // Broadcast the initial message to the relay now the AUTH is done.
+                        $this->payload = $initialMessage;
+                        $client->text($this->payload);
+                        $client->onText(function (Client $client, Connection $connection, Text $message) {
+                            /** @var RelayResponse $response */
+                            $response = RelayResponse::create(json_decode($message->getContent()));
+                            $this->responses[] = $response;
+                            if ($response->type === 'EOSE') {
+                                $client->disconnect();
+                            }
+                        })->start();
+                        break;
+                    }
+                    if (str_starts_with($relayResponse->message, 'restricted:')) {
+                        // For when a client has already performed AUTH but the key used to perform
+                        // it is still not allowed by the relay or is exceeding its authorization.
+                        $client->disconnect();
+                        throw new \Exception($relayResponse->message);
+                    }
+                }
             }
         }
         $client->disconnect();
-        return $result;
+        $client->close();
+        return $this->responses;
     }
 }

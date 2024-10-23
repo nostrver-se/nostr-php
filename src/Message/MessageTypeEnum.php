@@ -12,4 +12,5 @@ enum MessageTypeEnum: string
     case EVENT = 'EVENT';
     case REQUEST = 'REQ';
     case CLOSE = 'CLOSE';
+    case AUTH = 'AUTH';
 }
