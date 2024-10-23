@@ -81,6 +81,7 @@ try {
                         print $ws_content . PHP_EOL;
                         print '-----------------------------------------------' . PHP_EOL;
                     }
+                    // TODO: stop this look when we receive the EOSE response from the relay
                 } while ($ws_content === '');
             }
         },
