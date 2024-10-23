@@ -288,7 +288,7 @@ private key on command line.
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
 - [x] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
-- [ ] Support NIP-42 authentication of clients to relays => AUTH relay response
+- [x] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
