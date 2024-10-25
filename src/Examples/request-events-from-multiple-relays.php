@@ -42,7 +42,7 @@ try {
     $response = $request->send();
 
     foreach ($response as $relayUrl => $relayResponses) {
-        print 'Received ' . count($response[$relayUrl]) . ' message(s) found from relay ' . $relayUrl . PHP_EOL;
+        print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
         foreach ($relayResponses as $message) {
             print $message->event->content . PHP_EOL;
         }
