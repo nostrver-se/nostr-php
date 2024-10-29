@@ -6,6 +6,7 @@ namespace swentel\nostr\Nip19;
 
 use BitWasp\Bech32\Exception\Bech32Exception;
 use swentel\nostr\Key\Key;
+use swentel\nostr\Nip19\TLVEnum;
 
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\encode;
@@ -24,7 +25,9 @@ class Nip19Helper
      */
     protected $prefix;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function decode(string $bech32string)
     {
@@ -58,23 +61,61 @@ class Nip19Helper
         return $this->convertToBech32($event_hex, 'note');
     }
 
-    public function encodeEvent(string $event_hex): string
+    /**
+     * @param string $event_hex
+     * @param array $relays
+     * @param string $author
+     * @param int $kind
+     * @return string
+     * @throws \Exception
+     */
+    public function encodeEvent(string $event_hex, array $relays = [], string $author = '', int $kind = null): string
     {
-        $hexInBin = hex2bin($event_hex); // Convert hex formatted string to binary string.
-        if (strlen($hexInBin) !== 32) {
-            throw new \Exception(sprintf('This is an invalid ID: %s', $event_hex));
+        $data = '';
+        $prefix = 'nevent';
+        $event_hex_in_bin = hex2bin($event_hex); // Convert hex formatted pubkey string to binary string.
+        if (strlen($event_hex_in_bin) !== 32) {
+            throw new \Exception(sprintf('This is an invalid event ID: %s', $event_hex));
         }
-        // todo process TLV
-        return $this->convertToBech32($event_hex, 'nevent');
+        // TODO: process TLV entries
+        $tlvEntry = $this->writeTLVEntry(TLVEnum::Special, $event_hex_in_bin);
+        // Optional
+        if (!(empty($relays))) {
+            foreach ($relays as $relay) {
+                // Encode as ascii.
+                //$relay = implode('', unpack('C*', $relay));
+                // Alternative which requires the icon PHP extension installed on the host machine.
+                // $relay = iconv('UTF-8', 'ASCII', $relay);
+                // decode ascii relay string
+                $tlvEntry .= $this->writeTLVEntry(TLVEnum::Relay, urlencode($relay));
+            }
+        }
+        // Optional
+        if (!(empty($author))) {
+            if (strlen(hex2bin($author)) !== 32) {
+                throw new \Exception(sprintf('This is an invalid author ID: %s', $event_hex));
+            }
+            // Convert hex formatted pubkey to 32-bit binary value.
+            $tlvEntry .= $this->writeTLVEntry(TLVEnum::Author, hex2bin($author));
+        }
+        // Optional
+        if ($kind !== null) {
+            // Convert kint int to unsigned integer, big-endian.
+            $v = pack('N', $kind);
+            $tlvEntry .= $this->writeTLVEntry(TLVEnum::Kind, $v);
+        }
+        $data = $tlvEntry;
+
+        return $this->encodeBech32($data, $prefix);
     }
 
-    public function encodeProfile(string $profile_hex): string
+    public function encodeProfile(string $pubkey, array $relays = []): string
     {
         // todo
         return '';
     }
 
-    public function encodeAddr(string $event_hex): string
+    public function encodeAddr(string $event_hex, int $kind, string $DTag, array $relays = []): string
     {
         // todo
         return '';
@@ -100,6 +141,19 @@ class Nip19Helper
         return $key->convertPrivateKeyToBech32($seckey);
     }
 
+    public function encodeBech32(string $value, string $prefix): string
+    {
+        // TODO
+        $bytes = [];
+        return encode($prefix, $bytes);
+    }
+
+    /**
+     * @param string $key
+     * @param string $prefix
+     * @return string
+     * @throws Bech32Exception
+     */
     private function convertToBech32(string $key, string $prefix): string
     {
         $str = '';
@@ -115,7 +169,25 @@ class Nip19Helper
         return $str;
     }
 
-    private function readTLVEntry($value) {}
+    private function readTLVEntry(string $data, TLVEnum $type)
+    {
+    }
 
-    private function writeTLVEntry($value, string $type) {}
+    /**
+     * @param \swentel\nostr\Nip19\TLVEnum $type
+     * @param string $value
+     *   Binary string.
+     * @return string
+     */
+    private function writeTLVEntry(TLVEnum $type, string $value)
+    {
+        // TODO
+        return $value;
+    }
+
+    private function encodeTLV(Object $TLV): array
+    {
+
+        return [];
+    }
 }

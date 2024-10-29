@@ -34,18 +34,34 @@ try {
     // TODO:
     // Encode to nevent with TLV data
 
-    // Encode it bech32 encoded nevent ID,
-    // $nevent = $nip19->encodeEvent($id);
+    $nevent = $nip19->encodeEvent($id, ['wss://nostr.sebastix.dev'], $pubkey, 1);
     // Expected result:
     // nevent1qqsy87cyyfzhc8ada35vttgcx79tktrzd44hsausjulg3rgfnrmva4qey0p0j
     // print $nevent . PHP_EOL;
 
-    // Encode to nprofile with TLV data
+    // Encode to pubkey profile with TLV data
+    $pubkey = '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d';
+    $relays = ['wss://r.x.com', 'wss://djbas.sadkb.com'];
+    $nprofile = $nip19->encodeProfile($pubkey, $relays);
+    // Expected result with TLV items:
+    // - pubkey: 3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d
+    // - relay: wss://r.x.com
+    // - relay: wss://djbas.sadkb.com
 
+    // TODO
     // Encode to naddr with TLV data
 
+    // TODO
     // Decode a bech32 encoded entity to an event ID.
     $nevent = '';
+
+    // TODO
+    // Decode to event with TLV data
+    $profile_id = 'nprofile1qqsrhuxx8l9ex335q7he0f09aej04zpazpl0ne2cgukyawd24mayt8gpp4mhxue69uhhytnc9e3k7mgpz4mhxue69uhkg6nzv9ejuumpv34kytnrdaksjlyr9p';
+    // Expected result with TLV items:
+    // - pubkey: 3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d
+    // - relay: wss://r.x.com
+    // - relay: wss://djbas.sadkb.com
 
 } catch (Exception $e) {
     print $e->getMessage() . PHP_EOL;

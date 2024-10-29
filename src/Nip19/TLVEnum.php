@@ -9,8 +9,8 @@ namespace swentel\nostr\Nip19;
  */
 enum TLVEnum: int
 {
-    case TLVDefault = 0;
-    case TLVRelay   = 1;
-    case TLVAuthor  = 2;
-    case TLVKind    = 3;
+    case Special = 0;
+    case Relay   = 1;
+    case Author  = 2;
+    case Kind    = 3;
 }
