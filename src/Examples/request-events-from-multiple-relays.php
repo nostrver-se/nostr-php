@@ -48,5 +48,5 @@ try {
         }
     }
 } catch (Exception $e) {
-    echo $e->getMessage();
+    print $e->getMessage() . PHP_EOL;
 }
