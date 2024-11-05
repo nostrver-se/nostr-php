@@ -28,12 +28,12 @@ try {
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
 
-    foreach ($response as $relay => $messages) {
+    foreach ($response as $relay => $relayResponses) {
         print 'Received ' . count($response[$relay]) . ' message(s) received from relay ' . $relay . PHP_EOL;
-        foreach ($messages as $message) {
-            print $message->type . ': ' . $message->message . PHP_EOL;
-            if ($message instanceof RelayResponseEvent) {
-                $rawEvent = $message->event;
+        foreach ($relayResponses as $relayResponse) {
+            print 'Relay response ' . $relayResponse->type . ': ' . $relayResponse->message . PHP_EOL;
+            if ($relayResponse instanceof RelayResponseEvent) {
+                $rawEvent = $relayResponse->event;
                 $event = new Event();
                 $event->setId($rawEvent->id);
                 $event->setPublicKey($rawEvent->pubkey);

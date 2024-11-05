@@ -5,6 +5,8 @@ declare(strict_types=1);
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Relay\Relay;
+use swentel\nostr\RelayResponse\RelayResponse;
+use swentel\nostr\RelayResponse\RelayResponseEvent;
 use swentel\nostr\Request\Request;
 use swentel\nostr\Subscription\Subscription;
 
@@ -57,10 +59,12 @@ try {
      */
     foreach ($response as $relayUrl => $relayResponses) {
         print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
-        /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $message */
+        /** @var RelayResponse $relayResponse */
         foreach ($relayResponses as $relayResponse) {
-            if (isset($relayResponse->event->content)) {
-                print $relayResponse->event->content . PHP_EOL;
+            if ($relayResponse instanceof RelayResponseEvent) {
+                if (isset($relayResponse->event->content)) {
+                    print $relayResponse->event->content . PHP_EOL;
+                }
             }
         }
     }
