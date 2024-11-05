@@ -114,6 +114,7 @@ class RelaySet implements RelaySetInterface
      */
     public function send(): array
     {
+        // TODO: deprecate this and replace with $request->send($relaySet, $message) logic.
         try {
             // Send message to each relay defined in this set.
             /** @var Relay $relay */

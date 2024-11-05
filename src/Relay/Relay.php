@@ -97,6 +97,7 @@ class Relay implements RelayInterface
      */
     public function send(): RelayResponse
     {
+        // TODO: deprecate this and replace with $request->send($relay, $message) logic.
         $this->validateUrl();
 
         try {
