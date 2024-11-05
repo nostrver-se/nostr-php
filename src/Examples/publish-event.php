@@ -8,6 +8,7 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Message\EventMessage;
 use swentel\nostr\Relay\Relay;
+use swentel\nostr\Request\Request;
 use swentel\nostr\Sign\Sign;
 
 try {
@@ -28,13 +29,18 @@ try {
     $relay = new Relay('wss://relay.nostr.band');
     $eventMessage = new EventMessage($note);
     $relay->setMessage($eventMessage);
-    /** @var \swentel\nostr\RelayResponse\RelayResponse $response */
-    $response = $relay->send();
+    $request = new Request($relay, $eventMessage);
+    $response = $request->send();
     // Handle response.
-    if ($response->isSuccess) {
-        print 'The event has been transmitted to the relay' . PHP_EOL;
-        $eventId = $response->eventId;
-        // Now we could request the event with this id.
+    foreach ($response as $relayUrl => $relayResponses) {
+        foreach ($relayResponses as $relayResponse) {
+            if ($relayResponse->isSuccess) {
+                print 'The event has been transmitted to the relay ' . $relayUrl . PHP_EOL;
+                $eventId = $relayResponse->eventId;
+                print 'The received event id from the relay: ' . $relayResponse->eventId;
+                // Now we could request the event with this id.
+            }
+        }
     }
 } catch (Exception $e) {
     print 'Exception error: ' . $e->getMessage() . PHP_EOL;
