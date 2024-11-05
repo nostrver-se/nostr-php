@@ -6,6 +6,7 @@ namespace swentel\nostr\Request;
 
 use swentel\nostr\Event\Event;
 use swentel\nostr\Message\AuthMessage;
+use swentel\nostr\MessageInterface;
 use swentel\nostr\Nip42\AuthEvent;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
@@ -44,7 +45,7 @@ class Request implements RequestInterface
      * Constructor for the Request class.
      * Initializes the url and payload properties based on the provided websocket and message.
      */
-    public function __construct(Relay|RelaySet $relay, $message)
+    public function __construct(Relay|RelaySet $relay, MessageInterface $message)
     {
         if ($relay instanceof RelaySet) {
             $this->relays = $relay;
@@ -105,6 +106,7 @@ class Request implements RequestInterface
         $client->setTimeout(60);
         $client->text($this->payload);
 
+        // The Nostr subscription lifecycle within a websocket connection lifecycle.
         while ($response = $client->receive()) {
             if ($response === null) {
                 $response = [
@@ -119,19 +121,41 @@ class Request implements RequestInterface
             } elseif ($response instanceof Text) {
                 $relayResponse = RelayResponse::create(json_decode($response->getContent()));
                 $this->responses[] = $relayResponse;
+                // NIP-01 - Response OK from the relay.
+                if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
+                    // Something went wrong, see message from the relay why.
+                    $client->disconnect();
+                    throw new \Exception($relayResponse->message);
+                }
+                if ($relayResponse->type === 'OK' && $relayResponse->status === true) {
+                    if (isset($relayResponse->eventId) && $relayResponse->eventId !== '') {
+                        // Event is transmitted to the relay.
+                        // TODO: send closeMessage to relay.
+                        $client->disconnect();
+                        break;
+                    }
+                }
+                // NIP-01 - Response EVENT from the relay.
+                if ($relayResponse->type === 'EVENT') {
+                    // Do nothing.
+                }
+                // NIP-01 - Response EOSE from the relay.
                 if ($relayResponse->type === 'EOSE') {
+                    // We should send closeMessage to the relay here.
                     $client->disconnect();
                     break;
                 }
                 if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
+                    // We should send closeMessage to the relay here.
                     $client->disconnect();
                     throw new \Exception($relayResponse->message);
                 }
-                // NIP-42
+                // NIP-42 - Response AUTH from the relay.
                 if ($relayResponse->type === 'AUTH') {
                     // Save challenge string in session.
                     $_SESSION['challenge'] = $relayResponse->message;
                 }
+                // NIP-01 - Response CLOSED from the relay.
                 if ($relayResponse->type === 'CLOSED') {
                     // NIP-42
                     // We do need to broadcast a signed event verification here to the relay.
@@ -167,7 +191,9 @@ class Request implements RequestInterface
                             /** @var RelayResponse $response */
                             $response = RelayResponse::create(json_decode($message->getContent()));
                             $this->responses[] = $response;
+                            $client->stop();
                             if ($response->type === 'EOSE') {
+                                // We should send closeMessage to the relay here.
                                 $client->disconnect();
                             }
                         })->start();
@@ -179,10 +205,14 @@ class Request implements RequestInterface
                         $client->disconnect();
                         throw new \Exception($relayResponse->message);
                     }
+                    $client->disconnect();
+                    break;
                 }
             }
         }
-        $client->disconnect();
+        if ($client->isConnected()) {
+            $client->disconnect();
+        }
         $client->close();
         return $this->responses;
     }
