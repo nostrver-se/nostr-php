@@ -9,6 +9,7 @@ use swentel\nostr\Key\Key;
 use swentel\nostr\Nip19\TLVEnum;
 
 use function BitWasp\Bech32\convertBits;
+use function BitWasp\Bech32\decode;
 use function BitWasp\Bech32\encode;
 
 /**
@@ -24,10 +25,6 @@ class Nip19Helper
      * @var string $prefix
      */
     protected $prefix;
-
-    public function __construct()
-    {
-    }
 
     public function decode(string $bech32string)
     {
@@ -65,20 +62,15 @@ class Nip19Helper
      * @param string $event_hex
      * @param array $relays
      * @param string $author
-     * @param int $kind
+     * @param int|null $kind
      * @return string
-     * @throws \Exception
      */
     public function encodeEvent(string $event_hex, array $relays = [], string $author = '', int $kind = null): string
     {
         $data = '';
         $prefix = 'nevent';
-        $event_hex_in_bin = hex2bin($event_hex); // Convert hex formatted pubkey string to binary string.
-        if (strlen($event_hex_in_bin) !== 32) {
-            throw new \Exception(sprintf('This is an invalid event ID: %s', $event_hex));
-        }
         // TODO: process TLV entries
-        $tlvEntry = $this->writeTLVEntry(TLVEnum::Special, $event_hex_in_bin);
+        $tlvEntry = $this->writeTLVEntry($prefix, TLVEnum::Special, $event_hex);
         // Optional
         if (!(empty($relays))) {
             foreach ($relays as $relay) {
@@ -87,22 +79,24 @@ class Nip19Helper
                 // Alternative which requires the icon PHP extension installed on the host machine.
                 // $relay = iconv('UTF-8', 'ASCII', $relay);
                 // decode ascii relay string
-                $tlvEntry .= $this->writeTLVEntry(TLVEnum::Relay, urlencode($relay));
+                $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Relay, urlencode($relay));
             }
         }
         // Optional
         if (!(empty($author))) {
+            if (str_starts_with($author, 'npub') === true) {
+                $author = $this->convertToHex($author);
+            }
             if (strlen(hex2bin($author)) !== 32) {
-                throw new \Exception(sprintf('This is an invalid author ID: %s', $event_hex));
+                throw new \RuntimeException(sprintf('This is an invalid author ID: %s', $event_hex));
             }
             // Convert hex formatted pubkey to 32-bit binary value.
-            $tlvEntry .= $this->writeTLVEntry(TLVEnum::Author, hex2bin($author));
+            $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Author, $author);
         }
         // Optional
         if ($kind !== null) {
             // Convert kint int to unsigned integer, big-endian.
-            $v = pack('N', $kind);
-            $tlvEntry .= $this->writeTLVEntry(TLVEnum::Kind, $v);
+            $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Kind, $kind);
         }
         $data = $tlvEntry;
 
@@ -144,7 +138,7 @@ class Nip19Helper
     public function encodeBech32(string $value, string $prefix): string
     {
         // TODO
-        $bytes = [];
+        $bytes = [$value];
         return encode($prefix, $bytes);
     }
 
@@ -169,25 +163,128 @@ class Nip19Helper
         return $str;
     }
 
-    private function readTLVEntry(string $data, TLVEnum $type)
-    {
-    }
-
     /**
-     * @param \swentel\nostr\Nip19\TLVEnum $type
-     * @param string $value
-     *   Binary string.
+     * Convert a bech32 encoded string to hex string.
+     *
+     * @param string $key
+     *
      * @return string
      */
-    private function writeTLVEntry(TLVEnum $type, string $value)
+    private function convertToHex(string $key): string
     {
-        // TODO
-        return $value;
+        $str = '';
+        try {
+            $decoded = decode($key);
+            $data = $decoded[1];
+            $bytes = convertBits($data, count($data), 5, 8, false);
+            foreach ($bytes as $item) {
+                $str .= str_pad(dechex($item), 2, '0', STR_PAD_LEFT);
+            }
+        } catch (Bech32Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+
+        return $str;
+    }
+
+    private function readTLVEntry(string $data, TLVEnum $type): string {}
+
+    /**
+     * https://nips.nostr.com/19#shareable-identifiers-with-extra-metadata
+     *
+     * @param string $prefix
+     * @param \swentel\nostr\Nip19\TLVEnum $type
+     * @param string|int $value
+     * @return string
+     */
+    private function writeTLVEntry(string $prefix, TLVEnum $type, string|int $value): string
+    {
+        $buf = '';
+        try {
+            if ($prefix === 'nevent' && $type->name === 'Special') {
+                $event_hex_in_bin = hex2bin($value);
+                if (strlen($event_hex_in_bin) !== 32) {
+                    throw new \RuntimeException(sprintf('This is an invalid event ID: %s', $value));
+                }
+                // TODO Return the 32 bytes of the event id.
+                $byte_array = unpack('C*', $event_hex_in_bin);
+                $uint32 = $this->uInt32($value, null);
+                $buf .= $uint32;
+                //print $event_hex_in_bin;
+            }
+            if ($prefix === 'nevent' && $type->name === 'Author') {
+                // TODO Return the 32 bytes of the pubkey of the event
+                $buf .= $this->uInt32($value, null);
+            }
+            if ($prefix === 'nevent' && $type->name === 'Relay') {
+                // TODO encoded as ascii
+                $buf .= $value;
+            }
+            if ($prefix === 'nevent' && $type->name === 'Kind') {
+                // TODO Return the 32-bit unsigned integer of the kind, big-endian
+                $buf .= $this->uInt32($value, true);
+            }
+
+            if ($prefix === 'profile') {
+
+            }
+            if ($prefix === 'naddr') {
+
+            }
+
+        } catch (Bech32Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+        return $buf;
     }
 
     private function encodeTLV(Object $TLV): array
     {
-
+        // TODO
         return [];
+    }
+
+    /**
+     * @param $i
+     * @return mixed|string
+     */
+    private static function uInt8($i)
+    {
+        return is_int($i) ? pack("C", $i) : unpack("C", $i)[1];
+    }
+
+    /**
+     * @param $i
+     * @param $endianness
+     * @return mixed
+     */
+    private static function uInt16($i, $endianness = false)
+    {
+        $f = is_int($i) ? "pack" : "unpack";
+
+        if ($endianness === true) {  // big-endian
+            $i = $f("n", $i);
+        } elseif ($endianness === false) {  // little-endian
+            $i = $f("v", $i);
+        } elseif ($endianness === null) {  // machine byte order
+            $i = $f("S", $i);
+        }
+
+        return is_array($i) ? $i[1] : $i;
+    }
+
+    private static function uInt32($i, $endianness = false)
+    {
+        $f = is_int($i) ? "pack" : "unpack";
+
+        if ($endianness === true) {  // big-endian
+            $i = $f("N", $i);
+        } elseif ($endianness === false) {  // little-endian
+            $i = $f("V", $i);
+        } elseif ($endianness === null) {  // machine byte order
+            $i = $f("L", $i);
+        }
+
+        return is_array($i) ? $i[1] : $i;
     }
 }
