@@ -7,7 +7,6 @@ namespace swentel\nostr\Nip19;
 use BitWasp\Bech32\Exception\Bech32Exception;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Nip19\TLVEnum;
-
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\decode;
 use function BitWasp\Bech32\encode;
@@ -15,9 +14,14 @@ use function BitWasp\Bech32\encode;
 /**
  * NIP-19 bech32-encoded entities
  *
- * Example reference: https://github.com/nbd-wtf/go-nostr/blob/master/nip19/nip19.go
+ * Example reference Go library: https://github.com/nbd-wtf/go-nostr/blob/master/nip19/nip19.go
+ * Example reference Javascript library:
+ * Example reference Python library:
  *
  * https://github.com/Bit-Wasp/bech32/blob/master/src/bech32.php
+ *
+ * Other helpfull resources
+ * https://www.geeksforgeeks.org/how-to-convert-byte-array-to-string-in-php/
  */
 class Nip19Helper
 {
@@ -74,12 +78,7 @@ class Nip19Helper
         // Optional
         if (!(empty($relays))) {
             foreach ($relays as $relay) {
-                // Encode as ascii.
-                //$relay = implode('', unpack('C*', $relay));
-                // Alternative which requires the icon PHP extension installed on the host machine.
-                // $relay = iconv('UTF-8', 'ASCII', $relay);
-                // decode ascii relay string
-                $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Relay, urlencode($relay));
+                array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Relay, $relay));
             }
         }
         // Optional
@@ -90,14 +89,14 @@ class Nip19Helper
             if (strlen(hex2bin($author)) !== 32) {
                 throw new \RuntimeException(sprintf('This is an invalid author ID: %s', $event_hex));
             }
-            // Convert hex formatted pubkey to 32-bit binary value.
-            $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Author, $author);
+            array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Author, $author));
+            //$tlvEntry = array_merge($tlvEntry, $this->writeTLVEntry($prefix, TLVEnum::Author, $author));
         }
-        // Optional
-        if ($kind !== null) {
-            // Convert kint int to unsigned integer, big-endian.
-            $tlvEntry .= $this->writeTLVEntry($prefix, TLVEnum::Kind, $kind);
-        }
+//        // Optional
+//        if ($kind !== null) {
+//            // Convert kind int to unsigned integer, big-endian.
+//            array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Kind, $kind));
+//        }
         $data = $tlvEntry;
 
         return $this->encodeBech32($data, $prefix);
@@ -135,10 +134,8 @@ class Nip19Helper
         return $key->convertPrivateKeyToBech32($seckey);
     }
 
-    public function encodeBech32(string $value, string $prefix): string
+    public function encodeBech32(array $bytes, string $prefix): string
     {
-        // TODO
-        $bytes = [$value];
         return encode($prefix, $bytes);
     }
 
@@ -152,11 +149,17 @@ class Nip19Helper
     {
         $str = '';
 
+        /** @var array $dec */
+        // This is our bits array with decimal formatted values.
         $dec = [];
+        /** @var array $split */
+        // Split string into data chucks with a max length of 2 chars each chunk. This will create the byte array.
         $split = str_split($key, 2);
         foreach ($split as $item) {
+            // Loop over the byte array and convert each chuck from a hex formatted value into a decimal formatted chunks.
             $dec[] = hexdec($item);
         }
+        // Convert the bits array to a bytes array.
         $bytes = convertBits($dec, count($dec), 8, 5);
         $str = encode($prefix, $bytes);
 
@@ -195,34 +198,47 @@ class Nip19Helper
      * @param string $prefix
      * @param \swentel\nostr\Nip19\TLVEnum $type
      * @param string|int $value
-     * @return string
+     * @return array
      */
-    private function writeTLVEntry(string $prefix, TLVEnum $type, string|int $value): string
+    private function writeTLVEntry(string $prefix, TLVEnum $type, string|int $value): array
     {
-        $buf = '';
+        $buf = [];
         try {
             if ($prefix === 'nevent' && $type->name === 'Special') {
+                // TODO Return the 32 bytes of the event id.
+
+                // Convert hexadecimal string to its binary representation.
                 $event_hex_in_bin = hex2bin($value);
                 if (strlen($event_hex_in_bin) !== 32) {
                     throw new \RuntimeException(sprintf('This is an invalid event ID: %s', $value));
                 }
-                // TODO Return the 32 bytes of the event id.
-                $byte_array = unpack('C*', $event_hex_in_bin);
-                $uint32 = $this->uInt32($value, null);
-                $buf .= $uint32;
-                //print $event_hex_in_bin;
+
+//                // Convert to ... ?
+//                $uint32 = $this->uInt32($value, null);
+//                // Bytes or bits (?) array with decimal formatted chunks
+//                $byte_array = unpack('C*', $value);
+//                // Some from byte array to string methods:
+//                $strFromByteArray1 = implode(array_map("chr", $byte_array));
+//                $strFromByteArray2 = pack('C*', ...$byte_array);
+//                $strFromByteArray3 = '';
+//                foreach ($byte_array as $byte) {
+//                    $strFromByteArray3 .= chr($byte);
+//                }
+
+                $buf = $this->convertToBytes($value);
             }
             if ($prefix === 'nevent' && $type->name === 'Author') {
                 // TODO Return the 32 bytes of the pubkey of the event
-                $buf .= $this->uInt32($value, null);
+                $buf = $this->convertToBytes($value);
             }
             if ($prefix === 'nevent' && $type->name === 'Relay') {
-                // TODO encoded as ascii
-                $buf .= $value;
+                // TODO
+                $relay = urlencode($value);
+                //$buf = $this->convertToBytes($relay);
             }
             if ($prefix === 'nevent' && $type->name === 'Kind') {
                 // TODO Return the 32-bit unsigned integer of the kind, big-endian
-                $buf .= $this->uInt32($value, true);
+                //$buf = $this->uInt32($value, true);
             }
 
             if ($prefix === 'profile') {
@@ -231,9 +247,11 @@ class Nip19Helper
             if ($prefix === 'naddr') {
 
             }
-
         } catch (Bech32Exception $e) {
             throw new \RuntimeException($e->getMessage());
+        }
+        if (empty($buf)) {
+            throw new \RuntimeException('$buf is empty');
         }
         return $buf;
     }
@@ -242,6 +260,27 @@ class Nip19Helper
     {
         // TODO
         return [];
+    }
+
+    /**
+     * @param string $str
+     * @return array
+     * @throws Bech32Exception
+     */
+    private function convertToBytes(string $str): array
+    {
+        /** @var array $dec */
+        // This will our bits array with decimal formatted values.
+        $dec = [];
+        /** @var array $split */
+        // Split string into data chucks with a max length of 2 chars each chunk. This will create the byte array.
+        $split = str_split($str, 2);
+        foreach ($split as $item) {
+            // Loop over the byte array and convert each chuck from a hex formatted value into a decimal formatted chunks so we get our bits array.
+            $dec[] = hexdec($item);
+        }
+        // Convert bits to bytes.
+        return convertBits($dec, count($dec), 8, 5);
     }
 
     /**
@@ -273,6 +312,11 @@ class Nip19Helper
         return is_array($i) ? $i[1] : $i;
     }
 
+    /**
+     * @param $i
+     * @param $endianness
+     * @return mixed
+     */
     private static function uInt32($i, $endianness = false)
     {
         $f = is_int($i) ? "pack" : "unpack";
