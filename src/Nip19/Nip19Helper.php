@@ -15,8 +15,7 @@ use function BitWasp\Bech32\encode;
  * NIP-19 bech32-encoded entities
  *
  * Example reference Go library: https://github.com/nbd-wtf/go-nostr/blob/master/nip19/nip19.go
- * Example reference Javascript library:
- * Example reference Python library:
+ * Example reference Javascript library: https://github.com/nbd-wtf/nostr-tools/blob/master/nip19.ts
  *
  * https://github.com/Bit-Wasp/bech32/blob/master/src/bech32.php
  *
