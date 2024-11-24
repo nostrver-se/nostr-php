@@ -116,15 +116,13 @@ $result = $relay->send();
 Fetch events from a relay. 
 
 ```php
-$subscription = new Subscription();
-$subscriptionId = $subscription->setId();
-
 $filter1 = new Filter();
 $filter1->setKinds([1, 3]); // You can add multiple kind numbers
 $filter1->setLimit(25); // Limit to fetch only a maximum of 25 events
 $filters = [$filter1]; // You can add multiple filters.
 
-$requestMessage = new RequestMessage($subscriptionId, $filters);
+$subscription = new Subscription();
+$requestMessage = new RequestMessage($subscription->getid(), $filters);
 
 $relayUrl = 'wss://nostr-websocket.tld';
 $relay = new Relay($relayUrl);
@@ -182,14 +180,12 @@ Read events from a set of relays with the `RelaySet` class.
 It's basically the same snippet as above with the difference you create a `RelaySet` class and pass it through the `Request` object.
 
 ```php
-$subscription = new Subscription();
-$subscriptionId = $subscription->setId();
-
 $filter1 = new Filter();
 $filter1->setKinds([1]);
 $filter1->setLimit(5);
 $filters = [$filter1];
-$requestMessage = new RequestMessage($subscriptionId, $filters);
+$subscription = new Subscription();
+$requestMessage = new RequestMessage($subscription->getId(), $filters);
 $relays = [
     new Relay('wss://nostr-websocket-1.tld'),
     new Relay('wss://nostr-websocket-2.tld'),
