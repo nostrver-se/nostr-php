@@ -7,8 +7,7 @@ namespace swentel\nostr\Filter;
 use swentel\nostr\FilterInterface;
 use swentel\nostr\Key\Key;
 
-use function PHPUnit\Framework\throwException;
-
+#[\AllowDynamicProperties]
 class Filter implements FilterInterface
 {
     /**
@@ -46,7 +45,7 @@ class Filter implements FilterInterface
      */
     public int $since;
 
-    /**
+    /**t
      * An integer unix timestamp in seconds, events must be older than this to pass
      */
     public int $until;
@@ -160,7 +159,7 @@ class Filter implements FilterInterface
     {
         // Check if tag starts with #.
         if (!str_starts_with($tag, '#')) {
-            throw new \RuntimeException('All tags must start with #');
+            throw new \RuntimeException('All tags on a filter must start with #');
         }
         // Check if tag has valid value.
         $pattern = '/^#[a-z_-]+$/i';

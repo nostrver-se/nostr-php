@@ -14,7 +14,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
     $filter1 = new Filter();
     $filter1->setAuthors([
         'npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe',
@@ -22,7 +21,7 @@ try {
     $filter1->setKinds([1]);
     $filter1->setLimit(3);
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relay = new Relay('wss://jingle.nostrver.se');
     //$relay = new Relay('wss://hotrightnow.nostr1.com');
     $request = new Request($relay, $requestMessage);
