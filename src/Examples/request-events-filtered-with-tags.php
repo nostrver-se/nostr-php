@@ -14,7 +14,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
 
     $filter1 = new Filter();
     $filter1->setKinds([1]);
@@ -45,7 +44,7 @@ try {
      * If you would like to use || (OR) conditions, you should use multiple filters.
      */
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relay = new Relay('wss://relay.nostr.band');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();

@@ -12,13 +12,12 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
 
     $filter1 = new Filter();
     $filter1->setKinds([1]);
     $filter1->setLimit(25);
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relay = new Relay('wss://relay.nostr.band');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
