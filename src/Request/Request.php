@@ -164,18 +164,12 @@ class Request implements RequestInterface
                             $client->disconnect();
                             throw new \Exception('No challenge set in $_SESSION');
                         }
-                        $aa = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
-                        $authEvent = new Event();
-                        $authEvent->setKind(22242);
-                        $authEvent->setTags([
-                            ['relay', $relay->getUrl()],
-                            ['challenge', $_SESSION['challenge']],
-                        ]);
+                        $authEvent = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
                         $sec = '0000000000000000000000000000000000000000000000000000000000000001';
                         // todo: use client defined secret key here instead of this default one
                         $signer = new Sign();
-                        $signer->signEvent($aa, $sec);
-                        $authMessage = new AuthMessage($aa);
+                        $signer->signEvent($authEvent, $sec);
+                        $authMessage = new AuthMessage($authEvent);
                         $initialMessage = $this->payload;
                         $this->payload = $authMessage->generate();
                         $client->text($this->payload);
