@@ -267,7 +267,7 @@ $ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key -
 Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
 
-## Roadmap
+## Roadmap / features
 
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
@@ -284,11 +284,18 @@ private key on command line.
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
 - [x] Improve handling relay responses
 - [ ] Support NIP-19 bech32-encoded identifiers
+  - [ ] Encode identifier
+  - [ ] Decode identifier
+- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [x] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
+- [ ] Support NIP-03 openTimestamps attestations for events
+- [ ] Support NIP-14 subject tag in text events
+- [ ] Support NIP-40 expiration timestamp
+- [ ] Support NIP-47 Nostr Wallet Connect
+- [ ] Support NIP-49 private key encryption
 
 ## Community
 
