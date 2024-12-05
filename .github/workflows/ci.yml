@@ -17,4 +17,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
       - run: composer install
       - run: php vendor/bin/php-cs-fixer check -v
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: 1
       - run: php vendor/bin/phpunit
