@@ -6,6 +6,7 @@ namespace swentel\nostr\Request;
 
 use swentel\nostr\Event\Event;
 use swentel\nostr\Message\AuthMessage;
+use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\MessageInterface;
 use swentel\nostr\Nip42\AuthEvent;
 use swentel\nostr\Relay\Relay;
@@ -40,6 +41,14 @@ class Request implements RequestInterface
      * @var array
      */
     protected array $responses;
+
+    /**
+     * Firehose modus
+     *   Default false / not active.
+     *
+     * @var bool
+     */
+    protected bool $isFirehose = false;
 
     /**
      * Constructor for the Request class.
@@ -141,9 +150,29 @@ class Request implements RequestInterface
                 }
                 // NIP-01 - Response EOSE from the relay.
                 if ($relayResponse->type === 'EOSE') {
-                    // We should send closeMessage to the relay here.
-                    $client->disconnect();
-                    break;
+                    if ($this->isFirehose) {
+                        // We keep the websocket connection open
+                        // Print all relay responses
+                        foreach ($this->responses as $relayResponse) {
+                            if (isset($relayResponse->event->content)) {
+                                print $relayResponse->event->content . PHP_EOL;
+                            }
+                        }
+                        $initialRequestMessage = $this->payload;
+                        $this->payload = $initialRequestMessage;
+                        $client->text($this->payload);
+                        $client->onText(function (Client $client, Connection $connection, Text $message) {
+                            /** @var RelayResponse $response */
+                            $relayResponse = RelayResponse::create(json_decode($message->getContent()));
+                            if (isset($relayResponse->event->content)) {
+                                print $relayResponse->event->content . PHP_EOL;
+                            }
+                        })->start();
+                    } else {
+                        // We should send closeMessage to the relay here.
+                        $client->disconnect();
+                        break;
+                    }
                 }
                 if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
                     // We should send closeMessage to the relay here.
@@ -209,5 +238,14 @@ class Request implements RequestInterface
         }
         $client->close();
         return $this->responses;
+    }
+
+    /**
+     * @param bool $value
+     * @return void
+     */
+    public function setFirehose(bool $value): void
+    {
+        $this->isFirehose = $value;
     }
 }
