@@ -16,6 +16,7 @@ use swentel\nostr\Sign\Sign;
 use WebSocket;
 use WebSocket\Client;
 use WebSocket\Connection;
+use WebSocket\Message\Pong;
 use WebSocket\Message\Text;
 
 class Request implements RequestInterface
@@ -116,8 +117,9 @@ class Request implements RequestInterface
                 $client->disconnect();
                 return RelayResponse::create($response);
             } elseif ($response instanceof WebSocket\Message\Ping) {
-                $client->disconnect();
-                return $this->responses;
+                // Send pong message.
+                $pongMessage = new Pong();
+                $client->text($pongMessage->getPayload());
             } elseif ($response instanceof Text) {
                 $relayResponse = RelayResponse::create(json_decode($response->getContent()));
                 $this->responses[] = $relayResponse;
