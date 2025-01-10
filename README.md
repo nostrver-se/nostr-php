@@ -108,7 +108,7 @@ $relay4 = new Relay(''wss://nostr-websocket4.tld'');
 $relaySet = new RelaySet();
 $relaySet->setRelays([$relay1, $relay2, $relay3, $relay4]);
 $relaySet->setMessage($eventMessage);
-$result = $relay->send();
+$result = $relaySet->send();
 ```
 
 ## Read events from a relay
