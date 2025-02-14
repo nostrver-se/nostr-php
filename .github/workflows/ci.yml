@@ -1,6 +1,6 @@
 name: CI
 
-on: push
+on: [push, pull_request]
 
 jobs:
   run-tests:
@@ -11,12 +11,17 @@ jobs:
       matrix:
         php-version: ["8.1", "8.2", "8.3", "8.4"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-      - run: composer install
-      - run: php vendor/bin/php-cs-fixer check -v
+      - name: Install dependencies
+        run: composer install --prefer-dist
+      - name: Coding standards
+        run: php vendor/bin/php-cs-fixer check -v
         env:
           PHP_CS_FIXER_IGNORE_ENV: 1
-      - run: php vendor/bin/phpunit
+      - name: Tests
+        run: php vendor/bin/phpunit
