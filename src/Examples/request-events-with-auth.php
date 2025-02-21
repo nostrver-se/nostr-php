@@ -22,8 +22,13 @@ try {
     $filter1->setLimit(3);
     $filters = [$filter1];
     $requestMessage = new RequestMessage($subscription->getId(), $filters);
+
+    // https://github.com/Sebastix/jingle.git
     $relay = new Relay('wss://jingle.nostrver.se');
-    //$relay = new Relay('wss://hotrightnow.nostr1.com');
+    //$relay = new Relay('wss://nostr.wine');
+    //$relay = new Relay('wss://mleku.realy.lol');
+    //$relay = new Relay('wss://gitcitadel.nostr1.com');
+    //$relay = new Relay('wss://nostr.land');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
 
