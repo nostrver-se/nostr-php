@@ -45,7 +45,7 @@ class Filter implements FilterInterface
      */
     public int $since;
 
-    /**t
+    /**
      * An integer unix timestamp in seconds, events must be older than this to pass
      */
     public int $until;

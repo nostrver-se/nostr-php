@@ -136,6 +136,25 @@ class Request implements RequestInterface
                         $client->disconnect();
                         break;
                     }
+                    if (str_starts_with($relayResponse->message, 'auth-required:')) {
+                        // NIP-42
+                        // Auth required
+                        if (!isset($_SESSION['challenge'])) {
+                            $client->disconnect();
+                            $message = sprintf(
+                                'Relay %s requires auth and there is no challenge set in $_SESSION. Did we get an AUTH response first?',
+                                $relay->getUrl(),
+                            );
+                            throw new \Exception($message);
+                        }
+                        // TODO: send AUTH message to the relay here
+                    }
+                    if (str_starts_with($relayResponse->message, 'restricted:')) {
+                        // For when a client has already performed AUTH but the key used to perform
+                        // it is still not allowed by the relay or is exceeding its authorization.
+                        $client->disconnect();
+                        throw new \Exception($relayResponse->message);
+                    }
                 }
                 // NIP-01 - Response EVENT from the relay.
                 if ($relayResponse->type === 'EVENT') {
@@ -164,7 +183,11 @@ class Request implements RequestInterface
                     if (str_starts_with($relayResponse->message, 'auth-required:')) {
                         if (!isset($_SESSION['challenge'])) {
                             $client->disconnect();
-                            throw new \Exception('No challenge set in $_SESSION');
+                            $message = sprintf(
+                                'Relay %s requires auth and there is no challenge set in $_SESSION. Did we get an AUTH response first?',
+                                $relay->getUrl(),
+                            );
+                            throw new \Exception($message);
                         }
                         $authEvent = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
                         $sec = '0000000000000000000000000000000000000000000000000000000000000001';
