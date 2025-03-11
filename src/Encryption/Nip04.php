@@ -6,6 +6,7 @@ namespace swentel\nostr\Encryption;
 
 use Elliptic\EC;
 use Exception;
+use swentel\nostr\Key\Key;
 
 /**
  * NIP-04 encryption implementation.
@@ -18,6 +19,15 @@ class Nip04
      */
     private static function deriveSharedSecret(string $privateKey, string $publicKey): string
     {
+        // Convert keys from bech32 format if needed
+        $key = new Key();
+        if (str_starts_with($privateKey, 'nsec') === true) {
+            $privateKey = $key->convertToHex($privateKey);
+        }
+        if (str_starts_with($publicKey, 'npub') === true) {
+            $publicKey = $key->convertToHex($publicKey);
+        }
+
         $ec = new EC('secp256k1');
         $private = $ec->keyFromPrivate($privateKey);
         // Add back the compression prefix (02 or 03)

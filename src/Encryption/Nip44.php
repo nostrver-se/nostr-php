@@ -7,6 +7,7 @@ namespace swentel\nostr\Encryption;
 use Elliptic\EC;
 use Exception;
 use ParagonIE\Sodium\Compat;
+use swentel\nostr\Key\Key;
 
 /**
  * NIP-44 encryption implementation.
@@ -23,6 +24,15 @@ class Nip44
      */
     public static function getConversationKey(string $privateKey, string $publicKey): string
     {
+        // Convert keys from bech32 format if needed
+        $key = new Key();
+        if (str_starts_with($privateKey, 'nsec') === true) {
+            $privateKey = $key->convertToHex($privateKey);
+        }
+        if (str_starts_with($publicKey, 'npub') === true) {
+            $publicKey = $key->convertToHex($publicKey);
+        }
+
         $ec = new EC('secp256k1');
         $private = $ec->keyFromPrivate($privateKey);
         $public = $ec->keyFromPublic('02' . $publicKey, 'hex');

@@ -124,4 +124,58 @@ class EncryptionTest extends TestCase
         $this->expectException(Exception::class);
         Nip44::decrypt(base64_encode($tampered), $conversationKey);
     }
+
+    public function testNip04WithBech32Keys(): void
+    {
+        $message = "Hello, this is a bech32 key test!";
+
+        // Convert keys to bech32 format
+        $aliceNsec = $this->keyGenerator->convertPrivateKeyToBech32($this->alicePrivKey);
+        $bobNpub = $this->keyGenerator->convertPublicKeyToBech32($this->bobPubKey);
+
+        // Alice encrypts a message for Bob using bech32 keys
+        $encrypted = Nip04::encrypt($message, $aliceNsec, $bobNpub);
+
+        // Bob decrypts the message using bech32 keys
+        $bobNsec = $this->keyGenerator->convertPrivateKeyToBech32($this->bobPrivKey);
+        $aliceNpub = $this->keyGenerator->convertPublicKeyToBech32($this->alicePubKey);
+        $decrypted = Nip04::decrypt($encrypted, $bobNsec, $aliceNpub);
+
+        $this->assertEquals($message, $decrypted);
+
+        // Test mixed format (hex private key, bech32 public key)
+        $mixedEncrypted = Nip04::encrypt($message, $this->alicePrivKey, $bobNpub);
+        $mixedDecrypted = Nip04::decrypt($mixedEncrypted, $bobNsec, $this->alicePubKey);
+        $this->assertEquals($message, $mixedDecrypted);
+    }
+
+    public function testNip44WithBech32Keys(): void
+    {
+        $message = "Hello, this is a bech32 key test for NIP-44!";
+
+        // Convert keys to bech32 format
+        $aliceNsec = $this->keyGenerator->convertPrivateKeyToBech32($this->alicePrivKey);
+        $bobNpub = $this->keyGenerator->convertPublicKeyToBech32($this->bobPubKey);
+
+        // Get conversation key using bech32 keys
+        $conversationKey = Nip44::getConversationKey($aliceNsec, $bobNpub);
+
+        // Alice encrypts a message
+        $encrypted = Nip44::encrypt($message, $conversationKey);
+
+        // Bob gets the same conversation key using bech32 keys and decrypts
+        $bobNsec = $this->keyGenerator->convertPrivateKeyToBech32($this->bobPrivKey);
+        $aliceNpub = $this->keyGenerator->convertPublicKeyToBech32($this->alicePubKey);
+        $bobConversationKey = Nip44::getConversationKey($bobNsec, $aliceNpub);
+
+        $this->assertEquals($conversationKey, $bobConversationKey);
+        $decrypted = Nip44::decrypt($encrypted, $bobConversationKey);
+        $this->assertEquals($message, $decrypted);
+
+        // Test mixed format (hex private key, bech32 public key)
+        $mixedConversationKey = Nip44::getConversationKey($this->alicePrivKey, $bobNpub);
+        $mixedEncrypted = Nip44::encrypt($message, $mixedConversationKey);
+        $mixedDecrypted = Nip44::decrypt($mixedEncrypted, $mixedConversationKey);
+        $this->assertEquals($message, $mixedDecrypted);
+    }
 }
