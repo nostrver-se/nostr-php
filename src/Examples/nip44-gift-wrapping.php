@@ -25,14 +25,14 @@ $charliePrivKey = $keyGenerator->generatePrivateKey();
 $charliePubKey = $keyGenerator->getPublicKey($charliePrivKey);
 $charlieNpub = $keyGenerator->convertPublicKeyToBech32($charliePubKey);
 
-echo "Generated keys:\n";
-echo "Alice's public key (npub): $aliceNpub\n";
-echo "Bob's public key (npub): $bobNpub\n";
-echo "Charlie's public key (npub): $charlieNpub\n\n";
+echo "Generated keys:" . PHP_EOL;
+echo "Alice's public key (npub): $aliceNpub" . PHP_EOL;
+echo "Bob's public key (npub): $bobNpub" . PHP_EOL;
+echo "Charlie's public key (npub): $charlieNpub" . PHP_EOL . PHP_EOL;
 
 // Example: NIP-44 Gift Wrapping
-echo "NIP-44 Gift Wrapping Example:\n";
-echo "---------------------------\n";
+echo "NIP-44 Gift Wrapping Example:" . PHP_EOL;
+echo "---------------------------" . PHP_EOL;
 
 $message = "This is a secret message for both Bob and Charlie!";
 
@@ -79,16 +79,16 @@ $signer = new Sign();
 $event->setCreatedAt(time());
 $signer->signEvent($event, $alicePrivKey);
 
-echo "Original message: $message\n";
-echo "Gift-wrapped event content:\n";
-echo $event->getContent() . "\n\n";
+echo "Original message: $message" . PHP_EOL;
+echo "Gift-wrapped event content:" . PHP_EOL;
+echo $event->getContent() . PHP_EOL . PHP_EOL;
 
 // Demonstrate decryption by recipients
 $wrappedContent = json_decode($event->getContent(), true);
 
 // Bob decrypts the message
-echo "Bob's decryption:\n";
-echo "-----------------\n";
+echo "Bob's decryption:" . PHP_EOL;
+echo "-----------------" . PHP_EOL;
 $bobConversationKey = Nip44::getConversationKey($bobPrivKey, $alicePubKey);
 foreach ($wrappedContent['seals'] as $seal) {
     if ($seal['pubkey'] === $bobPubKey) {
@@ -96,14 +96,14 @@ foreach ($wrappedContent['seals'] as $seal) {
         $decryptedKey = Nip44::decrypt($seal['seal'], $bobConversationKey);
         // Use the decrypted key to decrypt the actual message
         $bobMessage = Nip44::decrypt($wrappedContent['content'], hex2bin($decryptedKey));
-        echo "Decrypted by Bob: $bobMessage\n";
+        echo "Decrypted by Bob: $bobMessage" . PHP_EOL;
         break;
     }
 }
 
 // Charlie decrypts the message
-echo "\nCharlie's decryption:\n";
-echo "-------------------\n";
+echo PHP_EOL . "Charlie's decryption:" . PHP_EOL;
+echo "-------------------" . PHP_EOL;
 $charlieConversationKey = Nip44::getConversationKey($charliePrivKey, $alicePubKey);
 foreach ($wrappedContent['seals'] as $seal) {
     if ($seal['pubkey'] === $charliePubKey) {
@@ -111,18 +111,18 @@ foreach ($wrappedContent['seals'] as $seal) {
         $decryptedKey = Nip44::decrypt($seal['seal'], $charlieConversationKey);
         // Use the decrypted key to decrypt the actual message
         $charlieMessage = Nip44::decrypt($wrappedContent['content'], hex2bin($decryptedKey));
-        echo "Decrypted by Charlie: $charlieMessage\n";
+        echo "Decrypted by Charlie: $charlieMessage" . PHP_EOL;
         break;
     }
 }
 
 // Demonstrate that Eve cannot decrypt the message
-echo "\nEve's attempt:\n";
-echo "-------------\n";
+echo PHP_EOL . "Eve's attempt:" . PHP_EOL;
+echo "-------------" . PHP_EOL;
 $evePrivKey = $keyGenerator->generatePrivateKey();
 $evePubKey = $keyGenerator->getPublicKey($evePrivKey);
 $eveNpub = $keyGenerator->convertPublicKeyToBech32($evePubKey);
-echo "Eve's public key (npub): $eveNpub\n";
+echo "Eve's public key (npub): $eveNpub" . PHP_EOL;
 
 try {
     $eveConversationKey = Nip44::getConversationKey($evePrivKey, $alicePubKey);
@@ -130,10 +130,10 @@ try {
         if ($seal['pubkey'] === $evePubKey) {
             $decryptedKey = Nip44::decrypt($seal['seal'], $eveConversationKey);
             $eveMessage = Nip44::decrypt($wrappedContent['content'], hex2bin($decryptedKey));
-            echo "Eve somehow decrypted: $eveMessage\n";
+            echo "Eve somehow decrypted: $eveMessage" . PHP_EOL;
             break;
         }
     }
 } catch (Exception $e) {
-    echo "Eve failed to decrypt (as expected): No seal found for Eve's key\n";
+    echo "Eve failed to decrypt (as expected): No seal found for Eve's key" . PHP_EOL;
 }
