@@ -272,8 +272,8 @@ private key on command line.
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17))
-- [x] Support NIP-01 basic protocol flow description
+- [x] Event string validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17)) + Event object validation (issue [#85](https://github.com/nostrver-se/nostr-php/issues/85))
+- [x] NIP-01 basic protocol flow description
   - [x] Publish events
   - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
   - [x] Implement all types of relay responses 
@@ -283,11 +283,13 @@ private key on command line.
     - [x] `CLOSED` - subscription is ended on the server side
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
 - [x] Improve handling relay responses
+- [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-42 authentication of clients to relays
 - [ ] Support NIP-19 bech32-encoded identifiers
   - [ ] Encode identifier
   - [ ] Decode identifier
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
-- [x] Support NIP-42 authentication of clients to relays
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
 - [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
@@ -296,6 +298,7 @@ private key on command line.
 - [ ] Support NIP-40 expiration timestamp
 - [ ] Support NIP-47 Nostr Wallet Connect
 - [ ] Support NIP-49 private key encryption
+- [ ] Support NIP-17 private direct messages
 
 ## Community
 
