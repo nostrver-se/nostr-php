@@ -42,7 +42,7 @@ class Relay implements RelayInterface
      * @param string $websocket
      *   The socket URL.
      */
-    public function __construct(string $websocket, MessageInterface $message = null)
+    public function __construct(string $websocket, MessageInterface|null $message = null)
     {
         $this->url = $websocket;
         // Backwards compatibility for version <1.2.4
