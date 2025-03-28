@@ -108,7 +108,7 @@ $relay4 = new Relay(''wss://nostr-websocket4.tld'');
 $relaySet = new RelaySet();
 $relaySet->setRelays([$relay1, $relay2, $relay3, $relay4]);
 $relaySet->setMessage($eventMessage);
-$result = $relay->send();
+$result = $relaySet->send();
 ```
 
 ## Read events from a relay
@@ -116,15 +116,13 @@ $result = $relay->send();
 Fetch events from a relay. 
 
 ```php
-$subscription = new Subscription();
-$subscriptionId = $subscription->setId();
-
 $filter1 = new Filter();
 $filter1->setKinds([1, 3]); // You can add multiple kind numbers
 $filter1->setLimit(25); // Limit to fetch only a maximum of 25 events
 $filters = [$filter1]; // You can add multiple filters.
 
-$requestMessage = new RequestMessage($subscriptionId, $filters);
+$subscription = new Subscription();
+$requestMessage = new RequestMessage($subscription->getid(), $filters);
 
 $relayUrl = 'wss://nostr-websocket.tld';
 $relay = new Relay($relayUrl);
@@ -182,14 +180,12 @@ Read events from a set of relays with the `RelaySet` class.
 It's basically the same snippet as above with the difference you create a `RelaySet` class and pass it through the `Request` object.
 
 ```php
-$subscription = new Subscription();
-$subscriptionId = $subscription->setId();
-
 $filter1 = new Filter();
 $filter1->setKinds([1]);
 $filter1->setLimit(5);
 $filters = [$filter1];
-$requestMessage = new RequestMessage($subscriptionId, $filters);
+$subscription = new Subscription();
+$requestMessage = new RequestMessage($subscription->getId(), $filters);
 $relays = [
     new Relay('wss://nostr-websocket-1.tld'),
     new Relay('wss://nostr-websocket-2.tld'),
@@ -271,13 +267,13 @@ $ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key -
 Note: the key arguments expects a file with your private key! Do not paste your
 private key on command line.
 
-## Roadmap
+## Roadmap / features
 
 - [x] Keypair generation and validation
   - [x] Convert from hex to bech32-encoded keys
 - [x] Event signing with Schnorr signatures (`secp256k1`)
-- [x] Event validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17))
-- [x] Support NIP-01 basic protocol flow description
+- [x] Event string validation (issue [#17](https://github.com/nostrver-se/nostr-php/issues/17)) + Event object validation (issue [#85](https://github.com/nostrver-se/nostr-php/issues/85))
+- [x] NIP-01 basic protocol flow description
   - [x] Publish events
   - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
   - [x] Implement all types of relay responses 
@@ -287,12 +283,22 @@ private key on command line.
     - [x] `CLOSED` - subscription is ended on the server side
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
 - [x] Improve handling relay responses
+- [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-42 authentication of clients to relays
 - [ ] Support NIP-19 bech32-encoded identifiers
-- [x] Support NIP-42 authentication of clients to relays
+  - [ ] Encode identifier
+  - [ ] Decode identifier
+- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
+- [ ] Support NIP-03 openTimestamps attestations for events
+- [ ] Support NIP-14 subject tag in text events
+- [ ] Support NIP-40 expiration timestamp
+- [ ] Support NIP-47 Nostr Wallet Connect
+- [ ] Support NIP-49 private key encryption
+- [ ] Support NIP-17 private direct messages
 
 ## Community
 

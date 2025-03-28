@@ -14,7 +14,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
 
     $filter1 = new Filter();
     $filter1->setAuthors(
@@ -25,7 +24,7 @@ try {
     $filter1->setKinds([1]);
     $filter1->setLimit(100);
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relays = [
         new Relay('wss://nostr.sebastix.dev'),
         new Relay('wss://relay.damus.io'),
@@ -48,5 +47,5 @@ try {
         }
     }
 } catch (Exception $e) {
-    echo $e->getMessage();
+    print $e->getMessage() . PHP_EOL;
 }

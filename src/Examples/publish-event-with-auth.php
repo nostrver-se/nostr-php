@@ -8,6 +8,8 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Message\EventMessage;
 use swentel\nostr\Relay\Relay;
+use swentel\nostr\RelayResponse\RelayResponse;
+use swentel\nostr\RelayResponse\RelayResponseOk;
 use swentel\nostr\Request\Request;
 use swentel\nostr\Sign\Sign;
 
@@ -15,8 +17,8 @@ try {
     $note = new Event();
     $note->setKind(1);
     $note->addTag(['t', 'introduction']);
-    $note->addTag(['r', 'wss://relay.nostr.band']);
-    $content = 'Hello Nostr world!';
+    $note->addTag(['r', 'wss://nostr.wine']);
+    $content = 'Hello Nostr world! This is just a test, please ignore.';
     $note->setContent($content);
     // Sign event.
     $private_key = new Key();
@@ -26,7 +28,7 @@ try {
     // Optional, verify event.
     $isValid = $note->verify();
     // Transmit the event to a relay.
-    $relay = new Relay('wss://relay.nostr.band');
+    $relay = new Relay('wss://nostr.wine');
     $eventMessage = new EventMessage($note);
     $relay->setMessage($eventMessage);
     $request = new Request($relay, $eventMessage);
@@ -34,7 +36,7 @@ try {
     // Handle response.
     foreach ($response as $relayUrl => $relayResponses) {
         foreach ($relayResponses as $relayResponse) {
-            if ($relayResponse->isSuccess) {
+            if ($relayResponse->isSuccess && $relayResponse instanceof RelayResponseOk) {
                 print 'The event has been transmitted to the relay ' . $relayUrl . PHP_EOL;
                 $eventId = $relayResponse->eventId;
                 print 'The received event id from the relay: ' . $relayResponse->eventId;

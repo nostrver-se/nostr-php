@@ -155,8 +155,21 @@ interface EventInterface
     /**
      * Returns true if event object encodes to a valid Nostr event JSON string.
      *
+     * @param string|object $input
+     *   The input to verify.
+     *
      * @return bool
      */
-    public function verify(): bool;
+    public function verify(string|object $input = ''): bool;
 
+    /**
+     * Create an Event object from a verified event input.
+     *
+     * @param string|object $input
+     *   The event data as JSON string or decoded object.
+     *
+     * @return ?static
+     *   Returns an Event object if valid, null otherwise.
+     */
+    public static function fromVerified(string|object $input): ?static;
 }

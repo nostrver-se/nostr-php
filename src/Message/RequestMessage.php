@@ -36,9 +36,7 @@ class RequestMessage implements MessageInterface
     {
         $this->subscriptionId = $subscriptionId;
         $this->setType(MessageTypeEnum::REQUEST);
-        foreach ($filters as $filter) {
-            $this->filters[] = $filter->toArray();
-        }
+        $this->processFilters($filters);
     }
 
     /**
@@ -61,5 +59,25 @@ class RequestMessage implements MessageInterface
     {
         $requestArray = array_merge([$this->type, $this->subscriptionId], $this->filters);
         return json_encode($requestArray, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param array $filters
+     *   Process filters for the request message.
+     * @return void
+     */
+    private function processFilters(array $filters): void
+    {
+        /** @var Filter\Filter $filter */
+        foreach ($filters as $filter) {
+            // Process tag values from $filter->tags.
+            if (isset($filter->tags)) {
+                foreach ($filter->tags as $key => $tag) {
+                    $filter->{$key} = [$tag];
+                }
+                unset($filter->tags);
+            }
+            $this->filters[] = $filter->toArray();
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace swentel\nostr\Filter;
 use swentel\nostr\FilterInterface;
 use swentel\nostr\Key\Key;
 
+#[\AllowDynamicProperties]
 class Filter implements FilterInterface
 {
     /**
@@ -23,6 +24,11 @@ class Filter implements FilterInterface
      * A list of a kind numbers
      */
     public array $kinds;
+
+    /**
+     * A list of tags values starting with a # followed by single letters (format: #<single-letter (a-zA-Z)>).
+     */
+    public array $tags;
 
     /**
      * A list of #e tag values (list of event ids)
@@ -102,6 +108,68 @@ class Filter implements FilterInterface
     }
 
     /**
+     * Set tags for the Filter object.
+     * Every tag in this filter property needs to start with a #.
+     *
+     * @param array $tags
+     *   The array of tags to set.
+     * @return Filter
+     */
+    public function setTags(array $tags): static
+    {
+        foreach ($tags as $name => $value) {
+            if (!is_array($value)) {
+                $message = sprintf('Provided tag value for %s must be an array', $name);
+                throw new \RuntimeException($message);
+            }
+            $this->validateTagName($name);
+            $this->setTag($name, $value);
+        }
+        return $this;
+    }
+
+    /**
+     * Set a single tag value for the Filter object.
+     *
+     * @param string $name
+     *   Tag name.
+     * @param string $value
+     *   Tag value.
+     * @return Filter
+     */
+    public function setTag(string $name, array $value): static
+    {
+        $this->validateTagName($name);
+        if (isset($this->{$name})) {
+            $this->{$name} = array_merge($this->{$name}, $value);
+        } else {
+            $this->{$name} = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * Validate standardized tag.
+     *
+     * @param $tag
+     *   Provided tag name to be validated.
+     * @return void
+     */
+    private function validateTagName($tag): void
+    {
+        // Check if tag starts with #.
+        if (!str_starts_with($tag, '#')) {
+            throw new \RuntimeException('All tags on a filter must start with #');
+        }
+        // Check if tag has valid value.
+        $pattern = '/^#[a-z_-]+$/i';
+        if (!preg_match($pattern, $tag)) {
+            $message = sprintf('Invalid tag provided: %s', $tag);
+            throw new \RuntimeException($message);
+        }
+    }
+
+    /**
      * Set the #e tag for the Filter object.
      *
      * @param array $etags
@@ -146,6 +214,9 @@ class Filter implements FilterInterface
      */
     public function setSince(int $since): static
     {
+        if (!$this->isValidTimestamp($since)) {
+            throw new \RuntimeException("The provided since filter is not a valid timestamp");
+        }
         $this->since = $since;
         return $this;
     }
@@ -158,6 +229,9 @@ class Filter implements FilterInterface
      */
     public function setUntil(int $until): static
     {
+        if (!$this->isValidTimestamp($until)) {
+            throw new \RuntimeException("The provided until filter is not a valid timestamp");
+        }
         $this->until = $until;
         return $this;
     }

@@ -6,6 +6,7 @@ namespace swentel\nostr\Request;
 
 use swentel\nostr\Event\Event;
 use swentel\nostr\Message\AuthMessage;
+use swentel\nostr\MessageInterface;
 use swentel\nostr\Nip42\AuthEvent;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
@@ -15,6 +16,7 @@ use swentel\nostr\Sign\Sign;
 use WebSocket;
 use WebSocket\Client;
 use WebSocket\Connection;
+use WebSocket\Message\Pong;
 use WebSocket\Message\Text;
 
 class Request implements RequestInterface
@@ -44,7 +46,7 @@ class Request implements RequestInterface
      * Constructor for the Request class.
      * Initializes the url and payload properties based on the provided websocket and message.
      */
-    public function __construct(Relay|RelaySet $relay, $message)
+    public function __construct(Relay|RelaySet $relay, MessageInterface $message)
     {
         if ($relay instanceof RelaySet) {
             $this->relays = $relay;
@@ -105,6 +107,7 @@ class Request implements RequestInterface
         $client->setTimeout(60);
         $client->text($this->payload);
 
+        // The Nostr subscription lifecycle within a websocket connection lifecycle.
         while ($response = $client->receive()) {
             if ($response === null) {
                 $response = [
@@ -114,44 +117,84 @@ class Request implements RequestInterface
                 $client->disconnect();
                 return RelayResponse::create($response);
             } elseif ($response instanceof WebSocket\Message\Ping) {
-                $client->disconnect();
-                return $this->responses;
+                // Send pong message.
+                $pongMessage = new Pong();
+                $client->text($pongMessage->getPayload());
             } elseif ($response instanceof Text) {
                 $relayResponse = RelayResponse::create(json_decode($response->getContent()));
                 $this->responses[] = $relayResponse;
+                // NIP-01 - Response OK from the relay.
+                if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
+                    // Something went wrong, see message from the relay why.
+                    $client->disconnect();
+                    throw new \Exception($relayResponse->message);
+                }
+                if ($relayResponse->type === 'OK' && $relayResponse->status === true) {
+                    if (isset($relayResponse->eventId) && $relayResponse->eventId !== '') {
+                        // Event is transmitted to the relay.
+                        // TODO: send closeMessage to relay.
+                        $client->disconnect();
+                        break;
+                    }
+                    if (str_starts_with($relayResponse->message, 'auth-required:')) {
+                        // NIP-42
+                        // Auth required
+                        if (!isset($_SESSION['challenge'])) {
+                            $client->disconnect();
+                            $message = sprintf(
+                                'Relay %s requires auth and there is no challenge set in $_SESSION. Did we get an AUTH response first?',
+                                $relay->getUrl(),
+                            );
+                            throw new \Exception($message);
+                        }
+                        // TODO: send AUTH message to the relay here
+                    }
+                    if (str_starts_with($relayResponse->message, 'restricted:')) {
+                        // For when a client has already performed AUTH but the key used to perform
+                        // it is still not allowed by the relay or is exceeding its authorization.
+                        $client->disconnect();
+                        throw new \Exception($relayResponse->message);
+                    }
+                }
+                // NIP-01 - Response EVENT from the relay.
+                if ($relayResponse->type === 'EVENT') {
+                    // Do nothing.
+                }
+                // NIP-01 - Response EOSE from the relay.
                 if ($relayResponse->type === 'EOSE') {
+                    // We should send closeMessage to the relay here.
                     $client->disconnect();
                     break;
                 }
                 if ($relayResponse->type === 'OK' && $relayResponse->status === false) {
+                    // We should send closeMessage to the relay here.
                     $client->disconnect();
                     throw new \Exception($relayResponse->message);
                 }
-                // NIP-42
+                // NIP-42 - Response AUTH from the relay.
                 if ($relayResponse->type === 'AUTH') {
                     // Save challenge string in session.
                     $_SESSION['challenge'] = $relayResponse->message;
                 }
+                // NIP-01 - Response CLOSED from the relay.
                 if ($relayResponse->type === 'CLOSED') {
                     // NIP-42
                     // We do need to broadcast a signed event verification here to the relay.
                     if (str_starts_with($relayResponse->message, 'auth-required:')) {
                         if (!isset($_SESSION['challenge'])) {
                             $client->disconnect();
-                            throw new \Exception('No challenge set in $_SESSION');
+                            $message = sprintf(
+                                'Relay %s requires auth and there is no challenge set in $_SESSION. Did we get an AUTH response first?',
+                                $relay->getUrl(),
+                            );
+                            throw new \Exception($message);
                         }
-                        $aa = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
-                        $authEvent = new Event();
-                        $authEvent->setKind(22242);
-                        $authEvent->setTags([
-                            ['relay', $relay->getUrl()],
-                            ['challenge', $_SESSION['challenge']],
-                        ]);
+                        $authEvent = new AuthEvent($relay->getUrl(), $_SESSION['challenge']);
                         $sec = '0000000000000000000000000000000000000000000000000000000000000001';
                         // todo: use client defined secret key here instead of this default one
                         $signer = new Sign();
-                        $signer->signEvent($aa, $sec);
-                        $authMessage = new AuthMessage($aa);
+                        $signer->signEvent($authEvent, $sec);
+                        $authMessage = new AuthMessage($authEvent);
                         $initialMessage = $this->payload;
                         $this->payload = $authMessage->generate();
                         $client->text($this->payload);
@@ -167,7 +210,9 @@ class Request implements RequestInterface
                             /** @var RelayResponse $response */
                             $response = RelayResponse::create(json_decode($message->getContent()));
                             $this->responses[] = $response;
+                            $client->stop();
                             if ($response->type === 'EOSE') {
+                                // We should send closeMessage to the relay here.
                                 $client->disconnect();
                             }
                         })->start();
@@ -179,10 +224,14 @@ class Request implements RequestInterface
                         $client->disconnect();
                         throw new \Exception($relayResponse->message);
                     }
+                    $client->disconnect();
+                    break;
                 }
             }
         }
-        $client->disconnect();
+        if ($client->isConnected()) {
+            $client->disconnect();
+        }
         $client->close();
         return $this->responses;
     }

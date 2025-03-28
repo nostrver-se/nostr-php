@@ -42,7 +42,7 @@ class Relay implements RelayInterface
      * @param string $websocket
      *   The socket URL.
      */
-    public function __construct(string $websocket, MessageInterface $message = null)
+    public function __construct(string $websocket, MessageInterface|null $message = null)
     {
         $this->url = $websocket;
         // Backwards compatibility for version <1.2.4
@@ -97,6 +97,7 @@ class Relay implements RelayInterface
      */
     public function send(): RelayResponse
     {
+        // TODO: deprecate this and replace with $request->send($relay, $message) logic.
         $this->validateUrl();
 
         try {

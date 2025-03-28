@@ -14,7 +14,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
     $filter1 = new Filter();
     $filter1->setAuthors([
         'npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe',
@@ -22,18 +21,23 @@ try {
     $filter1->setKinds([1]);
     $filter1->setLimit(3);
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
+
+    // https://github.com/Sebastix/jingle.git
     $relay = new Relay('wss://jingle.nostrver.se');
-    //$relay = new Relay('wss://hotrightnow.nostr1.com');
+    //$relay = new Relay('wss://nostr.wine');
+    //$relay = new Relay('wss://mleku.realy.lol');
+    //$relay = new Relay('wss://gitcitadel.nostr1.com');
+    //$relay = new Relay('wss://nostr.land');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
 
-    foreach ($response as $relay => $messages) {
+    foreach ($response as $relay => $relayResponses) {
         print 'Received ' . count($response[$relay]) . ' message(s) received from relay ' . $relay . PHP_EOL;
-        foreach ($messages as $message) {
-            print $message->type . ': ' . $message->message . PHP_EOL;
-            if ($message instanceof RelayResponseEvent) {
-                $rawEvent = $message->event;
+        foreach ($relayResponses as $relayResponse) {
+            print 'Relay response ' . $relayResponse->type . ': ' . $relayResponse->message . PHP_EOL;
+            if ($relayResponse instanceof RelayResponseEvent) {
+                $rawEvent = $relayResponse->event;
                 $event = new Event();
                 $event->setId($rawEvent->id);
                 $event->setPublicKey($rawEvent->pubkey);

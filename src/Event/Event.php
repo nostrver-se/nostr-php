@@ -231,14 +231,21 @@ class Event implements EventInterface
     /**
      * {@inheritdoc}
      */
-    public function verify(string $json = ''): bool
+    public function verify(string|object $input = ''): bool
     {
         try {
-            if ($json === '') {
-                $json = $this->toJson();
-                $event = json_decode($json, flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
+            if ($input === '') {
+                $event = json_decode(
+                    $this->toJson(),
+                    flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR,
+                );
+            } elseif (is_string($input)) {
+                $event = json_decode(
+                    $input,
+                    flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR,
+                );
             } else {
-                $event = json_decode($json, flags: \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
+                $event = $input;
             }
         } catch (\JsonException) {
             return false;
@@ -301,6 +308,40 @@ class Event implements EventInterface
         }
 
         return (new SchnorrSignature())->verify($event->pubkey, $event->sig, $event->id);
+    }
+
+    /**
+     * Create an Event object from a verified event input.
+     *
+     * @param string|object $input The event data as JSON string or decoded object
+     * @return ?static Returns an Event object if valid, null otherwise
+     */
+    public static function fromVerified(string|object $input): ?static
+    {
+        $event = new static();
+        if (!$event->verify($input)) {
+            return null;
+        }
+
+        try {
+            if (is_string($input)) {
+                $data = json_decode($input, flags: \JSON_THROW_ON_ERROR);
+            } else {
+                $data = $input;
+            }
+
+            $event->setId($data->id)
+                ->setPublicKey($data->pubkey)
+                ->setCreatedAt($data->created_at)
+                ->setKind($data->kind)
+                ->setContent($data->content)
+                ->setSignature($data->sig)
+                ->setTags($data->tags);
+
+            return $event;
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
 }

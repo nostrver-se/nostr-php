@@ -12,13 +12,12 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
 
     $filter1 = new Filter();
     $filter1->setKinds([1]);
     $filter1->setLimit(25);
     $filters = [$filter1];
-    $requestMessage = new RequestMessage($subscriptionId, $filters);
+    $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relay = new Relay('wss://relay.nostr.band');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
@@ -26,19 +25,19 @@ try {
     /**
      * @var string $relayUrl
      *   The relay URL.
-     * @var object $relayResponses
-     *   RelayResponses which will contain the messages returned by the relay.
+     * @var object $relayResponse
+     *   RelayResponse which will contain the messages returned by the relay.
      *   Each message will also contain the event.
      */
     foreach ($response as $relayUrl => $relayResponses) {
         print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
         /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $message */
-        foreach ($relayResponses as $message) {
-            if (isset($message->event->content)) {
-                print $message->event->content . PHP_EOL;
+        foreach ($relayResponses as $relayResponse) {
+            if (isset($relayResponse->event->content)) {
+                print $relayResponse->event->content . PHP_EOL;
             }
         }
     }
 } catch (Exception $e) {
-    print 'Exception error: ' . $e->getMessage() . '\n';
+    print 'Exception error: ' . $e->getMessage() . PHP_EOL;
 }
