@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace swentel\nostr\Nip19;
 
 use BitWasp\Bech32\Exception\Bech32Exception;
+use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Nip19\TLVEnum;
 use function BitWasp\Bech32\convertBits;
@@ -27,13 +28,146 @@ class Nip19Helper
     /**
      * @var string $prefix
      */
-    protected $prefix;
+    protected string $prefix;
+
+    private const BECH32_MAX_LENGTH = 5000;
+    private const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+    private const CHARKEY_KEY = [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        15,
+        -1,
+        10,
+        17,
+        21,
+        20,
+        26,
+        30,
+        7,
+        5,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        29,
+        -1,
+        24,
+        13,
+        25,
+        9,
+        8,
+        23,
+        -1,
+        18,
+        22,
+        31,
+        27,
+        19,
+        -1,
+        1,
+        0,
+        3,
+        16,
+        11,
+        28,
+        12,
+        14,
+        6,
+        4,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        29,
+        -1,
+        24,
+        13,
+        25,
+        9,
+        8,
+        23,
+        -1,
+        18,
+        22,
+        31,
+        27,
+        19,
+        -1,
+        1,
+        0,
+        3,
+        16,
+        11,
+        28,
+        12,
+        14,
+        6,
+        4,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+    ];
 
     public function decode(string $bech32string)
     {
         $length = strlen($bech32string);
-        if ($length > 90) {
-            throw new \Exception('Bech32 string cannot exceed 90 characters in length');
+        if ($length > static::BECH32_MAX_LENGTH) {
+            throw new \Exception('Bech32 string cannot exceed '.static::BECH32_MAX_LENGTH.' characters in length');
         }
         if ($length < 8) {
             throw new \Exception('Bech32 string is too short');
@@ -51,9 +185,41 @@ class Nip19Helper
         //        }
     }
 
-    public function encode(string $value, string $prefix): string
+    /**
+     * Encode hex formatted string or Event to a bech32 formatted string.
+     *
+     * @param string|Event $data
+     * @param string $prefix
+     * @param array $metadata
+     * @return string
+     * @throws Bech32Exception
+     */
+    public function encode(string|Event $data, string $prefix, array $metadata = []): string
     {
-        return $this->convertToBech32($value, $prefix);
+        if ($data instanceof Event) {
+            $event = $data;
+            /*
+             * TODO create TLV / metadata class for this structure so we can it as an object
+             * TODO validate metadata array here
+             * only allowed key are:
+             * - id (hex event id)
+             * - author (hex pubkey)
+             * - relays (array)
+             * - kind (integer)
+             */
+            try {
+                $bytes_array = $this->convertEventToBytes($event, $metadata);
+                $checksum = new Checksum($prefix, Bits::encode($bytes_array));
+                $bech32_string = $checksum(
+                    fn(string $encoded, int $character) => $encoded .= static::BECH32_CHARSET[$character]
+                );
+                return $bech32_string;
+            } catch (\Exception $e) {
+                throw new \RuntimeException($e->getMessage());
+            }
+        } else {
+            return $this->convertToBech32($data, $prefix);
+        }
     }
 
     public function encodeNote(string $event_hex): string
@@ -62,43 +228,33 @@ class Nip19Helper
     }
 
     /**
-     * @param string $event_hex
+     * Convert a hex formatted event to a bech32 encoded `nevent` value with metadata (TLV).
+     *
+     * @param Event $event
      * @param array $relays
      * @param string $author
      * @param int|null $kind
      * @return string
+     * @throws \Exception
      */
-    public function encodeEvent(string $event_hex, array $relays = [], string $author = '', int $kind = null): string
+    public function encodeEvent(Event $event, array $relays = [], string $author = '', int $kind = null): string
     {
-        $data = '';
         $prefix = 'nevent';
-        // TODO: process TLV entries
-        $tlvEntry = $this->writeTLVEntry($prefix, TLVEnum::Special, $event_hex);
-        // Optional
-        if (!(empty($relays))) {
-            foreach ($relays as $relay) {
-                array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Relay, $relay));
-            }
-        }
-        // Optional
-        if (!(empty($author))) {
-            if (str_starts_with($author, 'npub') === true) {
-                $author = $this->convertToHex($author);
-            }
-            if (strlen(hex2bin($author)) !== 32) {
-                throw new \RuntimeException(sprintf('This is an invalid author ID: %s', $event_hex));
-            }
-            array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Author, $author));
-            //$tlvEntry = array_merge($tlvEntry, $this->writeTLVEntry($prefix, TLVEnum::Author, $author));
-        }
-//        // Optional
-//        if ($kind !== null) {
-//            // Convert kind int to unsigned integer, big-endian.
-//            array_push($tlvEntry, ...$this->writeTLVEntry($prefix, TLVEnum::Kind, $kind));
-//        }
-        $data = $tlvEntry;
-
-        return $this->encodeBech32($data, $prefix);
+        // TODO convert this array with this structure to a TLV class
+        $metadata = [
+            'id' => $event->getId(),
+            // TODO how do we check if there are some relays set on the event?
+            // iterate over the tags field and look for r-tags with values
+            'relays' => $relays,
+            'author' => $author !== '' ? $author : $event->getPublicKey(),
+            'kind' => $kind ?? $event->getKind()
+        ];
+        $bytes_array = $this->convertEventToBytes($event, $metadata);
+        $checksum = new Checksum($prefix, Bits::encode($bytes_array));
+        $bech32_string = $checksum(
+            fn(string $encoded, int $character) => $encoded .= static::BECH32_CHARSET[$character]
+        );
+        return $bech32_string;
     }
 
     public function encodeProfile(string $pubkey, array $relays = []): string
@@ -107,10 +263,32 @@ class Nip19Helper
         return '';
     }
 
-    public function encodeAddr(string $event_hex, int $kind, string $DTag, array $relays = []): string
+    /**
+     * Convert a hex formatted event to a bech32 encoded `naddr` value with metadata (TLV).
+     *
+     * @param Event $event
+     * @param string $dTag
+     * @param array $relays
+     * @param string $author
+     * @param int $kind
+     * @return string
+     * @throws \Exception
+     */
+    public function encodeAddr(Event $event, string $dTag, array $relays = [], string $author = '', int $kind): string
     {
-        // todo
-        return '';
+        $prefix = 'naddr';
+        $metadata = [
+            'dTag' => $dTag,
+            'relays' => $relays,
+            'author' => $author !== '' ? $author : $event->getPublicKey(),
+            'kind' => $kind,
+        ];
+        $bytes_array = $this->convertEventToBytes($event, $metadata);
+        $checksum = new Checksum($prefix, Bits::encode($bytes_array));
+        $bech32_string = $checksum(
+            fn(string $encoded, int $character) => $encoded .= static::BECH32_CHARSET[$character]
+        );
+        return $bech32_string;
     }
 
     /**
@@ -189,7 +367,9 @@ class Nip19Helper
         return $str;
     }
 
-    private function readTLVEntry(string $data, TLVEnum $type): string {}
+    private function readTLVEntry(string $data, TLVEnum $type): string
+    {
+    }
 
     /**
      * https://nips.nostr.com/19#shareable-identifiers-with-extra-metadata
@@ -241,10 +421,8 @@ class Nip19Helper
             }
 
             if ($prefix === 'profile') {
-
             }
             if ($prefix === 'naddr') {
-
             }
         } catch (Bech32Exception $e) {
             throw new \RuntimeException($e->getMessage());
@@ -262,6 +440,31 @@ class Nip19Helper
     }
 
     /**
+     * Convert event to bytes with metadata.
+     *
+     * @param Event $event
+     * @return array
+     */
+    private function convertEventToBytes(Event $event, array $metadata) : array
+    {
+
+        $id = [
+            Bech32::fromHexToBytes($event->getId())
+        ];
+        $relays = Bech32::fromRelaysToBytes(
+            $metadata['relays'] ?? []
+        );
+        $pubkey = isset($metadata['author']) ? [
+            Bech32::fromHexToBytes($metadata['author'])] :
+            [Bech32::fromHexToBytes($event->getPublicKey())];
+        $kind = [
+            Bech32::fromIntegerToBytes($event->getKind())
+        ];
+        return Bech32::encodeTLV($id, $relays, $pubkey, $kind);
+    }
+
+    /**
+     *
      * @param string $str
      * @return array
      * @throws Bech32Exception
