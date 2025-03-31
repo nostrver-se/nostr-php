@@ -9,7 +9,6 @@ namespace swentel\nostr\Nip19;
  */
 class Bits
 {
-
     /**
      * @param array $data
      * @return array

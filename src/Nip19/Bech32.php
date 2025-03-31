@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Nip19;
 
+use swentel\nostr\Nip19\Identifiers\NAddr;
 use swentel\nostr\Nip19\Identifiers\NEvent;
 
 /**
@@ -11,21 +12,15 @@ use swentel\nostr\Nip19\Identifiers\NEvent;
  */
 class Bech32
 {
-
     public IdentifierInterface $data;
 
-    const TYPE_MAP = [
-//        'nsec' => Data\NSec::class,
-//        'npub' => Data\NPub::class,
-//        'note' => Data\Note::class,
-//        'nprofile' => Data\NProfile::class,
-//        'naddr' => Data\NAddr::class,
-//        'ncryptsec' => Data\NCryptSec::class,
-        'nevent' => NEvent::class
+    public const TYPE_MAP = [
+        'naddr' => NAddr::class,
+        'nevent' => NEvent::class,
     ];
-    const BECH32_MAX_LENGTH = 5000;
-    const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-    const CHARKEY_KEY = [
+    public const BECH32_MAX_LENGTH = 5000;
+    public const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+    public const CHARKEY_KEY = [
         -1,
         -1,
         -1,
@@ -153,7 +148,7 @@ class Bech32
         -1,
         -1,
         -1,
-        -1
+        -1,
     ];
 
     public function __construct(private string $bech32)
@@ -162,7 +157,7 @@ class Bech32
 
         if ($length < 8 || $length > self::BECH32_MAX_LENGTH) {
             throw new \Exception(
-                "invalid string length: $length ($bech32). Expected (8.." . self::BECH32_MAX_LENGTH . ")"
+                "invalid string length: $length ($bech32). Expected (8.." . self::BECH32_MAX_LENGTH . ")",
             );
         }
 
@@ -213,8 +208,8 @@ class Bech32
         $data = array_values(
             array_map(
                 fn($char) => ($char & 0x80) ? -1 : self::CHARKEY_KEY[$char],
-                array_slice($chars, $positionOne + 1)
-            )
+                array_slice($chars, $positionOne + 1),
+            ),
         );
 
         $stripped = Checksum::validate($hrp, $data);
@@ -232,7 +227,7 @@ class Bech32
         }
     }
 
-    static function __callStatic(string $name, array $arguments): self
+    public static function __callStatic(string $name, array $arguments): self
     {
         $bytes = call_user_func_array([self::TYPE_MAP[$name], 'toBytes'], $arguments);
         $checksum = new Checksum($name, Bits::encode($bytes));
@@ -249,27 +244,27 @@ class Bech32
         return ($this->data)();
     }
 
-    static function array_entries(array $array)
+    public static function array_entries(array $array)
     {
         return array_map(fn(mixed $key, mixed $value) => [$key, $value], array_keys($array), array_values($array));
     }
 
-    static function parseTLVRelays(array $tlv): array
+    public static function parseTLVRelays(array $tlv): array
     {
         return isset($tlv[1]) ? array_map([self::class, 'fromBytesToUTF8'], $tlv[1]) : [];
     }
 
-    static function parseTLVKind(array $tlv): ?int
+    public static function parseTLVKind(array $tlv): ?int
     {
         return isset($tlv[3][0]) ? self::fromBytesToInteger($tlv[3][0]) : null;
     }
 
-    static function parseTLVAuthor(array $tlv): ?string
+    public static function parseTLVAuthor(array $tlv): ?string
     {
         return isset($tlv[2][0]) ? self::fromBytesToHex($tlv[2][0]) : null;
     }
 
-    static function parseTLV(array $bytes): array
+    public static function parseTLV(array $bytes): array
     {
         $result = [];
         $rest = $bytes;
@@ -287,7 +282,7 @@ class Bech32
         return $result;
     }
 
-    static function encodeTLV(array ...$tlv): array
+    public static function encodeTLV(array ...$tlv): array
     {
         return array_reduce(self::array_entries($tlv), function (array $carry, array $tlv_entry): array {
             return array_reduce($tlv_entry[1], function (array $carry, array $value) use ($tlv_entry): array {
@@ -296,41 +291,41 @@ class Bech32
         }, []);
     }
 
-    static function fromBytesToHex(array $bytes): string
+    public static function fromBytesToHex(array $bytes): string
     {
         return array_reduce(
             $bytes,
             fn(string $hex, int $item) => $hex .= str_pad(dechex($item), 2, '0', STR_PAD_LEFT),
-            ''
+            '',
         );
     }
 
-    static function fromBytesToInteger(array $bytes): int
+    public static function fromBytesToInteger(array $bytes): int
     {
         return hexdec(self::fromBytesToHex($bytes));
     }
 
-    static function fromBytesToUTF8(array $bytes): string
+    public static function fromBytesToUTF8(array $bytes): string
     {
         return array_reduce($bytes, fn(string $utf8, int $item) => $utf8 .= chr($item), '');
     }
 
-    static function fromHexToBytes(#[\SensitiveParameter] string $hex_key): array
+    public static function fromHexToBytes(#[\SensitiveParameter] string $hex_key): array
     {
         return array_map('hexdec', str_split($hex_key, 2));
     }
 
-    static function fromUTF8ToBytes(string $utf8): array
+    public static function fromUTF8ToBytes(string $utf8): array
     {
         return array_map('ord', mb_str_split($utf8));
     }
 
-    static function fromRelaysToBytes(array $relays): array
+    public static function fromRelaysToBytes(array $relays): array
     {
         return array_map([self::class, 'fromUTF8ToBytes'], $relays);
     }
 
-    static function fromIntegerToBytes(int $integer): array
+    public static function fromIntegerToBytes(int $integer): array
     {
         // Create a Uint8Array with enough space to hold a 32-bit integer (4 bytes).
         $uint8Array = [];
@@ -344,7 +339,7 @@ class Bech32
         return $uint8Array;
     }
 
-    static function isValid(string $expected_type, string $bech32)
+    public static function isValid(string $expected_type, string $bech32)
     {
         try {
             $decoded = new self($bech32);
@@ -354,37 +349,37 @@ class Bech32
         return false;
     }
 
-    static function isValidNProfile(string $bech32): bool
+    public static function isValidNProfile(string $bech32): bool
     {
         return self::isValid('nprofile', $bech32);
     }
 
-    static function isValidNAddress(string $bech32): bool
+    public static function isValidNAddress(string $bech32): bool
     {
         return self::isValid('naddr', $bech32);
     }
 
-    static function isValidNSec(string $bech32): bool
+    public static function isValidNSec(string $bech32): bool
     {
         return self::isValid('nsec', $bech32);
     }
 
-    static function isValidNPub(string $bech32): bool
+    public static function isValidNPub(string $bech32): bool
     {
         return self::isValid('npub', $bech32);
     }
 
-    static function isValidNote(string $bech32): bool
+    public static function isValidNote(string $bech32): bool
     {
         return self::isValid('note', $bech32);
     }
 
-    static function isValidNCryptSec(string $bech32): bool
+    public static function isValidNCryptSec(string $bech32): bool
     {
         return self::isValid('ncryptsec', $bech32);
     }
 
-    static function isValidNEvent(string $bech32): bool
+    public static function isValidNEvent(string $bech32): bool
     {
         return self::isValid('nevent', $bech32);
     }

@@ -9,7 +9,6 @@ use swentel\nostr\NIP19\Bech32;
 
 class NAddr implements IdentifierInterface
 {
-
     public string $identifier;
     public string $pubkey;
     public int $kind;

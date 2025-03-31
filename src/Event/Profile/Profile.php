@@ -17,7 +17,6 @@ use swentel\nostr\Subscription\Subscription;
  */
 class Profile extends Event
 {
-
     /**
      * Event kind 0.
      *

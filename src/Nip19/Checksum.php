@@ -9,12 +9,9 @@ namespace swentel\nostr\Nip19;
  */
 class Checksum
 {
+    public const CHECKSUM_LENGTH = 6;
 
-    const CHECKSUM_LENGTH = 6;
-
-    public function __construct(private string $hrp, private array $words)
-    {
-    }
+    public function __construct(private string $hrp, private array $words) {}
 
     public function __invoke(callable $encoder, int $length = self::CHECKSUM_LENGTH): string
     {

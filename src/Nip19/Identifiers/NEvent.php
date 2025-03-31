@@ -12,7 +12,6 @@ use swentel\nostr\NIP19\Bech32;
  */
 class NEvent implements IdentifierInterface
 {
-
     public string $id;
     public array $relays;
     public ?string $author;

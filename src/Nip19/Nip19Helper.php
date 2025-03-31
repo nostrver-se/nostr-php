@@ -38,7 +38,7 @@ class Nip19Helper
             $length = strlen($bech32string);
 
             if ($length > Bech32::BECH32_MAX_LENGTH) {
-                throw new \Exception('Bech32 string cannot exceed '.Bech32::BECH32_MAX_LENGTH.' characters in length');
+                throw new \Exception('Bech32 string cannot exceed ' . Bech32::BECH32_MAX_LENGTH . ' characters in length');
             }
             if ($length < 8) {
                 throw new \Exception('Bech32 string is too short');
@@ -186,7 +186,7 @@ class Nip19Helper
                 }
                 $checksum = new Checksum($prefix, Bits::encode($bytes_array));
                 $bech32_string = $checksum(
-                    fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character]
+                    fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
                 );
                 return $bech32_string;
             } catch (\Exception $e) {
@@ -225,12 +225,12 @@ class Nip19Helper
             // iterate over the tags field and look for r-tags with values
             'relays' => $relays,
             'author' => $author !== '' ? $author : $event->getPublicKey(),
-            'kind' => $kind ?? $event->getKind()
+            'kind' => $kind ?? $event->getKind(),
         ];
         $bytes_array = $this->convertEventToBytes($event, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
         $bech32_string = $checksum(
-            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character]
+            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
         return $bech32_string;
     }
@@ -258,7 +258,7 @@ class Nip19Helper
         $bytes_array = $this->convertAddressableEventToBytes($event, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
         $bech32_string = $checksum(
-            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character]
+            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
         return $bech32_string;
     }
@@ -278,7 +278,7 @@ class Nip19Helper
         $bytes_array = $this->convertProfileToBytes($profile, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
         $bech32_string = $checksum(
-            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character]
+            fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
         return $bech32_string;
     }
@@ -337,19 +337,19 @@ class Nip19Helper
      * @param array $metadata
      * @return array
      */
-    private function convertEventToBytes(Event $event, array $metadata) : array
+    private function convertEventToBytes(Event $event, array $metadata): array
     {
         $id = [
-            Bech32::fromHexToBytes($event->getId())
+            Bech32::fromHexToBytes($event->getId()),
         ];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? []
+            $metadata['relays'] ?? [],
         );
         $pubkey = isset($metadata['author']) ?
             [Bech32::fromHexToBytes($metadata['author'])] :
             [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
-            Bech32::fromIntegerToBytes($event->getKind())
+            Bech32::fromIntegerToBytes($event->getKind()),
         ];
         return Bech32::encodeTLV($id, $relays, $pubkey, $kind);
     }
@@ -357,27 +357,27 @@ class Nip19Helper
     private function convertAddressableEventToBytes(Event $event, array $metadata): array
     {
         $identifier = [
-            Bech32::fromUTF8ToBytes($metadata['dTag'])
+            Bech32::fromUTF8ToBytes($metadata['dTag']),
         ];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? []
+            $metadata['relays'] ?? [],
         );
         $pubkey = isset($metadata['author']) ?
             [Bech32::fromHexToBytes($metadata['author'])] :
             [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
-            Bech32::fromIntegerToBytes($event->getKind())
+            Bech32::fromIntegerToBytes($event->getKind()),
         ];
         return Bech32::encodeTLV($identifier, $relays, $pubkey, $kind);
     }
 
-    private function convertProfileToBytes(Profile $profile, array $metadata) : array
+    private function convertProfileToBytes(Profile $profile, array $metadata): array
     {
         $pubkey = isset($metadata['author']) ?
             [Bech32::fromHexToBytes($metadata['author'])] :
             [Bech32::fromHexToBytes($profile->getPublicKey())];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? []
+            $metadata['relays'] ?? [],
         );
         return Bech32::encodeTLV($pubkey, $relays);
     }
