@@ -11,7 +11,6 @@ use swentel\nostr\Key\Key;
 
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\encode;
-use function BitWasp\Bech32\decode;
 
 /**
  * NIP-19 bech32-encoded entities
@@ -61,18 +60,6 @@ class Nip19Helper
             // Extract human-readable part (HRP)
             $prefix = substr($bech32string, 0, $pos);
 
-            switch ($prefix) {
-                case 'npub':
-                case 'nsec':
-                case 'note':
-                    throw new \RuntimeException(
-                        message: sprintf(
-                            'Given bech32 string %s does not support identifiers with extra metadata.',
-                            $bech32string,
-                        ),
-                    );
-            }
-
             // Extract data part
             $data_part = substr($bech32string, $pos + 1);
             $data = [];
@@ -84,8 +71,17 @@ class Nip19Helper
             }
             // Convert 5-bit data to 8-bit data
             $binaryData = convertBits($data, count($data), 5, 8);
-            if ($prefix === 'npub') {
-                return [$prefix, $binaryData];
+            switch ($prefix) {
+                case 'note':
+                    // Format binary to hex with a max of 32 bytes to be processed.
+                    $val = '';
+                    for ($i = 0, $max = 32; $i < $max; $i++) {
+                        $val .= str_pad(dechex($binaryData[$i]), 2, '0', STR_PAD_LEFT);
+                    }
+                    return ['event_id' => $val];
+                case 'npub':
+                case 'nsec':
+                    return [$prefix, $binaryData];
             }
             // Parse the binary data into TLV format
             $tlvEntries = [];
@@ -258,6 +254,11 @@ class Nip19Helper
     public function encodeNote(string $event_hex): string
     {
         return $this->convertToBech32($event_hex, 'note');
+    }
+
+    public function decodeNote(string $bech32string): array
+    {
+        return $this->decode($bech32string);
     }
 
     /**
