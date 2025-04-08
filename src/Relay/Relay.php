@@ -45,6 +45,7 @@ class Relay implements RelayInterface
     public function __construct(string $websocket, MessageInterface|null $message = null)
     {
         $this->url = $websocket;
+        $this->validateUrl();
         // Backwards compatibility for version <1.2.4
         if ($message !== null) {
             $this->setMessage($message);
@@ -93,7 +94,7 @@ class Relay implements RelayInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function send(): RelayResponse
     {
