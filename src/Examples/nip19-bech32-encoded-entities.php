@@ -89,8 +89,6 @@ try {
     // - relay wss://nostr.sebastix.dev
     // - pubkey: 06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71
     // - kind: 30023
-    // $ ./nak encode naddr --identifier week-11-updates --relay wss://nostr.sebastix.dev --pubkey 06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71 --kind 30023
-    // naddr1qq8hwet9dvknzvfdw4cxgct5v4esygqxvwdrsmyuzq2zza3zej70gzggcnc6pse7y0udd450f2lk2hu0wypsgqqqw4rs35j8dj
     print $naddr . PHP_EOL;
 
     /*
