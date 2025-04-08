@@ -7,7 +7,6 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\Relay\RelaySet;
-use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\Sign\Sign;
 
 class RelaySetTest extends TestCase
@@ -29,6 +28,8 @@ class RelaySetTest extends TestCase
         $relay1 = new Relay('wss://example1.com');
         $relay2 = new Relay('wss://example2.com');
         $relay3 = new Relay('wss://example3.com');
+        $this->expectException(\InvalidArgumentException::class);
+        $relay4 = new Relay('http://not-wss.com');
 
         $relaySet = $this->createMock(RelaySet::class);
         $relaySet->setRelays([$relay1, $relay2, $relay3]);

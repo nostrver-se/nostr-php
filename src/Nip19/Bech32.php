@@ -4,20 +4,13 @@ declare(strict_types=1);
 
 namespace swentel\nostr\Nip19;
 
-use swentel\nostr\Nip19\Identifiers\NAddr;
-use swentel\nostr\Nip19\Identifiers\NEvent;
-
 /**
+ * Bech32 class which originally is copy-pasted from
  * https://github.com/nostriphant/nip-19/blob/main/src/Bech32.php
+ *
  */
 class Bech32
 {
-    public IdentifierInterface $data;
-
-    public const TYPE_MAP = [
-        'naddr' => NAddr::class,
-        'nevent' => NEvent::class,
-    ];
     public const BECH32_MAX_LENGTH = 5000;
     public const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
     public const CHARKEY_KEY = [
@@ -150,13 +143,14 @@ class Bech32
         -1,
         -1,
     ];
+    private $data;
 
     public function __construct(private string $bech32)
     {
         $length = strlen($bech32);
 
         if ($length < 8 || $length > self::BECH32_MAX_LENGTH) {
-            throw new \Exception(
+            throw new \RuntimeException(
                 "invalid string length: $length ($bech32). Expected (8.." . self::BECH32_MAX_LENGTH . ")",
             );
         }
@@ -170,7 +164,7 @@ class Bech32
         for ($i = 0; $i < $length; $i++) {
             $x = $chars[$i];
             if ($x < 33 || $x > 126) {
-                throw new \Exception('Out of range character in bech32 string');
+                throw new \RuntimeException('Out of range character in bech32 string');
             }
 
             if ($x >= 0x61 && $x <= 0x7a) {
@@ -188,19 +182,19 @@ class Bech32
         }
 
         if ($haveUpper && $haveLower) {
-            throw new \Exception('Data contains mixture of higher/lower case characters');
+            throw new \RuntimeException('Data contains mixture of higher/lower case characters');
         }
 
         if ($positionOne === -1) {
-            throw new \Exception("Missing separator character");
+            throw new \RuntimeException("Missing separator character");
         }
 
         if ($positionOne < 1) {
-            throw new \Exception("Empty HRP");
+            throw new \RuntimeException("Empty HRP");
         }
 
         if (($positionOne + 7) > $length) {
-            throw new \Exception('Too short checksum');
+            throw new \RuntimeException('Too short checksum');
         }
 
         $hrp = \pack("C*", ...\array_slice($chars, 0, $positionOne));
@@ -214,24 +208,8 @@ class Bech32
 
         $stripped = Checksum::validate($hrp, $data);
         if ($stripped === false) {
-            throw new \Exception('Invalid bech32 checksum');
+            throw new \RuntimeException('Invalid bech32 checksum');
         }
-        $this->data = new (self::TYPE_MAP[$hrp])(Bits::decode($stripped));
-    }
-
-    public function __get(string $name): mixed
-    {
-        if ($name === 'type') {
-            $class = get_class($this->data);
-            return strtolower(substr($class, strrpos($class, '\\') + 1));
-        }
-    }
-
-    public static function __callStatic(string $name, array $arguments): self
-    {
-        $bytes = call_user_func_array([self::TYPE_MAP[$name], 'toBytes'], $arguments);
-        $checksum = new Checksum($name, Bits::encode($bytes));
-        return new self($checksum(fn(string $encoded, int $character) => $encoded .= self::BECH32_CHARSET[$character]));
     }
 
     public function __toString(): string
@@ -244,7 +222,11 @@ class Bech32
         return ($this->data)();
     }
 
-    public static function array_entries(array $array)
+    /**
+     * @param array $array
+     * @return array
+     */
+    public static function arrayEntries(array $array): array
     {
         return array_map(fn(mixed $key, mixed $value) => [$key, $value], array_keys($array), array_values($array));
     }
@@ -284,13 +266,19 @@ class Bech32
 
     public static function encodeTLV(array ...$tlv): array
     {
-        return array_reduce(self::array_entries($tlv), function (array $carry, array $tlv_entry): array {
+        return array_reduce(self::arrayEntries($tlv), function (array $carry, array $tlv_entry): array {
             return array_reduce($tlv_entry[1], function (array $carry, array $value) use ($tlv_entry): array {
                 return array_merge($carry, [$tlv_entry[0], count($value)], $value);
             }, $carry);
         }, []);
     }
 
+    /**
+     *  Format array with bytes to hex formatted string.
+     *
+     * @param array $bytes
+     * @return string
+     */
     public static function fromBytesToHex(array $bytes): string
     {
         return array_reduce(
@@ -300,31 +288,67 @@ class Bech32
         );
     }
 
+    /**
+     * Format array with bytes to int.
+     *
+     * @param array $bytes
+     * @return int
+     */
     public static function fromBytesToInteger(array $bytes): int
     {
         return hexdec(self::fromBytesToHex($bytes));
     }
 
+    /**
+     * Format bytes array to UTF8 formatted string.
+     *
+     * @param array $bytes
+     * @return string
+     */
     public static function fromBytesToUTF8(array $bytes): string
     {
         return array_reduce($bytes, fn(string $utf8, int $item) => $utf8 .= chr($item), '');
     }
 
+    /**
+     * Format hex formatted string to array with bytes.
+     *
+     * @param string $hex_key
+     * @return array
+     */
     public static function fromHexToBytes(#[\SensitiveParameter] string $hex_key): array
     {
         return array_map('hexdec', str_split($hex_key, 2));
     }
 
+    /**
+     * Format UTF8 formatted string to array with bytes.
+     *
+     * @param string $utf8
+     * @return array
+     */
     public static function fromUTF8ToBytes(string $utf8): array
     {
         return array_map('ord', mb_str_split($utf8));
     }
 
+    /**
+     * Format array with relays to array with bytes.
+     *
+     * @param array $relays
+     * @return array
+     */
     public static function fromRelaysToBytes(array $relays): array
     {
         return array_map([self::class, 'fromUTF8ToBytes'], $relays);
     }
 
+    /**
+     * Format int value to array with bytes.
+     *
+     * @param int $integer
+     * @return array
+     */
     public static function fromIntegerToBytes(int $integer): array
     {
         // Create a Uint8Array with enough space to hold a 32-bit integer (4 bytes).
@@ -337,50 +361,5 @@ class Bech32
         $uint8Array[3] = $integer & 0xff; // Least significant byte (LSB)
 
         return $uint8Array;
-    }
-
-    public static function isValid(string $expected_type, string $bech32)
-    {
-        try {
-            $decoded = new self($bech32);
-            return $decoded->type === $expected_type;
-        } catch (\Exception $ex) {
-        }
-        return false;
-    }
-
-    public static function isValidNProfile(string $bech32): bool
-    {
-        return self::isValid('nprofile', $bech32);
-    }
-
-    public static function isValidNAddress(string $bech32): bool
-    {
-        return self::isValid('naddr', $bech32);
-    }
-
-    public static function isValidNSec(string $bech32): bool
-    {
-        return self::isValid('nsec', $bech32);
-    }
-
-    public static function isValidNPub(string $bech32): bool
-    {
-        return self::isValid('npub', $bech32);
-    }
-
-    public static function isValidNote(string $bech32): bool
-    {
-        return self::isValid('note', $bech32);
-    }
-
-    public static function isValidNCryptSec(string $bech32): bool
-    {
-        return self::isValid('ncryptsec', $bech32);
-    }
-
-    public static function isValidNEvent(string $bech32): bool
-    {
-        return self::isValid('nevent', $bech32);
     }
 }

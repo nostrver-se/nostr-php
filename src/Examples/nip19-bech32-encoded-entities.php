@@ -9,15 +9,16 @@ use swentel\nostr\Event\Profile\Profile;
 use swentel\nostr\Nip19\Nip19Helper;
 
 /**
- * Example snippet where we encode key ands ids into bech32 formatted entities.
+ * Example snippets where we encode key ands ids into bech32 formatted entities.
  */
 
 try {
-    $nip19 = new Nip19Helper(); // The helper.
+    $nip19 = new Nip19Helper(); // The NIP-19 helper class.
     $event_id = '43fb0422457c1fadec68c5ad18378abb2c626d6b787790973e888d0998f6ced4'; // This is an event hex id.
-    //$id = 'fb0422457c1fadec68c5ad18378abb2c626d6b787790973e888d0998f6ce'; // This is an invalid ID.
 
-    // Encode it to a bech32 encoded note ID.
+    /*
+     * Encode event id string to a bech32 encoded note ID.
+     */
     $note = $nip19->encodeNote($event_id);
     // Expected result:
     // note1g0asggj90s06mmrgckk3sdu2hvkxymtt0pmep9e73zxsnx8kem2qulye77
@@ -26,7 +27,9 @@ try {
     $note1 = $nip19->encode($event_id, 'note');
     print $note1 . PHP_EOL;
 
-    // Encode a profile pubkey or npub, this works.
+    /*
+     * Encode a profile pubkey or npub.
+     */
     $pubkey = '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71';
     // Alternative way:
     // $key = new Key();
@@ -36,12 +39,17 @@ try {
     // npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe
     print $npub . PHP_EOL;
 
-    // Encode an event to bech32 encoded string with prefix `nevent`, this works.
+    /*
+     * Encode an event to bech32 encoded string with prefix `nevent`.
+     */
     $event = new Event();
     $event->setId($event_id);
     $event->setKind(1);
     $event->setPublicKey('06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71');
-    // Encode event to nevent without TLV data
+
+    /*
+     * Encode event to nevent without TLV data.
+     */
     $nevent_1 = $nip19->encode($event, 'nevent');
     // Result checked with nak:
     // $ ./nak encode nevent 43fb0422457c1fadec68c5ad18378abb2c626d6b787790973e888d0998f6ced4
@@ -53,7 +61,9 @@ try {
     $nevent_11 = $nip19->encodeEvent($event);
     print $nevent_11 . PHP_EOL;
 
-    // Encode an event to bech32 encoded string with prefix `nevent` with TLV data, this work.
+    /*
+     * Encode an event to bech32 encoded string with prefix `nevent` with TLV data.
+     */
     $pubkey = '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71';
     $relays = ['wss://nostr.sebastix.dev'];
     $nevent_2 = $nip19->encodeEvent($event, $relays ?? [], $pubkey, 1);
@@ -62,7 +72,9 @@ try {
     // nevent1qqsy87cyyfzhc8ada35vttgcx79tktrzd44hsausjulg3rgfnrmva4qprpmhxue69uhkummnw3ezuum9vfshxarf0qhxgetkqgsqvcu68pkfcyq5y9mz9n9u7sys33835rpnuglc6mtg7j4lv40c7ugdggh4t
     print $nevent_2 . PHP_EOL;
 
-    // Encode an event to bech32 encoded string with prefix `naddr` with TLV data, this works.
+    /*
+     * Encode an event to bech32 encoded string with prefix `naddr` with TLV data.
+     */
     $event_kind30023_id = 'dfe2bc7f5da5fe2b5e3083a9856b68d29b65b59d4503e081292a27b6e7438b56';
     $event = new Event();
     $event->setId($event_kind30023_id);
@@ -81,7 +93,9 @@ try {
     // naddr1qq8hwet9dvknzvfdw4cxgct5v4esygqxvwdrsmyuzq2zza3zej70gzggcnc6pse7y0udd450f2lk2hu0wypsgqqqw4rs35j8dj
     print $naddr . PHP_EOL;
 
-    // Encode a profile to a bech32 formatted string, this works.
+    /*
+     * Encode a profile to a bech32 formatted string.
+     */
     $pubkey = '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71';
     $profile = new Profile();
     $profile = $profile->fetch($pubkey);
@@ -102,16 +116,8 @@ try {
     // $ ./nak encode nprofile 06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71 --relay wss://nostr.sebastix.dev --relay wss://nostr.wine
     // nprofile1qqsqvcu68pkfcyq5y9mz9n9u7sys33835rpnuglc6mtg7j4lv40c7ugprpmhxue69uhkummnw3ezuum9vfshxarf0qhxgetkqyg8wumn8ghj7mn0wd68ytnhd9hx2c4r37c
     print $nprofile1 . PHP_EOL;
-
-    // Decode nevent bech32 encoded string
-    print_r($nip19->decode('nevent1qqsy87cyyfzhc8ada35vttgcx79tktrzd44hsausjulg3rgfnrmva4qprpmhxue69uhkummnw3ezuum9vfshxarf0qhxgetkqgsqvcu68pkfcyq5y9mz9n9u7sys33835rpnuglc6mtg7j4lv40c7ugdggh4t', true)) . PHP_EOL;
-
-    // Decode naddr bech32 encoded string
-    print_r($nip19->decode('naddr1qq8hwet9dvknzvfdw4cxgct5v4esygqxvwdrsmyuzq2zza3zej70gzggcnc6pse7y0udd450f2lk2hu0wypsgqqqw4rs35j8dj', true)) . PHP_EOL;
-
-    // Decode nprofile bech32 encoded string
-    print_r($nip19->decode('nprofile1qqsqvcu68pkfcyq5y9mz9n9u7sys33835rpnuglc6mtg7j4lv40c7ugprpmhxue69uhkummnw3ezuum9vfshxarf0qhxgetkqyg8wumn8ghj7mn0wd68ytnhd9hx2c4r37c', true)) . PHP_EOL;
-
+    // Same result as example above.
+    print $nip19->encode($profile, 'nprofile', ['relays' => $relays]) . PHP_EOL;
 } catch (Exception $e) {
     print $e->getMessage() . PHP_EOL;
 }

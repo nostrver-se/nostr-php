@@ -11,6 +11,7 @@ use swentel\nostr\Key\Key;
 
 use function BitWasp\Bech32\convertBits;
 use function BitWasp\Bech32\encode;
+use function BitWasp\Bech32\decode;
 
 /**
  * NIP-19 bech32-encoded entities
@@ -18,38 +19,59 @@ use function BitWasp\Bech32\encode;
  * Example reference Go library: https://github.com/nbd-wtf/go-nostr/blob/master/nip19/nip19.go
  * Example reference Javascript library: https://github.com/nbd-wtf/nostr-tools/blob/master/nip19.ts
  *
+ * PHP Bech32 package.
  * https://github.com/Bit-Wasp/bech32/blob/master/src/bech32.php
  *
+ * Some of the methods are copy-pasted from
  * https://github.com/nostriphant/nip-19
+ * and have been modified to match these library needs.
  *
  */
 class Nip19Helper
 {
     /**
-     * Decode an bech32 identifier into TLV / metadata.
+     * Decode a bech32 identifier into TLV / metadata.
+     * TLVs that are not recognized or supported should be ignored, rather than causing an error.
      *
      * @param string $bech32string
      * @return array
      * @throws \Exception
      */
-    public function decode(string $bech32string)
+    public function decode(string $bech32string): array
     {
         try {
             $length = strlen($bech32string);
 
             if ($length > Bech32::BECH32_MAX_LENGTH) {
-                throw new \Exception('Bech32 string cannot exceed ' . Bech32::BECH32_MAX_LENGTH . ' characters in length');
+                throw new \RuntimeException(
+                    message: sprintf(
+                        'Bech32 string cannot exceed %d characters in length',
+                        Bech32::BECH32_MAX_LENGTH,
+                    ),
+                );
             }
             if ($length < 8) {
-                throw new \Exception('Bech32 string is too short');
+                throw new \RuntimeException(message: 'Bech32 string is too short');
             }
             // Find the separator (1)
             $pos = strrpos($bech32string, '1');
             if ($pos === false) {
-                throw new \Exception('Invalid Bech32 string');
+                throw new \RuntimeException(message: 'Invalid bech32 string');
             }
             // Extract human-readable part (HRP)
             $prefix = substr($bech32string, 0, $pos);
+
+            switch ($prefix) {
+                case 'npub':
+                case 'nsec':
+                case 'note':
+                    throw new \RuntimeException(
+                        message: sprintf(
+                            'Given bech32 string %s does not support identifiers with extra metadata.',
+                            $bech32string,
+                        ),
+                    );
+            }
 
             // Extract data part
             $data_part = substr($bech32string, $pos + 1);
@@ -57,7 +79,7 @@ class Nip19Helper
             for ($i = 0, $iMax = strlen($data_part); $i < $iMax; $i++) {
                 $data[] = strpos(Bech32::BECH32_CHARSET, $data_part[$i]);
                 if ($data[$i] === false) {
-                    throw new \Exception('Invalid character in Bech32 string');
+                    throw new \RuntimeException('Invalid character in Bech32 string');
                 }
             }
             // Convert 5-bit data to 8-bit data
@@ -70,7 +92,7 @@ class Nip19Helper
             $offset = 0;
             while ($offset < count($binaryData)) {
                 if ($offset + 1 >= count($binaryData)) {
-                    throw new \Exception("Incomplete TLV data");
+                    throw new \RuntimeException("Incomplete TLV data");
                 }
                 // Read the Type (T) and Length (L)
                 $type = $binaryData[$offset];
@@ -81,7 +103,6 @@ class Nip19Helper
                 if ($offset + $length > count($binaryData)) {
                     break;
                 } else {
-                    // Extract the Value (V)
                     $value = array_slice($binaryData, $offset, $length);
                 }
                 $offset += $length;
@@ -94,14 +115,10 @@ class Nip19Helper
             }
             // Parse TLVs into readable data
             $tlvData = [];
-            $typeSlug = 0; // special
-            $typeRelays = 1; // relays
-            $typeAuthor = 2; // author
-            $typeKind = 3; // kind
             $relays = [];
             foreach ($tlvEntries as $item) {
                 // The 32 bytes of the event id
-                if ($item['type'] === $typeSlug && $prefix === 'nevent') {
+                if ($item['type'] === TLVEnum::Special->value && $prefix === 'nevent') {
                     $val = '';
                     foreach ($item['value'] as $byte) {
                         $val .= str_pad(dechex($byte), 2, '0', STR_PAD_LEFT);
@@ -109,7 +126,7 @@ class Nip19Helper
                     $tlvData['event_id'] = $val;
                 }
                 // The 32 bytes of the profile public key
-                if ($item['type'] === $typeSlug && $prefix === 'nprofile') {
+                if ($item['type'] === TLVEnum::Special->value && $prefix === 'nprofile') {
                     $val = '';
                     foreach ($item['value'] as $byte) {
                         $val .= str_pad(dechex($byte), 2, '0', STR_PAD_LEFT);
@@ -117,15 +134,15 @@ class Nip19Helper
                     $tlvData['pubkey'] = $val;
                 }
                 // identifier (the d-tag) of the event
-                if ($item['type'] === $typeSlug && $prefix === 'naddr') {
+                if ($item['type'] === TLVEnum::Special->value && $prefix === 'naddr') {
                     $val = implode('', array_map('chr', $item['value']));
                     $tlvData['identifier'] = $val;
                 }
-                if ($item['type'] === $typeRelays) {
+                if ($item['type'] === TLVEnum::Relay->value) {
                     $relays[] = implode('', array_map('chr', $item['value']));
                     $tlvData['relays'] = $relays;
                 }
-                if ($item['type'] === $typeAuthor) {
+                if ($item['type'] === TLVEnum::Author->value) {
                     $str = '';
                     foreach ($item['value'] as $byte) {
                         $str .= str_pad(dechex($byte), 2, '0', STR_PAD_LEFT);
@@ -133,7 +150,7 @@ class Nip19Helper
                     $author = $str;
                     $tlvData['author'] = $author;
                 }
-                if ($item['type'] === $typeKind) {
+                if ($item['type'] === TLVEnum::Kind->value) {
                     // big-endian integer
                     $intValue = 0;
                     foreach ($item['value'] as $byte) {
@@ -162,27 +179,34 @@ class Nip19Helper
     {
         if ($data instanceof Event) {
             $event = $data;
-            /*
-             * TODO create TLV / metadata class for this structure so we can it as an object
-             * TODO validate metadata array here
-             * only allowed keys are:
-             * - id (hex event id)
-             * - dTag (unique identifier string)
-             * - author (hex pubkey)
-             * - relays (array)
-             * - kind (integer)
-             */
+            $tlv = new TLV(
+                $metadata['id'] ?? $data->getId(),
+                $metadata['dTag'] ?? null,
+                $metadata['author'] ?? $data->getPublicKey(),
+                $metadata['relays'] ?? [],
+                $metadata['kind'] ?? $data->getKind(),
+            );
             try {
                 switch ($prefix) {
+                    case 'note':
+                        return $this->encodeNote($data->getId());
                     case 'nevent':
-                        $bytes_array = $this->convertEventToBytes($event, $metadata);
+                        $bytes_array = $this->convertEventToBytes($event, $tlv);
                         break;
                     case 'naddr':
-                        $bytes_array = $this->convertAddressableEventToBytes($event, $metadata);
+                        $bytes_array = $this->convertAddressableEventToBytes($event, $tlv);
                         break;
                     case 'nprofile':
-                        $bytes_array = $this->convertProfileToBytes($event, $metadata);
+                        $bytes_array = $this->convertProfileToBytes($event, $tlv);
                         break;
+                    default:
+                        throw new \RuntimeException(
+                            message: sprintf(
+                                "Exception: unexpected prefix value for the data to be encoded, got %s of type %s",
+                                $prefix,
+                                gettype($prefix),
+                            ),
+                        );
                 }
                 $checksum = new Checksum($prefix, Bits::encode($bytes_array));
                 $bech32_string = $checksum(
@@ -193,7 +217,38 @@ class Nip19Helper
                 throw new \RuntimeException($e->getMessage());
             }
         } else {
-            return $this->convertToBech32($data, $prefix);
+            switch ($prefix) {
+                case 'npub':
+                    if (is_string($data) === false) {
+                        throw new \RuntimeException(
+                            message: sprintf(
+                                'Exception: pubkey value should be a hex formatted string, got %s',
+                                gettype($data),
+                            ),
+                        );
+                    }
+                    return $this->encodeNpub($data);
+                case 'nsec':
+                    if (is_string($data) === false) {
+                        throw new \RuntimeException(
+                            message: sprintf(
+                                'Exception: secret key value should be a hex formatted string, got %s',
+                                gettype($data),
+                            ),
+                        );
+                    }
+                    return $this->encodeNsec($data);
+                case 'note':
+                    return $this->encodeNote($data);
+                default:
+                    throw new \RuntimeException(
+                        message: sprintf(
+                            "Exception: unexpected prefix value, got %s of type %s",
+                            $prefix,
+                            gettype($prefix),
+                        ),
+                    );
+            }
         }
     }
 
@@ -218,21 +273,18 @@ class Nip19Helper
     public function encodeEvent(Event $event, array $relays = [], string $author = '', int $kind = null): string
     {
         $prefix = 'nevent';
-        // TODO convert this array with this structure to a TLV class
-        $metadata = [
-            'id' => $event->getId(),
-            // TODO how do we check if there are some relays set on the event?
-            // iterate over the tags field and look for r-tags with values
-            'relays' => $relays,
-            'author' => $author !== '' ? $author : $event->getPublicKey(),
-            'kind' => $kind ?? $event->getKind(),
-        ];
-        $bytes_array = $this->convertEventToBytes($event, $metadata);
+        $tlv = new TLV(
+            $event->getId(),
+            null,
+            $author !== '' ? $author : $event->getPublicKey(),
+            $relays,
+            $kind ?? $event->getKind(),
+        );
+        $bytes_array = $this->convertEventToBytes($event, $tlv);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
-        $bech32_string = $checksum(
+        return $checksum(
             fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
-        return $bech32_string;
     }
 
     /**
@@ -249,18 +301,18 @@ class Nip19Helper
     public function encodeAddr(Event $event, string $dTag, int $kind, string $author = '', array $relays = []): string
     {
         $prefix = 'naddr';
-        $metadata = [
-            'dTag' => $dTag,
-            'relays' => $relays,
-            'author' => $author !== '' ? $author : $event->getPublicKey(),
-            'kind' => $kind,
-        ];
+        $metadata = new TLV(
+            $event->getId(),
+            $dTag,
+            $author !== '' ? $author : $event->getPublicKey(),
+            $relays,
+            $kind ?? $event->getKind(),
+        );
         $bytes_array = $this->convertAddressableEventToBytes($event, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
-        $bech32_string = $checksum(
+        return $checksum(
             fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
-        return $bech32_string;
     }
 
     /**
@@ -272,15 +324,18 @@ class Nip19Helper
     public function encodeProfile(Profile $profile, array $relays = []): string
     {
         $prefix = 'nprofile';
-        $metadata = [
-            'relays' => $relays,
-        ];
+        $metadata = new TLV(
+            $profile->getId(),
+            null,
+            $profile->getPublicKey(),
+            $relays,
+            $profile->getKind(),
+        );
         $bytes_array = $this->convertProfileToBytes($profile, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
-        $bech32_string = $checksum(
+        return $checksum(
             fn(string $encoded, int $character) => $encoded .= Bech32::BECH32_CHARSET[$character],
         );
-        return $bech32_string;
     }
 
     /**
@@ -289,8 +344,7 @@ class Nip19Helper
      */
     public function encodeNpub(string $pubkey): string
     {
-        $key = new Key();
-        return $key->convertPublicKeyToBech32($pubkey);
+        return (new Key())->convertPublicKeyToBech32($pubkey);
     }
 
     /**
@@ -299,8 +353,7 @@ class Nip19Helper
      */
     public function encodeNsec(string $seckey): string
     {
-        $key = new Key();
-        return $key->convertPrivateKeyToBech32($seckey);
+        return (new Key())->convertPrivateKeyToBech32($seckey);
     }
 
     /**
@@ -311,42 +364,35 @@ class Nip19Helper
      */
     private function convertToBech32(string $key, string $prefix): string
     {
-        $str = '';
-
-        /** @var array $dec */
         // This is our bits array with decimal formatted values.
         $dec = [];
-        /** @var array $split */
         // Split string into data chucks with a max length of 2 chars each chunk. This will create the byte array.
         $split = str_split($key, 2);
         foreach ($split as $item) {
-            // Loop over the byte array and convert each chuck from a hex formatted value into a decimal formatted chunks.
             $dec[] = hexdec($item);
         }
         // Convert the bits array to a bytes array.
         $bytes = convertBits($dec, count($dec), 8, 5);
-        $str = encode($prefix, $bytes);
-
-        return $str;
+        return encode($prefix, $bytes);
     }
 
     /**
-     * Convert event to bytes with metadata.
+     * Convert replaceable event to bytes with metadata.
      *
      * @param Event $event
-     * @param array $metadata
+     * @param TLV $metadata
      * @return array
      */
-    private function convertEventToBytes(Event $event, array $metadata): array
+    private function convertEventToBytes(Event $event, TLV $metadata): array
     {
         $id = [
             Bech32::fromHexToBytes($event->getId()),
         ];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? [],
+            $metadata->getRelays() ?? [],
         );
-        $pubkey = isset($metadata['author']) ?
-            [Bech32::fromHexToBytes($metadata['author'])] :
+        $pubkey = $metadata->getAuthor() ?
+            [Bech32::fromHexToBytes($metadata->getAuthor())] :
             [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
             Bech32::fromIntegerToBytes($event->getKind()),
@@ -354,16 +400,28 @@ class Nip19Helper
         return Bech32::encodeTLV($id, $relays, $pubkey, $kind);
     }
 
-    private function convertAddressableEventToBytes(Event $event, array $metadata): array
+    /**
+     *  Convert addressable event to bytes with metadata.
+     *
+     * @param Event $event
+     * @param TLV $metadata
+     * @return array
+     */
+    private function convertAddressableEventToBytes(Event $event, TLV $metadata): array
     {
+        if (is_null($metadata->getDTag())) {
+            throw new \RuntimeException(
+                message: 'Exception: a dTag value is required for encoding a naddr bech32 encoded entity, got NULL',
+            );
+        }
         $identifier = [
-            Bech32::fromUTF8ToBytes($metadata['dTag']),
+            Bech32::fromUTF8ToBytes($metadata->getDTag()),
         ];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? [],
+            $metadata->getRelays() ?? [],
         );
-        $pubkey = isset($metadata['author']) ?
-            [Bech32::fromHexToBytes($metadata['author'])] :
+        $pubkey = $metadata->getAuthor() ?
+            [Bech32::fromHexToBytes($metadata->getAuthor())] :
             [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
             Bech32::fromIntegerToBytes($event->getKind()),
@@ -371,13 +429,18 @@ class Nip19Helper
         return Bech32::encodeTLV($identifier, $relays, $pubkey, $kind);
     }
 
-    private function convertProfileToBytes(Profile $profile, array $metadata): array
+    /**
+     * @param Profile $profile
+     * @param TLV $metadata
+     * @return array
+     */
+    private function convertProfileToBytes(Profile $profile, TLV $metadata): array
     {
-        $pubkey = isset($metadata['author']) ?
-            [Bech32::fromHexToBytes($metadata['author'])] :
+        $pubkey = $metadata->getAuthor() ?
+            [Bech32::fromHexToBytes($metadata->getAuthor())] :
             [Bech32::fromHexToBytes($profile->getPublicKey())];
         $relays = Bech32::fromRelaysToBytes(
-            $metadata['relays'] ?? [],
+            $metadata->getRelays() ?? [],
         );
         return Bech32::encodeTLV($pubkey, $relays);
     }
