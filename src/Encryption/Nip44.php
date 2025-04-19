@@ -42,7 +42,7 @@ class Nip44
         $sharedX = hex2bin(str_pad(substr($shared->toString(16), 0, 64), 64, '0', STR_PAD_LEFT));
 
         // HKDF extract with salt 'nip44-v2'
-        return hash_hkdf('sha256', $sharedX, 32, 'nip44-v2', '');
+        return hash_hmac('sha256', $sharedX, 'nip44-v2', true);
     }
 
     /**

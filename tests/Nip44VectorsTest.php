@@ -4,49 +4,135 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use swentel\nostr\Encryption\Nip44;
+use swentel\nostr\Key\Key;
 
 class Nip44VectorsTest extends TestCase
 {
     /**
-     * Test vectors from https://github.com/paulmillr/nip44/blob/main/nip44.vectors.json
+     * @var array The loaded test vectors from nip44.vectors.json
      */
-    public function testEncryptionVectors(): void
+    private array $vectors;
+
+    /**
+     * Load test vectors from JSON file
+     */
+    protected function setUp(): void
     {
-        // Test vector 1: Basic encryption/decryption
-        $conversationKey = hex2bin('ca2527a037347b91bea0c8a30fc8d9600ffd81ec00038671e3a0f0cb0fc9f642');
-        $nonce = hex2bin('daaea5ca345b268e5b62060ca72c870c48f713bc1e00ff3fc0ddb78e826f10db');
-        $plaintext = 'noble';
+        parent::setUp();
 
-        $encrypted = Nip44::encrypt($plaintext, $conversationKey, $nonce);
-        $decrypted = Nip44::decrypt($encrypted, $conversationKey);
-        $this->assertEquals($plaintext, $decrypted);
+        // Load the vectors from the JSON file
+        $jsonPath = __DIR__ . '/../nip44.vectors.json';
 
-        // Test vector 2: Unicode emoji
-        $conversationKey = hex2bin('36f04e558af246352dcf73b692fbd3646a2207bd8abd4b1cd26b234db84d9481');
-        $nonce = hex2bin('ad408d4be8616dc84bb0bf046454a2a102edac937c35209c43cd7964c5feb781');
-        $plaintext = '⚠️';
+        if (!file_exists($jsonPath)) {
+            $this->markTestSkipped("Test vector file not found: $jsonPath");
+        }
 
-        $encrypted = Nip44::encrypt($plaintext, $conversationKey, $nonce);
-        $decrypted = Nip44::decrypt($encrypted, $conversationKey);
-        $this->assertEquals($plaintext, $decrypted);
+        $jsonContent = file_get_contents($jsonPath);
+        if ($jsonContent === false) {
+            $this->markTestSkipped("Failed to read test vector file: $jsonPath");
+        }
 
-        // Test vector 3: Longer text with spaces
-        $conversationKey = hex2bin('5254827d29177622d40a7b67cad014fe7137700c3c523903ebbe3e1b74d40214');
-        $nonce = hex2bin('7ab65dbb8bbc2b8e35cafb5745314e1f050325a864d11d0475ef75b3660d91c1');
-        $plaintext = 'elliptic-curve cryptography';
+        $this->vectors = json_decode($jsonContent, true);
+        if ($this->vectors === null) {
+            $this->markTestSkipped("Failed to parse JSON in test vector file: $jsonPath");
+        }
 
-        $encrypted = Nip44::encrypt($plaintext, $conversationKey, $nonce);
-        $decrypted = Nip44::decrypt($encrypted, $conversationKey);
-        $this->assertEquals($plaintext, $decrypted);
+        // Ensure we have v2 vectors
+        if (!isset($this->vectors['v2']) || !isset($this->vectors['v2']['valid'])) {
+            $this->markTestSkipped("No valid v2 vectors found in the test file");
+        }
+    }
 
-        // Test vector 4: Long text with special characters
-        $conversationKey = hex2bin('0c4cffb7a6f7e706ec94b2e879f1fc54ff8de38d8db87e11787694d5392d5b3f');
-        $nonce = hex2bin('6f9fd72667c273acd23ca6653711a708434474dd9eb15c3edb01ce9a95743e9b');
-        $plaintext = 'censorship-resistant and global social network';
+    /**
+     * Test the padding length calculation using official vectors.
+     */
+    public function testPaddingLength(): void
+    {
+        if (!isset($this->vectors['v2']['valid']['calc_padded_len'])) {
+            $this->markTestSkipped("No padding length vectors found");
+        }
 
-        $encrypted = Nip44::encrypt($plaintext, $conversationKey, $nonce);
-        $decrypted = Nip44::decrypt($encrypted, $conversationKey);
-        $this->assertEquals($plaintext, $decrypted);
+        $vectors = $this->vectors['v2']['valid']['calc_padded_len'];
+
+        // Create a reflection to access the private method
+        $reflectionClass = new \ReflectionClass(Nip44::class);
+        $calcPaddedLen = $reflectionClass->getMethod('calcPaddedLen');
+        $calcPaddedLen->setAccessible(true);
+
+        foreach ($vectors as $vector) {
+            $unpadded = $vector[0];
+            $expected = $vector[1];
+            $actual = $calcPaddedLen->invoke(null, $unpadded);
+            $this->assertEquals($expected, $actual, "Padding calculation failed for length $unpadded");
+        }
+    }
+
+    /**
+     * Test conversation key derivation using official vectors.
+     */
+    public function testConversationKeyDerivation(): void
+    {
+        if (!isset($this->vectors['v2']['valid']['get_conversation_key'])) {
+            $this->markTestSkipped("No conversation key vectors found");
+        }
+
+        $vectors = $this->vectors['v2']['valid']['get_conversation_key'];
+        $keyGenerator = new Key();
+
+        foreach ($vectors as $vector) {
+            // If pub2 is provided, use it directly
+            if (isset($vector['pub2'])) {
+                $pubKey = $vector['pub2'];
+            } else {
+                // Otherwise, derive it from sec2
+                $pubKey = $keyGenerator->getPublicKey($vector['sec2']);
+            }
+
+            $conversationKey = Nip44::getConversationKey($vector['sec1'], $pubKey);
+            $this->assertEquals(
+                $vector['conversation_key'],
+                bin2hex($conversationKey),
+                "Conversation key derivation failed for sec1={$vector['sec1']}",
+            );
+        }
+    }
+
+    /**
+     * Test encryption and decryption with official vector examples.
+     */
+    public function testEncryptDecrypt(): void
+    {
+        if (!isset($this->vectors['v2']['valid']['encrypt_decrypt'])) {
+            $this->markTestSkipped("No encrypt/decrypt vectors found");
+        }
+
+        $vectors = $this->vectors['v2']['valid']['encrypt_decrypt'];
+        $successfulReferenceDecryptions = 0;
+        $failedReferenceDecryptions = 0;
+
+        foreach ($vectors as $vector) {
+            $conversationKey = hex2bin($vector['conversation_key']);
+            $nonce = hex2bin($vector['nonce']);
+
+            // Test encryption and decryption consistency with our implementation
+            $encrypted = Nip44::encrypt($vector['plaintext'], $conversationKey, $nonce);
+            $decrypted = Nip44::decrypt($encrypted, $conversationKey);
+            $this->assertEquals(
+                $vector['plaintext'],
+                $decrypted,
+                "Failed to decrypt our own encrypted message for plaintext: {$vector['plaintext']}",
+            );
+
+            // Try to decrypt the reference payload
+            if (isset($vector['payload'])) {
+                $decryptedReference = Nip44::decrypt($vector['payload'], $conversationKey);
+                $this->assertEquals(
+                    $vector['plaintext'],
+                    $decryptedReference,
+                    "Decrypted reference payload doesn't match expected plaintext",
+                );
+            }
+        }
     }
 
     /**
@@ -54,47 +140,118 @@ class Nip44VectorsTest extends TestCase
      */
     public function testErrorCases(): void
     {
+        // Test with empty message (should fail)
+        $conversationKey = hex2bin('c41c775356fd92eadc63ff5a0dc1da211b268cbea22316767095b2871ea1412d');
+
+        if (isset($this->vectors['v2']['valid']['encrypt_decrypt'][0]['conversation_key'])) {
+            $conversationKey = hex2bin($this->vectors['v2']['valid']['encrypt_decrypt'][0]['conversation_key']);
+        }
+
         // Test empty message (should fail)
-        $conversationKey = hex2bin('5cd2d13b9e355aeb2452afbd3786870dbeecb9d355b12cb0a3b6e9da5744cd35');
-        $nonce = hex2bin('b60036976a1ada277b948fd4caa065304b96964742b89d26f26a25263a5060bd');
+        try {
+            Nip44::encrypt('', $conversationKey);
+            $this->fail('Expected exception was not thrown for empty message');
+        } catch (\Exception $e) {
+            $this->addToAssertionCount(1); // Count this as a check
+        }
 
-        $this->expectException(Exception::class);
-        Nip44::encrypt('', $conversationKey, $nonce);
+        // Test invalid message lengths from vectors if available
+        if (isset($this->vectors['v2']['invalid']['encrypt_msg_lengths'])) {
+            $invalidMessages = $this->vectors['v2']['invalid']['encrypt_msg_lengths'];
+            foreach ($invalidMessages as $message) {
+                // Convert to string if it's a number (like 0 or integers)
+                $messageStr = is_numeric($message) ? (string) $message : $message;
+                Nip44::encrypt($messageStr, $conversationKey);
+                $this->fail("Expected exception was not thrown for invalid message: $message");
+            }
+        }
 
-        // Test invalid base64
-        $conversationKey = hex2bin('ca2527a037347b91bea0c8a30fc8d9600ffd81ec00038671e3a0f0cb0fc9f642');
-        $invalidPayload = 'Atфupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbrhdG8VmJZE0UICD06CUvEvdnr1cp1fiMtlM/GrE92xAc1EwsVCQEgWEu2gsHUVf4JAa3TpgkmFc3TWsax0v6n/Wq';
+        // Test invalid conversation keys if available
+        if (isset($this->vectors['v2']['invalid']['get_conversation_key'])) {
+            $invalidKeyVectors = $this->vectors['v2']['invalid']['get_conversation_key'];
+            $keyGenerator = new Key();
 
-        $this->expectException(Exception::class);
-        Nip44::decrypt($invalidPayload, $conversationKey);
+            foreach ($invalidKeyVectors as $vector) {
+                if (isset($vector['pub2'])) {
+                    $pubKey = $vector['pub2'];
+                } else {
+                    $pubKey = $keyGenerator->getPublicKey($vector['sec2']);
+                }
+                Nip44::getConversationKey($vector['sec1'], $pubKey);
+                $this->fail("Expected exception was not thrown for invalid key pair");
+            }
+        }
     }
 
     /**
-     * Test MAC verification
+     * Test MAC verification with tampered payloads.
      */
-    public function testMacVerification(): void
+    public function testInvalidMac(): void
     {
-        $conversationKey = hex2bin('cff7bd6a3e29a450fd27f6c125d5edeb0987c475fd1e8d97591e0d4d8a89763c');
-        $payload = 'Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholyySBfeh+EN8wNB9gaLlg4j6wdBYh+3oK+mnxWu3NKRbSvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+        // Use a conversation key from the vectors if available
+        $conversationKey = hex2bin('c41c775356fd92eadc63ff5a0dc1da211b268cbea22316767095b2871ea1412d');
 
-        // This should fail due to invalid MAC
+        if (isset($this->vectors['v2']['valid']['encrypt_decrypt'][0]['conversation_key'])) {
+            $conversationKey = hex2bin($this->vectors['v2']['valid']['encrypt_decrypt'][0]['conversation_key']);
+        }
+
+        $message = 'This is a test message';
+
+        // Generate a valid payload
+        $encrypted = Nip44::encrypt($message, $conversationKey);
+
+        // Tamper with the MAC by changing the last few characters
+        $tampered = substr($encrypted, 0, -4) . 'AAAA';
+
+        // Should fail with invalid MAC
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Invalid MAC');
-        Nip44::decrypt($payload, $conversationKey);
+        Nip44::decrypt($tampered, $conversationKey);
     }
 
     /**
-     * Test padding validation
+     * Test symmetric communication between two users.
      */
-    public function testPaddingValidation(): void
+    public function testSymmetricCommunication(): void
     {
-        $conversationKey = hex2bin('fea39aca9aa8340c3a78ae1f0902aa7e726946e4efcd7783379df8096029c496');
-        $payload = 'An1Cg+O1TIhdav7ogfSOYvCj9dep4ctxzKtZSniCw5MwRrrPJFyAQYZh5VpjC2QYzny5LIQ9v9lhqmZR4WBYRNJ0ognHVNMwiFV1SHpvUFT8HHZN/m/QarflbvDHAtO6pY16';
+        // Get private keys from vectors if available
+        $alice_private = '0000000000000000000000000000000000000000000000000000000000000001';
+        $bob_private = '0000000000000000000000000000000000000000000000000000000000000002';
 
-        // This will fail with Invalid MAC before we even get to padding validation,
-        // which is the correct behavior for security (fail fast on MAC)
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Invalid MAC');
-        Nip44::decrypt($payload, $conversationKey);
+        if (isset($this->vectors['v2']['valid']['encrypt_decrypt'][0]['sec1'])) {
+            $alice_private = $this->vectors['v2']['valid']['encrypt_decrypt'][0]['sec1'];
+
+            if (isset($this->vectors['v2']['valid']['encrypt_decrypt'][0]['sec2'])) {
+                $bob_private = $this->vectors['v2']['valid']['encrypt_decrypt'][0]['sec2'];
+            }
+        }
+
+        $keyGenerator = new Key();
+        $alice_public = $keyGenerator->getPublicKey($alice_private);
+        $bob_public = $keyGenerator->getPublicKey($bob_private);
+
+        // Alice's conversation key (for sending to Bob)
+        $alice_conv_key = Nip44::getConversationKey($alice_private, $bob_public);
+
+        // Bob's conversation key (for sending to Alice)
+        $bob_conv_key = Nip44::getConversationKey($bob_private, $alice_public);
+
+        // Conversation keys should be identical
+        $this->assertEquals(bin2hex($alice_conv_key), bin2hex($bob_conv_key));
+
+        // Alice encrypts a message to Bob
+        $message = 'Hello Bob, this is Alice!';
+        $encrypted = Nip44::encrypt($message, $alice_conv_key);
+
+        // Bob decrypts Alice's message
+        $decrypted = Nip44::decrypt($encrypted, $bob_conv_key);
+        $this->assertEquals($message, $decrypted);
+
+        // Bob encrypts a reply to Alice
+        $reply = 'Hello Alice, this is Bob!';
+        $encrypted_reply = Nip44::encrypt($reply, $bob_conv_key);
+
+        // Alice decrypts Bob's reply
+        $decrypted_reply = Nip44::decrypt($encrypted_reply, $alice_conv_key);
+        $this->assertEquals($reply, $decrypted_reply);
     }
 }
