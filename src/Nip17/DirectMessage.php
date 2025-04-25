@@ -97,7 +97,7 @@ class DirectMessage implements DirectMessageInterface
         bool $verifyRecipient = true,
     ): ?array {
         // Extract the recipient pubkey from p tag
-        $receiverPubkey = new Key()->getPublicKey($receiverPrivkey);
+        $receiverPubkey = (new Key())->getPublicKey($receiverPrivkey);
         $isAddressedToReceiver = false;
 
         // Check that the gift wrap is addressed to the receiver via p tag
