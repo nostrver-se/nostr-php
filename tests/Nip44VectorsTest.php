@@ -107,9 +107,6 @@ class Nip44VectorsTest extends TestCase
         }
 
         $vectors = $this->vectors['v2']['valid']['encrypt_decrypt'];
-        $successfulReferenceDecryptions = 0;
-        $failedReferenceDecryptions = 0;
-
         foreach ($vectors as $vector) {
             $conversationKey = hex2bin($vector['conversation_key']);
             $nonce = hex2bin($vector['nonce']);
@@ -126,6 +123,7 @@ class Nip44VectorsTest extends TestCase
             // Try to decrypt the reference payload
             if (isset($vector['payload'])) {
                 $decryptedReference = Nip44::decrypt($vector['payload'], $conversationKey);
+
                 $this->assertEquals(
                     $vector['plaintext'],
                     $decryptedReference,
@@ -159,10 +157,9 @@ class Nip44VectorsTest extends TestCase
         if (isset($this->vectors['v2']['invalid']['encrypt_msg_lengths'])) {
             $invalidMessages = $this->vectors['v2']['invalid']['encrypt_msg_lengths'];
             foreach ($invalidMessages as $message) {
-                // Convert to string if it's a number (like 0 or integers)
-                $messageStr = is_numeric($message) ? (string) $message : $message;
+                $messageStr = str_pad('', $message, 'a');
+                $this->expectExceptionMessageMatches('/Invalid plaintext size: must be between 1 and 65535 bytes/');
                 Nip44::encrypt($messageStr, $conversationKey);
-                $this->fail("Expected exception was not thrown for invalid message: $message");
             }
         }
 
