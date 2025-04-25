@@ -64,7 +64,7 @@ try {
 
     // Create the event with the wrapped message
     $event = new Event();
-    $event->setKind(44);
+    $event->setKind(4);
     $event->setContent(json_encode([
         'content' => $encryptedMessage,
         'seals' => $seals,

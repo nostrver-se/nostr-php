@@ -62,7 +62,7 @@ try {
 
     // Create and encrypt the message
     $event = new Event();
-    $event->setKind(44); // kind 44 = NIP-44 encrypted message
+    $event->setKind(4); // kind 4 = NIP-44 encrypted message
     $event->setContent(Nip44::encrypt($message, $conversationKey));
     $event->addTag(['p', $bobPubKey]); // tag the recipient
 
