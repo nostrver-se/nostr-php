@@ -194,12 +194,13 @@ class Event implements EventInterface
      */
     public function getTag(string $key): array
     {
+        $tags = [];
         foreach ($this->tags as $tag) {
             if ($tag[0] === $key) {
-                return $tag;
+                $tags[] =  $tag;
             }
         }
-        return [];
+        return $tags;
     }
 
     /**
