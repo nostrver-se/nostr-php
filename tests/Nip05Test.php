@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Nip05\Nip05;
+use swentel\nostr\Nip05\Nip05Helper;
 
 /**
  * Test class for NIP-05 functionality.
@@ -15,7 +15,7 @@ class Nip05Test extends TestCase
      */
     public function testParseValidIdentifier(): void
     {
-        $nip05 = $this->getMockBuilder(Nip05::class)
+        $nip05 = $this->getMockBuilder(Nip05Helper::class)
             ->onlyMethods(['fetchJson'])
             ->getMock();
 
@@ -46,7 +46,7 @@ class Nip05Test extends TestCase
      */
     public function testParseInvalidIdentifier(): void
     {
-        $nip05 = $this->getMockBuilder(Nip05::class)
+        $nip05 = $this->getMockBuilder(Nip05Helper::class)
             ->onlyMethods(['fetchJson'])
             ->getMock();
 
@@ -69,7 +69,7 @@ class Nip05Test extends TestCase
     public function testVerifySuccess(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return true for the verify method
         $nip05->method('verify')
@@ -86,7 +86,7 @@ class Nip05Test extends TestCase
     public function testVerifyFailure(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return false for the verify method
         $nip05->method('verify')
@@ -103,7 +103,7 @@ class Nip05Test extends TestCase
     public function testGetPublicKey(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return a pubkey for the getPublicKey method
         $nip05->method('getPublicKey')
@@ -120,7 +120,7 @@ class Nip05Test extends TestCase
     public function testGetPublicKeyMissing(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return null for the getPublicKey method
         $nip05->method('getPublicKey')
@@ -137,7 +137,7 @@ class Nip05Test extends TestCase
     public function testGetRelays(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         $relays = ['wss://relay.example.com', 'wss://relay2.example.com'];
 
@@ -156,7 +156,7 @@ class Nip05Test extends TestCase
     public function testGetRelaysWithSpecifiedPubkey(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         $pubkey = 'b0635d6a9851d3aed0cd6c495b282167acf761729078d975fc341b22650b07b9';
         $relays = ['wss://relay.example.com', 'wss://relay2.example.com'];
@@ -176,7 +176,7 @@ class Nip05Test extends TestCase
     public function testGetRelaysMissing(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return null for the getRelays method
         $nip05->method('getRelays')
@@ -193,7 +193,7 @@ class Nip05Test extends TestCase
     public function testFormatForDisplay(): void
     {
         // Create a mock of the Nip05
-        $nip05 = $this->createMock(Nip05::class);
+        $nip05 = $this->createMock(Nip05Helper::class);
 
         // Setup the mock to return formatted identifiers
         $nip05->method('formatForDisplay')

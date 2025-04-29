@@ -8,7 +8,7 @@ namespace swentel\nostr\Nip05;
  * NIP-05: https://github.com/nostr-protocol/nips/blob/master/05.md
  * Mapping Nostr keys to DNS-based internet identifiers
  */
-class Nip05
+class Nip05Helper
 {
     /**
      * Validates a NIP-05 identifier against a public key.
