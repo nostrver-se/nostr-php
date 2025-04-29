@@ -21,7 +21,7 @@ class Nip44VectorsTest extends TestCase
         parent::setUp();
 
         // Load the vectors from the JSON file
-        $jsonPath = __DIR__ . '/../nip44.vectors.json';
+        $jsonPath = __DIR__ . '/../assets/nip44.vectors.json';
 
         if (!file_exists($jsonPath)) {
             $this->markTestSkipped("Test vector file not found: $jsonPath");
