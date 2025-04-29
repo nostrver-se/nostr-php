@@ -29,7 +29,7 @@ try {
     // Get the public key
     $pubkey = $nip05->getPublicKey($identifier);
     if (!$pubkey) {
-        throw new \RuntimeException( "Could not find public key for $identifier");
+        throw new \RuntimeException("Could not find public key for $identifier");
     }
 
     // Convert the public key to npub format
