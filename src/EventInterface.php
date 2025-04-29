@@ -136,6 +136,14 @@ interface EventInterface
     public function getTags(): array;
 
     /**
+     * Get specific tag by key.
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getTag(string $key): array;
+
+    /**
      * Convert the object to an array.
      *
      * @param array $ignore_properties
@@ -151,6 +159,14 @@ interface EventInterface
      * @return string
      */
     public function toJson(): string;
+
+    /**
+     * Populate to a Nostr event object with a given object.
+     *
+     * @param object $input
+     * @return $this
+     */
+    public function populate(object $input): static;
 
     /**
      * Returns true if event object encodes to a valid Nostr event JSON string.
