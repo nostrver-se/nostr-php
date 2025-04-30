@@ -484,6 +484,14 @@
           "nonce": "a3e219242d85465e70adcd640b564b3feff57d2ef8745d5e7a0663b2dccceb54",
           "plaintext": "🙈 🙉 🙊 0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟 Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗",
           "payload": "AqPiGSQthUZecK3NZAtWSz/v9X0u+HRdXnoGY7LczOtUf05aMF89q1FLwJvaFJYICZoMYgRJHFLwPiOHce7fuAc40kX0wXJvipyBJ9HzCOj7CgtnC1/cmPCHR3s5AIORmroBWglm1LiFMohv1FSPEbaBD51VXxJa4JyWpYhreSOEjn1wd0lMKC9b+osV2N2tpbs+rbpQem2tRen3sWflmCqjkG5VOVwRErCuXuPb5+hYwd8BoZbfCrsiAVLd7YT44dRtKNBx6rkabWfddKSLtreHLDysOhQUVOp/XkE7OzSkWl6sky0Hva6qJJ/V726hMlomvcLHjE41iKmW2CpcZfOedg=="
+        },
+        {
+          "sec1": "cce1ec0fa89ba93919abd9eb4f22e0e5e4d95ecfd47f7537ce0e9c79fa6355a8",
+          "sec2": "3bb0d1a58d857e9a2a3296f224898d18f8077424abb400c3cdd7fc0ab19a6210",
+          "conversation_key": "106c9a76f9cdb7bbeff8f6979dc550dc887852ede0a052f7d18fa09476afac5a",
+          "nonce": "89600188ee5a01842b1e5ca993b98eac54089720f82b2aebbabe9523f78ca4fa",
+          "plaintext": "Testing NIP-44 implementation with golang library and fixed keys \uD83D\uDD0D",
+          "payload": "Asf7WKWoUecUVX/ajl68U1+dAxz6ND4w9nkJcn5e/665gxbSRMKLS9ZDXYUGSNQhyKh+ANLsk4n0SrflpV4Xxm4eDBhRc7VPIy/FTvJQYKS8yT6R6IDrGY5YRnHqaPlZmerZZA8LYEGTK96a4/VrZ7q4SR4TdbqOdb3cV3gN32kQGBmar5YrZHqNmNj1z3F6hfcNbh1MTikrDbq1QVFfqjjRng=="
         }
       ],
       "encrypt_decrypt_long_msg": [
