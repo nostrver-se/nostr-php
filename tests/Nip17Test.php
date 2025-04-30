@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use swentel\nostr\Event\Types\DirectMessageEvent;
+use swentel\nostr\Event\DirectMessage\DirectMessage as DirectMessageEvent;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Nip17\DirectMessage;
 use swentel\nostr\Nip59\GiftWrapService;
