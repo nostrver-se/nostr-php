@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Event\Types;
+namespace swentel\nostr\Event\DirectMessage;
 
 use swentel\nostr\Event\Event;
 
-class FileMessageEvent extends Event
+class FileMessage extends Event
 {
     /**
      * Construct a File Message event (kind 15)

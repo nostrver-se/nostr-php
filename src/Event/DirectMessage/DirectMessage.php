@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace swentel\nostr\Event\Types;
+namespace swentel\nostr\Event\DirectMessage;
 
 use swentel\nostr\Event\Event;
 
-class DirectMessageEvent extends Event
+class DirectMessage extends Event
 {
     /**
      * Construct a Direct Message event (kind 14)

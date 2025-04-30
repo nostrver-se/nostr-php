@@ -6,7 +6,7 @@ namespace swentel\nostr\Nip17;
 
 use swentel\nostr\DirectMessageInterface;
 use swentel\nostr\EventInterface;
-use swentel\nostr\Event\Types\DirectMessageEvent;
+use swentel\nostr\Event\DirectMessage\DirectMessage as DirectMessageEvent;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Nip59\GiftWrapService;
