@@ -28,7 +28,6 @@
     "bitwasp/bech32": "^0.0.1",
     "leigh/chacha20": "^0.2.0",
     "paragonie/ecc": "^2.4",
-    "paragonie/sodium_compat": "^2.1",
     "phrity/websocket": "^3.0",
     "simplito/elliptic-php": "^1.0"
   },
@@ -41,9 +40,6 @@
       "swentel\\nostr\\": "src/"
     }
   },
-  "bin": [
-    "bin/nostr-php"
-  ],
   "config": {
     "platform": {
       "php": "8.1"

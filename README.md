@@ -290,6 +290,8 @@ private key on command line.
   - [x] Encode identifiers
   - [x] Decode identifiers
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
+- [ ] Support NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
+- [ ] Support NIP-46 remote signing initiated by the client (issue [#87](https://github.com/nostrver-se/nostr-php/issues/87)) 
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
 - [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
@@ -298,7 +300,6 @@ private key on command line.
 - [ ] Support NIP-40 expiration timestamp
 - [ ] Support NIP-47 Nostr Wallet Connect
 - [ ] Support NIP-49 private key encryption
-- [ ] Support NIP-17 private direct messages
 
 ## Community
 

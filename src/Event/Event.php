@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace swentel\nostr\Event;
 
 use Mdanter\Ecc\Crypto\Signature\SchnorrSignature;
+use PhpCsFixer\DocBlock\Tag;
 use swentel\nostr\EventInterface;
 
 /**
@@ -191,6 +192,20 @@ class Event implements EventInterface
     /**
      * {@inheritdoc}
      */
+    public function getTag(string $key): array
+    {
+        $tags = [];
+        foreach ($this->tags as $tag) {
+            if ($tag[0] === $key) {
+                $tags[] =  $tag;
+            }
+        }
+        return $tags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setCreatedAt(int $time): static
     {
         $this->created_at = $time;
@@ -226,6 +241,23 @@ class Event implements EventInterface
     public function toJson(): string
     {
         return json_encode($this->toArray(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function populate(object $input): static
+    {
+        $this->setContent($input->content);
+        $this->setCreatedAt($input->created_at);
+        $this->setId($input->id);
+        $this->setKind($input->kind);
+        $this->setPublicKey($input->pubkey);
+        $this->setSignature($input->sig);
+        if (!empty($input->tags)) {
+            $this->setTags($input->tags);
+        }
+        return $this;
     }
 
     /**
