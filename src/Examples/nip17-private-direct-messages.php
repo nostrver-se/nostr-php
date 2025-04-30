@@ -53,7 +53,7 @@ try {
 
     print PHP_EOL . "===== PUBLISHING GIFT WRAPS TO RELAYS =====" . PHP_EOL;
 
-    // Normally, you would get the relay list from the NIP-10050 event
+    // Normally, you would get the relay list from the kind 10050 event (see NIP-51)
     // but for this example, we'll use hardcoded relay URLs
     print "Publishing to receiver's relay: wss://relay.example.com" . PHP_EOL;
 
