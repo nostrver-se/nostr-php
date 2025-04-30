@@ -74,7 +74,7 @@ try {
     $decryptedEvent = DirectMessage::decryptDirectMessage(
         $result['receiver'],  // The gift wrap to decrypt
         $bobPrivKey,          // Bob's private key
-        true,                  // Verify the gift wrap is addressed to Bob
+        true,                 // Verify the gift wrap is addressed to Bob
     );
 
     if ($decryptedEvent) {
@@ -124,7 +124,7 @@ try {
         $decryptedReply = DirectMessage::decryptDirectMessage(
             $replyResult['receiver'],  // The gift wrap to decrypt
             $alicePrivKey,             // Alice's private key
-            true,                       // Verify the gift wrap is addressed to Alice
+            true,                      // Verify the gift wrap is addressed to Alice
         );
 
         if ($decryptedReply) {
