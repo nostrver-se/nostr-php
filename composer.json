@@ -40,9 +40,6 @@
       "swentel\\nostr\\": "src/"
     }
   },
-  "bin": [
-    "bin/nostr-php"
-  ],
   "config": {
     "platform": {
       "php": "8.1"
