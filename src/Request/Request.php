@@ -64,20 +64,20 @@ class Request implements RequestInterface
      */
     public function send(): array
     {
-        try {
-            $result = [];
-            // Send message to each relay defined in this set in $this->relays.
-            /** @var Relay $relay */
-            foreach ($this->relays->getRelays() as $relay) {
+        $result = [];
+        // Send message to each relay defined in this set in $this->relays.
+        /** @var Relay $relay */
+        foreach ($this->relays->getRelays() as $relay) {
+            try {
                 $result[$relay->getUrl()] = $this->getResponseFromRelay($relay);
+            } catch (WebSocket\Exception\Exception $e) {
+                $result[$relay->getUrl()][] = [
+                    'ERROR',
+                    '',
+                    false,
+                    $e->getMessage(),
+                ];
             }
-        } catch (WebSocket\Exception\ClientException $e) {
-            $result[$relay->getUrl()][] = [
-                'ERROR',
-                '',
-                false,
-                $e->getMessage(),
-            ];
         }
 
         return $result;
@@ -105,8 +105,12 @@ class Request implements RequestInterface
 
         $client = $relay->getClient();
         $client->setTimeout(60);
-        $client->text($this->payload);
 
+        try {
+            $client->text($this->payload);
+        } catch (\Exception $e) {
+            throw $e;
+        }
         // The Nostr subscription lifecycle within a websocket connection lifecycle.
         while ($response = $client->receive()) {
             if ($response === null) {
