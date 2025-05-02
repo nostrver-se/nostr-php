@@ -26,14 +26,9 @@ try {
     $filters = [$filter1];
     $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relays = [
-        new Relay('wss://nostr.sebastix.dev'),
         new Relay('wss://relay.damus.io'),
-        new Relay('wss://welcome.nostr.wine'),
         new Relay('wss://nos.lol'),
         new Relay('wss://relay.nostr.band'),
-        new Relay('wss://sebastix.social/relay'),
-        new Relay('wss://nostr.wine'),
-        new Relay('wss://pyramid.fiatjaf.com'),
     ];
     $relaySet = new RelaySet();
     $relaySet->setRelays($relays);
@@ -43,7 +38,9 @@ try {
     foreach ($response as $relayUrl => $relayResponses) {
         print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
         foreach ($relayResponses as $message) {
-            print $message->event->content . PHP_EOL;
+            if ($message->type === 'EVENT') {
+                print $message->event->content . PHP_EOL;
+            }
         }
     }
 } catch (Exception $e) {
