@@ -16,7 +16,7 @@ class RelaySet implements RelaySetInterface
      *
      * @var array
      */
-    protected array $relays;
+    protected array $relays = [];
 
     /**
      * The message to be sent to all relays.
@@ -24,13 +24,6 @@ class RelaySet implements RelaySetInterface
      * @var MessageInterface
      */
     private MessageInterface $message;
-
-    /**
-     * Are all relays connected in this relay set?
-     *
-     * @var bool
-     */
-    public bool $isConnected;
 
     /**
      * @inheritDoc
@@ -61,7 +54,9 @@ class RelaySet implements RelaySetInterface
      */
     public function removeRelay(Relay $relay): void
     {
-        // TODO: Implement removeRelay() method.
+        $this->relays = array_filter($this->relays, function ($r) use ($relay) {
+            return $r !== $relay;
+        });
     }
 
     /**
@@ -88,8 +83,14 @@ class RelaySet implements RelaySetInterface
      */
     public function connect(): bool
     {
-        // TODO: Implement connect() method.
-        return $this->isConnected;
+        try {
+            foreach ($this->relays as $relay) {
+                $relay->connect();
+            }
+            return true;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -97,8 +98,14 @@ class RelaySet implements RelaySetInterface
      */
     public function disconnect(): bool
     {
-        // TODO: Implement disconnect() method.
-        return $this->isConnected;
+        try {
+            foreach ($this->relays as $relay) {
+                $relay->disconnect();
+            }
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -106,7 +113,12 @@ class RelaySet implements RelaySetInterface
      */
     public function isConnected(): bool
     {
-        return $this->isConnected;
+        foreach ($this->relays as $relay) {
+            if (!$relay->isConnected()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -119,7 +131,7 @@ class RelaySet implements RelaySetInterface
             // Send message to each relay defined in this set.
             /** @var Relay $relay */
             foreach ($this->relays as $relay) {
-                $client = new WebSocket\Client($relay->getUrl());
+                $client = $relay->getClient();
                 $payload = $this->message->generate();
                 $client->text($payload);
                 $response = $client->receive();

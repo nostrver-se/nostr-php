@@ -103,7 +103,7 @@ class Request implements RequestInterface
          *    connection is still alive, but it does not confirm the closure of the subscription)
          */
 
-        $client = new Client($relay->getUrl());
+        $client = $relay->getClient();
         $client->setTimeout(60);
         $client->text($this->payload);
 

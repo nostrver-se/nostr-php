@@ -37,19 +37,27 @@ class Relay implements RelayInterface
     private string $payload;
 
     /**
+     * The WebSocket client.
+     *
+     * @var WebSocket\Client|null
+     */
+    private ?WebSocket\Client $client = null;
+
+    /**
      * Relay constructor.
      *
-     * @param string $websocket
+     * @param string $url
      *   The socket URL.
      */
-    public function __construct(string $websocket, MessageInterface|null $message = null)
+    public function __construct(string $url, MessageInterface|null $message = null)
     {
-        $this->url = $websocket;
+        $this->url = $url;
         $this->validateUrl();
         // Backwards compatibility for version <1.2.4
         if ($message !== null) {
             $this->setMessage($message);
         }
+        $this->client = new WebSocket\Client($this->url);
     }
 
     private function validateUrl(): void
@@ -99,13 +107,14 @@ class Relay implements RelayInterface
     public function send(): RelayResponse
     {
         // TODO: deprecate this and replace with $request->send($relay, $message) logic.
-        $this->validateUrl();
 
         try {
-            $client = new WebSocket\Client($this->url);
-            $client->text($this->payload);
-            $response = $client->receive();
-            $client->disconnect();
+            if ($this->client === null) {
+                $this->client = new WebSocket\Client($this->url);
+            }
+            $this->client->text($this->payload);
+            $response = $this->client->receive();
+            $this->client->disconnect();
             if ($response === null) {
                 throw new \RuntimeException('Websocket client response is null');
             }
@@ -119,5 +128,46 @@ class Relay implements RelayInterface
             ];
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function connect(): void
+    {
+        $this->validateUrl();
+        $this->client = new WebSocket\Client($this->url);
+        $this->client->connect();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isConnected(): bool
+    {
+        if ($this->client === null) {
+            return false;
+        }
+        return $this->client->isConnected();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function disconnect(): void
+    {
+        if ($this->isConnected()) {
+            $this->client->disconnect();
+        }
+    }
+
+    /**
+     * Get the WebSocket client.
+     *
+     * @return WebSocket\Client
+     */
+    public function getClient(): WebSocket\Client
+    {
+        return $this->client;
     }
 }
