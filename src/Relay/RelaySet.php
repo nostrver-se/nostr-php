@@ -81,16 +81,22 @@ class RelaySet implements RelaySetInterface
     /**
      * @inheritDoc
      */
-    public function connect(): bool
+    public function connect($throwOnError = true): bool
     {
-        try {
-            foreach ($this->relays as $relay) {
+        $hasError = false;
+        $errors = [];
+        foreach ($this->relays as $relay) {
+            try {
                 $relay->connect();
+            } catch (\Exception $e) {
+                $hasError = true;
+                $errors[] = $relay->getUrl() . ' - ' . $e->getMessage();
             }
-            return true;
-        } catch (\Exception $e) {
-            throw $e;
         }
+        if ($hasError && $throwOnError) {
+            throw new \Exception(implode("\n", $errors));
+        }
+        return !$hasError;
     }
 
     /**
