@@ -34,4 +34,27 @@ interface RelayInterface
      * @return RelayResponseInterface
      */
     public function send(): RelayResponseInterface;
+
+
+    /**
+     * Connects to the relay.
+     *
+     * @return void
+     */
+    public function connect(): void;
+
+    /**
+     * Checks if the connection to the relay is established.
+     *
+     * @return bool
+     */
+    public function isConnected(): bool;
+
+    /**
+     * Disconnects from the relay.
+     *
+     * @return void
+     */
+    public function disconnect(): void;
+
 }
