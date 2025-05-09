@@ -94,7 +94,7 @@ class Profile extends Event
     {
         parent::__construct();
         if ($this->kind !== 0) {
-            throw new \RuntimeException('You cannot set the kind number of ' . __CLASS__ . ' which is fixed to 0');
+            throw new \RuntimeException('You cannot set the kind number of ' . __CLASS__ . ' which is fixed to ' . $this->kind);
         }
         $this->setKind($this->kind);
     }
@@ -114,7 +114,7 @@ class Profile extends Event
         $subscription = new Subscription();
         $filter = new Filter();
         $filter->setLimit(1);
-        $filter->setKinds([0]);
+        $filter->setKinds([$this->kind]);
         $filter->setAuthors([$pubkey]);
         $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
         $relay = new Relay($relayURL);
