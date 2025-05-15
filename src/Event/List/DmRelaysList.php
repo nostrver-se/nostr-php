@@ -17,7 +17,8 @@ use swentel\nostr\Subscription\Subscription;
  * To fetch the relays where to send NIP-17 direct messages of a given pubkey.
  * Described in NIP-17 and NIP-51.
  */
-class DmRelaysList extends Event {
+class DmRelaysList extends Event
+{
     /**
      * Event kind 10050.
      *
@@ -50,7 +51,8 @@ class DmRelaysList extends Event {
      * @param string $relayURL
      * @return array
      */
-    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.nostr.band'): array {
+    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.nostr.band'): array
+    {
         $this->setPublicKey($pubkey);
         $subscription = new Subscription();
         $filter = new Filter();
