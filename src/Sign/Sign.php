@@ -29,8 +29,11 @@ class Sign
 
         $hash_content = $this->serializeEvent($event);
         if ($hash_content) {
-            $id = hash('sha256', $hash_content);
-            $event->setId($id);
+
+            if ($event->getId() === '') {
+                $id = hash('sha256', $hash_content);
+                $event->setId($id);
+            }
 
             $sign = new SchnorrSignature();
             $signature = $sign->sign($private_key, $event->getId());
@@ -45,7 +48,7 @@ class Sign
      *
      * @return bool|string
      */
-    public function serializeEvent(EventInterface $event): bool|string
+    public static function serializeEvent(EventInterface $event): bool|string
     {
         $array =
         [
