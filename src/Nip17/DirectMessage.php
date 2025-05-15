@@ -8,13 +8,9 @@ use swentel\nostr\Encryption\Nip44;
 use swentel\nostr\Event\DirectMessage\DirectMessage as DirectMessageEvent;
 use swentel\nostr\Event\List\DmRelaysList;
 use swentel\nostr\EventInterface;
-use swentel\nostr\Filter\Filter;
 use swentel\nostr\Key\Key;
-use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Nip59\GiftWrapInterface;
 use swentel\nostr\Nip59\GiftWrapService;
-use swentel\nostr\Request\Request;
-use swentel\nostr\Subscription\Subscription;
 
 /**
  * NIP-17: https://github.com/nostr-protocol/nips/blob/master/17.md
@@ -94,6 +90,7 @@ class DirectMessage implements DirectMessageInterface
      * @param bool $verifyRecipient Whether to verify that the gift wrap is addressed to the receiver
      *
      * @return array|null The decrypted event as an array, or null if decryption failed or recipient verification failed
+     * @throws \Exception
      */
     public static function decryptDirectMessage(
         $giftWrap,
@@ -161,89 +158,6 @@ class DirectMessage implements DirectMessageInterface
             print "Decryption failed: " . $e->getMessage() . PHP_EOL;
             throw $e;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    //    public function hasPublishedRelayList(string $pubkey): bool
-    //    {
-    //        $relays = $this->getPreferredRelaysForPubkey($pubkey);
-    //        return !empty($relays);
-    //    }
-
-    /**
-     * {@inheritdoc}
-     */
-    //    public function getPreferredRelaysForPubkey(string $pubkey): array
-    //    {
-    //        $subscription = new Subscription();
-    //
-    //        // Create filter for kind 10050 events from this pubkey
-    //        $filter = new Filter();
-    //        $filter->setKinds([10050]);
-    //        $filter->setAuthors([$pubkey]);
-    //        $filter->setLimit(1);
-    //
-    //        $filters = [$filter];
-    //        $requestMessage = new RequestMessage($subscription->getId(), $filters);
-    //
-    //        // Request from known public relays
-    //        $relays = $this->getKnownRelays();
-    //        $events = [];
-    //
-    //        foreach ($relays as $relayUrl) {
-    //            $relay = new \swentel\nostr\Relay\Relay($relayUrl);
-    //            $request = new Request($relay, $requestMessage);
-    //            $response = $request->send();
-    //
-    //            foreach ($response as $responses) {
-    //                /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $relayResponse */
-    //                foreach ($responses as $relayResponse) {
-    //                    if (isset($relayResponse->event)) {
-    //                        $events[] = $relayResponse->event;
-    //                    }
-    //                }
-    //            }
-    //
-    //            // If we found events, no need to check more relays
-    //            if (!empty($events)) {
-    //                break;
-    //            }
-    //        }
-    //
-    //        if (empty($events)) {
-    //            return [];
-    //        }
-    //
-    //        // Extract relay URLs from the most recent event
-    //        $relayListEvent = $events[0];
-    //        $preferredRelays = [];
-    //
-    //        // The event object from RelayResponse has tags as a property
-    //        if (isset($relayListEvent->tags) && is_array($relayListEvent->tags)) {
-    //            foreach ($relayListEvent->tags as $tag) {
-    //                if (isset($tag[0]) && $tag[0] === 'r' && isset($tag[1])) {
-    //                    $preferredRelays[] = $tag[1];
-    //                }
-    //            }
-    //        }
-    //
-    //        return $preferredRelays;
-    //    }
-
-    /**
-     * Get a list of known relays to query
-     *
-     * @return array List of relay URLs
-     */
-    private function getKnownRelays(): array
-    {
-        // This would ideally come from configuration
-        return [
-            'wss://relay.primal.net',
-            'wss://relay.damus.io',
-        ];
     }
 
     /**

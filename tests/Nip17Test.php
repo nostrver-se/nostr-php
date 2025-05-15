@@ -166,35 +166,6 @@ class Nip17Test extends TestCase
     }
 
     /**
-     * Test the relay list checking functionality
-     */
-//    public function testRelayListChecking(): void
-//    {
-//        // Create a mock DirectMessage that implements DirectMessageInterface
-//        $mockDirectMessage = $this->getMockBuilder(DirectMessage::class)
-//            ->disableOriginalConstructor()
-//            ->onlyMethods(['getPreferredRelaysForPubkey'])
-//            ->getMock();
-//
-//        // Set up expectations for Alice (has relay list)
-//        $mockDirectMessage->method('getPreferredRelaysForPubkey')
-//            ->willReturnMap([
-//                [$this->alicePubKey, ['wss://relay.example.com']],
-//                [$this->bobPubKey, []],
-//            ]);
-//
-//        // Test with reflection to access the protected method
-//        $reflectionMethod = new \ReflectionMethod(DirectMessage::class, 'hasPublishedRelayList');
-//        $reflectionMethod->setAccessible(true);
-//
-//        // Test if Alice has published relay list (should return true)
-//        $this->assertTrue($reflectionMethod->invoke($mockDirectMessage, $this->alicePubKey));
-//
-//        // Test if Bob has published relay list (should return false)
-//        $this->assertFalse($reflectionMethod->invoke($mockDirectMessage, $this->bobPubKey));
-//    }
-
-    /**
      * Test decrypting a direct message with proper seal and gift wrap as per NIP-59
      */
     public function testDecryptDirectMessage(): void

@@ -8,6 +8,7 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Relay\Relay;
+use swentel\nostr\RelayResponse\RelayResponseEose;
 use swentel\nostr\RelayResponse\RelayResponseEvent;
 use swentel\nostr\Request\Request;
 use swentel\nostr\Subscription\Subscription;
@@ -67,7 +68,7 @@ class DmRelaysList extends Event
             foreach ($relayResponses as $relayResponse) {
                 if ($relayResponse instanceof RelayResponseEvent) {
                     $event = $relayResponse->event;
-                    //$this->setTags($event->tags);
+                    $this->setTags($event->tags);
                     $this->relays = $this->getTag('relays');
                 }
             }
@@ -81,6 +82,10 @@ class DmRelaysList extends Event
                     $response = $request->send();
                     foreach ($response as $relayResponses) {
                         foreach ($relayResponses as $relayResponse) {
+                            if ($relayResponse instanceof RelayResponseEose) {
+                                // TODO this does not work to get to the next relay in $other_relays_to_query
+                                break 4;
+                            }
                             if ($relayResponse instanceof RelayResponseEvent) {
                                 $event = $relayResponse->event;
                                 $this->setTags($event->tags);

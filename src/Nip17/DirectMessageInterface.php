@@ -24,20 +24,4 @@ interface DirectMessageInterface
         array $additionalTags = [],
         ?string $replyToId = null,
     ): array;
-
-    /**
-     * Check if a pubkey has published a kind 10050 event with preferred relays
-     *
-     * @param string $pubkey The public key to check
-     * @return bool True if the pubkey has published a kind 10050 event
-     */
-    //    public function hasPublishedRelayList(string $pubkey): bool;
-
-    /**
-     * Get preferred relays for a pubkey from kind 10050 events
-     *
-     * @param string $pubkey The public key to get relays for
-     * @return array Array of relay URLs
-     */
-    //    public function getPreferredRelaysForPubkey(string $pubkey): array;
 }
