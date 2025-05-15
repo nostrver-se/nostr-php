@@ -11,6 +11,8 @@ use swentel\nostr\Sign\Sign;
 
 class RelaySetTest extends TestCase
 {
+    private $actualRelayUrls = ['wss://nos.lol', 'wss://relay.primal.net'];
+
     /**
      * Tests sending a note to a set of relays.
      */
@@ -32,14 +34,79 @@ class RelaySetTest extends TestCase
         $relay4 = new Relay('http://not-wss.com');
 
         $relaySet = $this->createMock(RelaySet::class);
-        $relaySet->setRelays([$relay1, $relay2, $relay3]);
-        $relaySet->expects($this->once())
-            ->method('send')
-            ->willReturn([
-                $relaySet->getRelays(),
-            ]);
+        $relaySet->method('getRelays')->willReturn([$relay1, $relay2, $relay3]);
+        $relaySet->method('send')->willReturn([
+            'wss://example1.com' => ['status' => 'success'],
+            'wss://example2.com' => ['status' => 'success'],
+            'wss://example3.com' => ['status' => 'success'],
+        ]);
 
         $response = $relaySet->send();
         $this->assertIsArray($response);
+    }
+
+    /**
+     * Tests removing a relay from a relay set.
+     */
+    public function testRemoveRelay()
+    {
+        $relay1 = new Relay('wss://example1.com');
+        $relay2 = new Relay('wss://example2.com');
+        $relay3 = new Relay('wss://example3.com');
+
+        $relaySet = new RelaySet();
+        $relaySet->setRelays([$relay1, $relay2, $relay3]);
+
+        $this->assertCount(3, $relaySet->getRelays());
+
+        $relaySet->removeRelay($relay2);
+
+        $this->assertCount(2, $relaySet->getRelays());
+        $this->assertContains($relay1, $relaySet->getRelays());
+        $this->assertContains($relay3, $relaySet->getRelays());
+        $this->assertNotContains($relay2, $relaySet->getRelays());
+    }
+
+    /**
+     * Tests connecting to relays in a relay set.
+     */
+    public function testConnect()
+    {
+        $relaySet = new RelaySet();
+
+        foreach ($this->actualRelayUrls as $url) {
+            $relay = new Relay($url);
+            $relaySet->addRelay($relay);
+        }
+
+        $this->assertFalse($relaySet->isConnected());
+
+        $result = $relaySet->connect();
+
+        $this->assertTrue($result);
+        $this->assertTrue($relaySet->isConnected());
+    }
+
+    /**
+     * Tests disconnecting from relays in a relay set.
+     */
+    public function testDisconnect()
+    {
+        $relaySet = new RelaySet();
+
+        foreach ($this->actualRelayUrls as $url) {
+            $relay = new Relay($url);
+            $relaySet->addRelay($relay);
+        }
+
+        // First connect to the relays
+        $relaySet->connect();
+        $this->assertTrue($relaySet->isConnected());
+
+        // Then disconnect
+        $result = $relaySet->disconnect();
+
+        $this->assertTrue($result);
+        $this->assertFalse($relaySet->isConnected());
     }
 }
