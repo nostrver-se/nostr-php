@@ -6,11 +6,7 @@ namespace swentel\nostr\Relay;
 
 use swentel\nostr\MessageInterface;
 use swentel\nostr\RelayInterface;
-use swentel\nostr\CommandResultInterface;
-use swentel\nostr\RelayResponse\RelayResponseOk;
-use swentel\nostr\RelayResponse\RelayResponseNotice;
 use swentel\nostr\RelayResponse\RelayResponse;
-use swentel\nostr\RelayResponseInterface;
 use WebSocket;
 
 class Relay implements RelayInterface
