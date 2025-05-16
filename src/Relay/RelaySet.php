@@ -94,7 +94,7 @@ class RelaySet implements RelaySetInterface
             }
         }
         if ($hasError && $throwOnError) {
-            throw new \Exception(implode("\n", $errors));
+            throw new \RuntimeException(implode("\n", $errors));
         }
         return !$hasError;
     }
