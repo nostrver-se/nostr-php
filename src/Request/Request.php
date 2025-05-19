@@ -69,6 +69,10 @@ class Request implements RequestInterface
         /** @var Relay $relay */
         foreach ($this->relays->getRelays() as $relay) {
             try {
+                // Connect relay if disconnected.
+                if (!$relay->isConnected()) {
+                    $relay->connect();
+                }
                 $result[$relay->getUrl()] = $this->getResponseFromRelay($relay);
             } catch (WebSocket\Exception\Exception $e) {
                 $result[$relay->getUrl()][] = [
