@@ -36,7 +36,11 @@ try {
     // Handle response.
     foreach ($response as $relayUrl => $relayResponses) {
         foreach ($relayResponses as $relayResponse) {
-            if ($relayResponse->isSuccess && $relayResponse instanceof RelayResponseOk) {
+            if (!isset($relayResponse->isSuccess) && $relayResponse[0] === 'ERROR') {
+                $errorMessage = $relayResponse[3];
+                throw new \RuntimeException($errorMessage);
+            }
+            if ($relayResponse instanceof RelayResponseOk) {
                 print 'The event has been transmitted to the relay ' . $relayUrl . PHP_EOL;
                 $eventId = $relayResponse->eventId;
                 print 'The received event id from the relay: ' . $relayResponse->eventId;
