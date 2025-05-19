@@ -197,7 +197,7 @@ class Event implements EventInterface
         $tags = [];
         foreach ($this->tags as $tag) {
             if ($tag[0] === $key) {
-                $tags[] =  $tag;
+                $tags[] = $tag;
             }
         }
         return $tags;
