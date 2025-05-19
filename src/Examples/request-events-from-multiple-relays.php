@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use swentel\nostr\Event\Event;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Relay\Relay;
@@ -29,6 +28,7 @@ try {
         new Relay('wss://relay.damus.io'),
         new Relay('wss://nos.lol'),
         new Relay('wss://relay.nostr.band'),
+        new Relay('wss://nostr.wine'),
     ];
     $relaySet = new RelaySet();
     $relaySet->setRelays($relays);
