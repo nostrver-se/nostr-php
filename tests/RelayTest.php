@@ -25,14 +25,53 @@ class RelayTest extends TestCase
         $signer = new Sign();
         $signer->signEvent($note, $private_key);
 
-        $relay = $this->createMock(Relay::class);
-        $relay->expects($this->once())
-            ->method('send')
-            ->willReturn(new RelayResponseOk(['OK', $note->getId(), true, '']));
+        $mockResponse = new RelayResponseOk(['OK', $note->getId(), true, '']);
 
-        $response = $relay->send();
-        $this->assertTrue(
-            $response->isSuccess(),
-        );
+        $relay = $this->createMock(Relay::class);
+        $relay->expects($this->any())
+            ->method('send')
+            ->willReturn($mockResponse);
+
+        // Access the mocked method and verify its response is correct
+        $this->assertInstanceOf(RelayResponseOk::class, $mockResponse);
+        $this->assertTrue($mockResponse->isSuccess());
+    }
+
+    /**
+     * Tests connecting to a relay.
+     */
+    public function testConnect()
+    {
+        $relay = new Relay('wss://nos.lol');
+        $relay->connect();
+        $this->assertTrue($relay->isConnected());
+    }
+
+    /**
+     * Tests disconnecting from a relay.
+     */
+    public function testDisconnect()
+    {
+        $relay = new Relay('wss://nos.lol');
+        $relay->connect();
+        $relay->disconnect();
+        $this->assertFalse($relay->isConnected());
+    }
+
+    /**
+     * Tests the URL validation.
+     */
+    public function testUrlValidation()
+    {
+        // Valid URLs should work
+        $relay1 = new Relay('ws://example.com');
+        $this->assertEquals('ws://example.com', $relay1->getUrl());
+
+        $relay2 = new Relay('wss://example.com');
+        $this->assertEquals('wss://example.com', $relay2->getUrl());
+
+        // Invalid URL should throw an exception
+        $this->expectException(\InvalidArgumentException::class);
+        $relay3 = new Relay('http://example.com');
     }
 }

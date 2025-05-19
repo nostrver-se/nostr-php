@@ -31,7 +31,7 @@ try {
      *   Each message will also contain the event.
      */
     if (empty($response)) {
-        throw new \RuntimeException(sprintf('Response from relay %s is empty', $relayUrl));
+        throw new \RuntimeException(sprintf('Response from relay %s is empty', $relay->getUrl()));
     }
     // Array for the events we're fetching from the relay
     $events = [];
