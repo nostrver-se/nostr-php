@@ -230,7 +230,8 @@ class Request implements RequestInterface
      * @param string $subscriptionId
      * @return void
      */
-    private function sendCloseMessage(Relay $relay, string $subscriptionId):void {
+    private function sendCloseMessage(Relay $relay, string $subscriptionId): void
+    {
         $client = $relay->getClient();
         $closeMessage = new CloseMessage($subscriptionId);
         $message = $closeMessage->generate();
@@ -243,7 +244,8 @@ class Request implements RequestInterface
      *
      * @throws \Throwable
      */
-    private function sendAuthMessage(Relay $relay):void {
+    private function sendAuthMessage(Relay $relay): void
+    {
         $client = $relay->getClient();
         if (!isset($_SESSION['challenge'])) {
             $client->disconnect();
