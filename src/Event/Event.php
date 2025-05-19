@@ -192,6 +192,30 @@ class Event implements EventInterface
     /**
      * {@inheritdoc}
      */
+    public function setTag(string $key, array $value): static
+    {
+        // Check if the key already exists in any of the tags
+        $keyExists = false;
+        foreach ($this->tags as $index => $tag) {
+            if ($tag[0] === $key) {
+                // Key exists, update the tag
+                $this->tags[$index] = array_merge([$key], $value);
+                $keyExists = true;
+                break;
+            }
+        }
+
+        // If key doesn't exist, add a new tag
+        if (!$keyExists) {
+            $this->tags[] = array_merge([$key], $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTag(string $key): array
     {
         $tags = [];
