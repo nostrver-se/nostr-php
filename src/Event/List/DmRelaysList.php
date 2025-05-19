@@ -76,31 +76,28 @@ class DmRelaysList extends Event
         if (empty($this->relays)) {
             // Fallback when no relays are found for given relay URL, let's query other relays.
             $other_relays_to_query = $this->getKnownRelays();
-            do {
-                foreach ($other_relays_to_query as $relay_url) {
-                    $subscription = new Subscription();
-                    $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
-                    $relay->setUrl($relay_url);
-                    $request = new Request($relay, $requestMessage);
-                    $response = $request->send();
-                    foreach ($response as $relayResponses) {
-                        foreach ($relayResponses as $relayResponse) {
-                            if ($relayResponse instanceof RelayResponseEose) {
-                                // TODO this does not work to get to the next relay in $other_relays_to_query
-                                break 4;
-                            }
-                            if ($relayResponse instanceof RelayResponseEvent) {
-                                $event = $relayResponse->event;
-                                $this->setTags($event->tags);
-                                $this->relays = $this->getTag('relay');
-                            }
+            foreach ($other_relays_to_query as $relay_url) {
+                $subscription = new Subscription();
+                $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
+                $relay->setUrl($relay_url);
+                $request = new Request($relay, $requestMessage);
+                $response = $request->send();
+                foreach ($response as $relayResponses) {
+                    foreach ($relayResponses as $relayResponse) {
+                        if ($relayResponse instanceof RelayResponseEose) {
+                            break;
+                        }
+                        if ($relayResponse instanceof RelayResponseEvent) {
+                            $event = $relayResponse->event;
+                            $this->setTags($event->tags);
+                            $this->relays = $this->getTag('relay');
                         }
                     }
-                    if (!empty($this->relays)) {
-                        break;
-                    }
                 }
-            } while (empty($this->relays));
+                if (!empty($this->relays)) {
+                    break;
+                }
+            }
         }
         return $this->relays;
     }
@@ -112,7 +109,7 @@ class DmRelaysList extends Event
      */
     private function getKnownRelays(): array
     {
-        // This would ideally come from configuration
+        // TODO: This would ideally come from configuration.
         return [
             'wss://relay.damus.io',
             'wss://relay.primal.net',
