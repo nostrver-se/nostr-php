@@ -69,7 +69,7 @@ class DmRelaysList extends Event
                 if ($relayResponse instanceof RelayResponseEvent) {
                     $event = $relayResponse->event;
                     $this->setTags($event->tags);
-                    $this->relays = $this->getTag('relays');
+                    $this->relays = $this->getTag('relay');
                 }
             }
         }
@@ -78,7 +78,10 @@ class DmRelaysList extends Event
             $other_relays_to_query = $this->getKnownRelays();
             do {
                 foreach ($other_relays_to_query as $relay_url) {
+                    $subscription = new Subscription();
+                    $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
                     $relay->setUrl($relay_url);
+                    $request = new Request($relay, $requestMessage);
                     $response = $request->send();
                     foreach ($response as $relayResponses) {
                         foreach ($relayResponses as $relayResponse) {
