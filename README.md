@@ -255,18 +255,6 @@ This directory also serves as the root directory for https://phpdoc.nostr-php.de
 
 The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 
-## nostr-php script (cli client)
-
-The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
-
-```console
-Usage:
-$ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
-```
-
-Note: the key arguments expects a file with your private key! Do not paste your
-private key on command line.
-
 ## Roadmap / features
 
 - [x] Keypair generation and validation
