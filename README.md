@@ -290,11 +290,13 @@ private key on command line.
   - [x] Encode identifiers
   - [x] Decode identifiers
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
-- [ ] Support NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
+- [x] Support NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
+- [ ] Support NIP-65 relay list metadata
+- [ ] Support NIP-29 relay-based groups (communities)
+- [ ] Support NIP-52 calendar events
 - [ ] Support NIP-46 remote signing initiated by the client (issue [#87](https://github.com/nostrver-se/nostr-php/issues/87)) 
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
 - [ ] Support NIP-03 openTimestamps attestations for events
 - [ ] Support NIP-14 subject tag in text events
 - [ ] Support NIP-40 expiration timestamp
