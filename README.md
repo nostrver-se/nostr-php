@@ -278,7 +278,7 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
   - [x] Encode identifiers
   - [x] Decode identifiers
 - [x] NIP-24 extra metadata fields and tags (pr [94](https://github.com/nostrver-se/nostr-php/pull/94) credits to [dsbaars](https://github.com/dsbaars))
-- [x] NIP-05 mapper Nostr keys to DNS-based internet identifiers (pr [89](https://github.com/nostrver-se/nostr-php/pull/89) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-05 mapping Nostr keys to DNS-based internet identifiers (pr [89](https://github.com/nostrver-se/nostr-php/pull/89) credits to [dsbaars](https://github.com/dsbaars))
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [x] NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90) credits to [dsbaars](https://github.com/dsbaars))
 - [ ] Support NIP-65 relay list metadata
