@@ -274,11 +274,11 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 - [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-42 authentication of clients to relays
-- [x] Support NIP-19 bech32-encoded identifiers
+- [x] NIP-19 bech32-encoded identifiers
   - [x] Encode identifiers
   - [x] Decode identifiers
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
-- [x] Support NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
+- [x] NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
 - [ ] Support NIP-65 relay list metadata
 - [ ] Support NIP-29 relay-based groups (communities)
 - [ ] Support NIP-52 calendar events
