@@ -270,7 +270,6 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
     - [x] `EOSE` - end of stored events
     - [x] `CLOSED` - subscription is ended on the server side
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
-- [x] Improve handling relay responses
 - [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-42 authentication of clients to relays
