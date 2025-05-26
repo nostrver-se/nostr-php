@@ -120,8 +120,12 @@ class TLV implements TLVInterface
         } else {
             $relaySet = new RelaySet();
             foreach ($relays as $relayUrl) {
-                $relay = new Relay($relayUrl);
-                $relaySet->addRelay($relay);
+                if ($relayUrl instanceof Relay) {
+                    $relaySet->addRelay($relayUrl);
+                } else {
+                    $relay = new Relay($relayUrl);
+                    $relaySet->addRelay($relay);
+                }
             }
             $this->relays = $relaySet;
         }
