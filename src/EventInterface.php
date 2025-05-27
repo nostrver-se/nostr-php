@@ -144,6 +144,15 @@ interface EventInterface
     public function getTag(string $key): array;
 
     /**
+     * Set a specific tag by key.
+     *
+     * @param string $key
+     * @param array $value
+     * @return $this
+     */
+    public function setTag(string $key, array $value): static;
+
+    /**
      * Convert the object to an array.
      *
      * @param array $ignore_properties
