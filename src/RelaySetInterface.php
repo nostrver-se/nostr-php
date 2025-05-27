@@ -54,9 +54,12 @@ interface RelaySetInterface
     /**
      * Connect to all relays in this set.
      *
+     * @param bool $throwOnErrorx
+     *   If true, throw an exception if any relay fails to connect.
+     *   If false, return false if any relay fails to connect.
      * @return bool
      */
-    public function connect(): bool;
+    public function connect($throwOnError = true): bool;
     /**
      * Disconnect all relays in this set.
      *

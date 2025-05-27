@@ -173,6 +173,7 @@ interface EventInterface
      * Populate to a Nostr event object with a given object.
      *
      * @param object $input
+     *
      * @return $this
      */
     public function populate(object $input): static;
@@ -186,6 +187,41 @@ interface EventInterface
      * @return bool
      */
     public function verify(string|object $input = ''): bool;
+
+    /**
+     * For kind n such that 1000 <= n < 10000 || 4 <= n < 45 || n == 1 || n == 2,
+     * events are regular, which means they're all expected to be stored by relays.
+     *
+     * @return bool
+     */
+    public function isRegular(): bool;
+
+    /**
+     * For kind n such that 10000 <= n < 20000 || n == 0 || n == 3, events are replaceable,
+     * which means that, for each combination of pubkey and kind,
+     * only the latest event MUST be stored by relays, older versions MAY be discarded.
+     *
+     * @return bool
+     */
+    public function isReplaceable(): bool;
+
+    /**
+     * For kind n such that 20000 <= n < 30000, events are ephemeral,
+     * which means they are not expected to be stored by relays.
+     *
+     * @return bool
+     */
+    public function isEphemeral(): bool;
+
+    /**
+     * For kind n such that 30000 <= n < 40000, events are addressable by their kind,
+     * pubkey and d tag value -- which means that, for each combination of kind,
+     * pubkey and the d tag value, only the latest event MUST be stored by relays,
+     * older versions MAY be discarded.
+     *
+     * @return bool
+     */
+    public function isAddressable(): bool;
 
     /**
      * Create an Event object from a verified event input.

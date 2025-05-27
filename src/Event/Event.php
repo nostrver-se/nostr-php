@@ -221,7 +221,7 @@ class Event implements EventInterface
         $tags = [];
         foreach ($this->tags as $tag) {
             if ($tag[0] === $key) {
-                $tags[] =  $tag;
+                $tags[] = $tag;
             }
         }
         return $tags;
@@ -367,10 +367,60 @@ class Event implements EventInterface
     }
 
     /**
-     * Create an Event object from a verified event input.
-     *
-     * @param string|object $input The event data as JSON string or decoded object
-     * @return ?static Returns an Event object if valid, null otherwise
+     * {@inheritdoc}
+     */
+    public function isRegular(): bool
+    {
+        if (
+            ($this->getKind() >= 4 &&  $this->getKind() < 45)
+            || ($this->getKind() >= 1000 &&  $this->getKind() < 10000)
+            || $this->getKind() === 1
+            || $this->getKind() === 2
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isReplaceable(): bool
+    {
+        if (
+            ($this->getKind() >= 10000 &&  $this->getKind() < 20000)
+            || $this->getKind() === 0
+            || $this->getKind() === 3
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEphemeral(): bool
+    {
+        if ($this->getKind() >= 20000 &&  $this->getKind() < 30000) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAddressable(): bool
+    {
+        if ($this->getKind() >= 30000 &&  $this->getKind() < 40000) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public static function fromVerified(string|object $input): ?static
     {
@@ -399,5 +449,4 @@ class Event implements EventInterface
             return null;
         }
     }
-
 }
