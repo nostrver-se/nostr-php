@@ -160,7 +160,8 @@ class PersistentConnection
      *
      * @return void
      */
-    public function pause(): void {
+    public function pause(): void
+    {
         if ($this->websocketClient->isRunning()) {
             $this->websocketClient->stop();
         }
@@ -172,7 +173,8 @@ class PersistentConnection
      * @return void
      * @throws \Throwable
      */
-    public function resume(): void {
+    public function resume(): void
+    {
         if (!$this->websocketClient->isRunning()) {
             $this->websocketClient->start();
         }
@@ -183,7 +185,8 @@ class PersistentConnection
      *
      * @return void
      */
-    public function close(): void {
+    public function close(): void
+    {
         if ($this->websocketClient->isConnected()) {
             $this->websocketClient->disconnect();
         }
