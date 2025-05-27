@@ -38,7 +38,21 @@ class PersistentConnection
      *
      * @var array
      */
-    protected array $responses;
+    protected array $responses = [];
+
+    /**
+     * Array of callback functions (closures) to be called when messages are received.
+     *
+     * @var callable[]
+     */
+    protected array $messageCallbacks = [];
+
+    /**
+     * Whether to print received messages to stdout.
+     *
+     * @var bool
+     */
+    protected bool $printMessages = false;
 
     /**
      * https://github.com/sirn-se/websocket-php/blob/v3.4-main/docs/Client.md#persistent-connection
@@ -63,6 +77,32 @@ class PersistentConnection
     }
 
     /**
+     * Adds a callback function to be called when messages are received.
+     *
+     * The callback will receive the RelayResponse object as its parameter.
+     *
+     * @param callable $callback (Closure) function to be called with the RelayResponse
+     * @return self
+     */
+    public function onReceive(callable $callback): self
+    {
+        $this->messageCallbacks[] = $callback;
+        return $this;
+    }
+
+    /**
+     * Enable or disable printing messages to stdout.
+     *
+     * @param bool $enable Whether to print messages
+     * @return self
+     */
+    public function setPrintMessages(bool $enable = true): self
+    {
+        $this->printMessages = $enable;
+        return $this;
+    }
+
+    /**
      * For transmitting messages between the client and relay.
      *
      * @return array
@@ -73,10 +113,17 @@ class PersistentConnection
         try {
             $this->websocketClient->text($this->payload);
             $this->websocketClient->onText(function (Client $client, Connection $connection, Text $message) {
-                $this->responses[] = RelayResponse::create(json_decode($message->getContent()));
-                $res = end($this->responses);
-                if (isset($res->event->content)) {
-                    print $res->event->content . PHP_EOL;
+                $relayResponse = RelayResponse::create(json_decode($message->getContent()));
+                $this->responses[] = $relayResponse;
+
+                // Print message if enabled
+                if ($this->printMessages && isset($relayResponse->event->content)) {
+                    print $relayResponse->event->content . PHP_EOL;
+                }
+
+                // Call all registered callbacks
+                foreach ($this->messageCallbacks as $callback) {
+                    $callback($relayResponse);
                 }
             })->start();
         } catch (\Exception $e) {
@@ -85,6 +132,17 @@ class PersistentConnection
             throw new \RuntimeException($e->getMessage());
         }
         return $this->responses;
+    }
+
+    /**
+     * Clear all registered message callbacks.
+     *
+     * @return self
+     */
+    public function clearCallbacks(): self
+    {
+        $this->messageCallbacks = [];
+        return $this;
     }
 
     private function setPersistent(bool $persistent = true): void
@@ -97,4 +155,38 @@ class PersistentConnection
         return $this->persistent;
     }
 
+    /**
+     * Pause the socket connection receiving messages.
+     *
+     * @return void
+     */
+    public function pause(): void {
+        if ($this->websocketClient->isRunning()) {
+            $this->websocketClient->stop();
+        }
+    }
+
+    /**
+     * Resume paused socket connection to start receiving messages again.
+     *
+     * @return void
+     * @throws \Throwable
+     */
+    public function resume(): void {
+        if (!$this->websocketClient->isRunning()) {
+            $this->websocketClient->start();
+        }
+    }
+
+    /**
+     * Disconnect and close the socket connection.
+     *
+     * @return void
+     */
+    public function close(): void {
+        if ($this->websocketClient->isConnected()) {
+            $this->websocketClient->disconnect();
+        }
+        $this->websocketClient->close();
+    }
 }
