@@ -53,12 +53,10 @@ class DirectMessage implements DirectMessageInterface
         // Discover receiver's preferred relays
         $receiverRelays = new DmRelaysList();
         $receiverRelays->getRelays($receiverPubkey);
-        //$receiverRelays = $this->getPreferredRelaysForPubkey($receiverPubkey);
 
         // Get sender's preferred relays
         $senderRelays = new DmRelaysList();
         $senderRelays->getRelays($receiverPubkey);
-        //$senderRelays = $this->getPreferredRelaysForPubkey($senderPubkey);
 
         // Create the base event (kind 14)
         $event = $this->createDirectMessageEvent($message, $receiverPubkey, $replyToId, $additionalTags);

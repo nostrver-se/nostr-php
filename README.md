@@ -255,18 +255,6 @@ This directory also serves as the root directory for https://phpdoc.nostr-php.de
 
 The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 
-## nostr-php script (cli client)
-
-The library ships with a simple CLI client (`bin/nostr-php`) to post a short text note to a Nostr relay.
-
-```console
-Usage:
-$ bin/nostr-php --content "Hello world!" --key /home/path/to/nostr-private.key --relay wss://nostr.pleb.network
-```
-
-Note: the key arguments expects a file with your private key! Do not paste your
-private key on command line.
-
 ## Roadmap / features
 
 - [x] Keypair generation and validation
@@ -282,19 +270,22 @@ private key on command line.
     - [x] `EOSE` - end of stored events
     - [x] `CLOSED` - subscription is ended on the server side
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
-- [x] Improve handling relay responses
 - [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-42 authentication of clients to relays
-- [x] Support NIP-19 bech32-encoded identifiers
+- [x] NIP-19 bech32-encoded identifiers (pr [#68](https://github.com/nostrver-se/nostr-php/pull/68))
   - [x] Encode identifiers
   - [x] Decode identifiers
+- [x] NIP-24 extra metadata fields and tags (pr [94](https://github.com/nostrver-se/nostr-php/pull/94) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-05 mapping Nostr keys to DNS-based internet identifiers (pr [89](https://github.com/nostrver-se/nostr-php/pull/89) credits to [dsbaars](https://github.com/dsbaars))
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
-- [ ] Support NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90))
+- [x] NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90) credits to [dsbaars](https://github.com/dsbaars))
+- [ ] Support NIP-65 relay list metadata
+- [ ] Support NIP-29 relay-based groups (communities)
+- [ ] Support NIP-52 calendar events
 - [ ] Support NIP-46 remote signing initiated by the client (issue [#87](https://github.com/nostrver-se/nostr-php/issues/87)) 
 - [ ] Support NIP-45 event counts
 - [ ] Support NIP-50 search capability
-- [ ] Support realtime (runtime) subscriptions with the `bin/nostr-php` CLI client to listen to new events from relays
 - [ ] Support NIP-03 openTimestamps attestations for events
 - [ ] Support NIP-14 subject tag in text events
 - [ ] Support NIP-40 expiration timestamp
