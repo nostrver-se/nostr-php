@@ -28,7 +28,7 @@ class Nip13Helper
 
         $count = 0;
         // Process each character in the hex string
-        for ($i = 0; $i < strlen($id); $i++) {
+        for ($i = 0, $iMax = strlen($id); $i < $iMax; $i++) {
             $nibble = hexdec($id[$i]);
 
             if ($nibble === 0) {
