@@ -37,7 +37,7 @@ try {
     $events = [];
     foreach ($response as $relayUrl => $relayResponses) {
         print 'Received ' . count($response[$relayUrl]) . ' message(s) received from relay ' . $relayUrl . PHP_EOL;
-        /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $message */
+        /** @var \swentel\nostr\RelayResponse\RelayResponseEvent $relayResponse */
         foreach ($relayResponses as $relayResponse) {
             if (isset($relayResponse->event->content)) {
                 // Save event to array
