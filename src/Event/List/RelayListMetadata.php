@@ -14,18 +14,18 @@ use swentel\nostr\Request\Request;
 use swentel\nostr\Subscription\Subscription;
 
 /**
- * DmRelaysList class for DM relays.
- * To fetch the relays where to send NIP-17 direct messages of a given pubkey.
- * Described in NIP-17 and NIP-51.
+ * Relay List Metadata
+ * To fetch the relays where to write to and read from of a given pubkey.
+ * Described in NIP-65.
  */
-class DmRelaysList extends Event
+class RelayListMetadata extends Event
 {
     /**
-     * Event kind 10050.
+     * Event kind 10002.
      *
      * @var int
      */
-    protected int $kind = 10050;
+    protected int $kind = 10002;
 
     /**
      * @var array
@@ -35,30 +35,80 @@ class DmRelaysList extends Event
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(string $pubkey, string $relayURL = 'wss://purplepag.es')
     {
         parent::__construct();
-        if ($this->kind !== 10050) {
+        if ($this->kind !== 10002) {
             throw new \RuntimeException('You cannot set the kind number of ' . __CLASS__ . ' which is fixed to ' . $this->kind);
         }
         $this->setKind($this->kind);
+        $this->fetch($pubkey, $relayURL);
     }
 
     /**
-     * Get the DM relays from a given pubkey and optional given relay URL.
+     * Get all relays.
+     *
+     * @return array
+     */
+    public function getRelays(): array {
+        if (empty($this->relays)) {
+            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+        }
+        return $this->relays;
+    }
+
+    /**
+     * Get relays where the npub writes to.
+     *
+     * @return array
+     */
+    public function getWriteRelays(): array {
+        if (empty($this->relays)) {
+            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+        }
+        $writeRelays = [];
+        foreach ($this->relays as $relay) {
+            if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
+                $writeRelays[] = $relay[1];
+            }
+            if (in_array('write', $relay, true)) {
+                $writeRelays[] = $relay[1];
+            }
+        }
+        return $writeRelays;
+    }
+
+    /**
+     * Get relays where the npub reads from.
+     *
+     * @return array
+     */
+    public function getReadRelays(): array {
+        if (empty($this->relays)) {
+            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+        }
+        $readRelays = [];
+        foreach ($this->relays as $relay) {
+            if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
+                $readRelays[] = $relay[1];
+            }
+            if (in_array('read', $relay, true)) {
+                $readRelays[] = $relay[1];
+            }
+        }
+        return $readRelays;
+    }
+
+    /**
+     * Fetch all relays from a given pubkey and optional given relay URL.
      * If the list (array) with relays is empty, other attempts are made with known public relays.
      *
      * @param string $pubkey
      * @param string $relayURL
      * @return array
      */
-    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.nostr.band'): array
+    private function fetch(string $pubkey, string $relayURL = 'wss://purplepag.es'): void
     {
-        /**
-         * @TODO
-         * Implements fetching the write relays where this pubkey writes to with RelayListMetadata class,
-         * so we than know where to possibly find the DM relays list.
-         */
         $this->setPublicKey($pubkey);
         $subscription = new Subscription();
         $filter = new Filter();
@@ -74,7 +124,7 @@ class DmRelaysList extends Event
                 if ($relayResponse instanceof RelayResponseEvent) {
                     $event = $relayResponse->event;
                     $this->setTags($event->tags);
-                    $this->relays = $this->getTag('relay');
+                    $this->relays = $this->getTag('r');
                 }
             }
         }
@@ -95,7 +145,7 @@ class DmRelaysList extends Event
                         if ($relayResponse instanceof RelayResponseEvent) {
                             $event = $relayResponse->event;
                             $this->setTags($event->tags);
-                            $this->relays = $this->getTag('relay');
+                            $this->relays = $this->getTag('r');
                         }
                     }
                 }
@@ -104,11 +154,10 @@ class DmRelaysList extends Event
                 }
             }
         }
-        return $this->relays;
     }
 
     /**
-     * Get a list of known (public) relays to query.
+     * Get a list of known (public) relays to query which indexes events with kind 10002.
      *
      * @return array List of relay URLs
      */
@@ -116,8 +165,8 @@ class DmRelaysList extends Event
     {
         // TODO: This would ideally come from configuration.
         return [
-            'wss://relay.damus.io',
-            'wss://relay.primal.net',
+            'wss://indexer.coracle.social',
+            'wss://relay.nostr.band',
         ];
     }
 }
