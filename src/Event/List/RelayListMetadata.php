@@ -50,7 +50,8 @@ class RelayListMetadata extends Event
      *
      * @return array
      */
-    public function getRelays(): array {
+    public function getRelays(): array
+    {
         if (empty($this->relays)) {
             throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
         }
@@ -62,7 +63,8 @@ class RelayListMetadata extends Event
      *
      * @return array
      */
-    public function getWriteRelays(): array {
+    public function getWriteRelays(): array
+    {
         if (empty($this->relays)) {
             throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
         }
@@ -83,7 +85,8 @@ class RelayListMetadata extends Event
      *
      * @return array
      */
-    public function getReadRelays(): array {
+    public function getReadRelays(): array
+    {
         if (empty($this->relays)) {
             throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
         }
