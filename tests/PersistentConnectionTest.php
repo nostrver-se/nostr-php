@@ -77,7 +77,8 @@ class PersistentConnectionTest extends TestCase
         $this->assertFalse($callbackInvoked, 'Callback should not have been invoked after clearing');
     }
 
-    public function testPrintMessagesFlag(): void {
+    public function testPrintMessagesFlag(): void
+    {
         ob_start();
         $this->connection->onReceive(function ($response) {
             // Disconnect and close after 3 seconds
