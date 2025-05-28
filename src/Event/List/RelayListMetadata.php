@@ -55,6 +55,11 @@ class RelayListMetadata extends Event
         if (empty($this->relays)) {
             throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
         }
+        foreach ($this->relays as $relay) {
+            if (str_starts_with($relay[1], 'wss://') === false) {
+                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            }
+        }
         return $this->relays;
     }
 
@@ -70,6 +75,9 @@ class RelayListMetadata extends Event
         }
         $writeRelays = [];
         foreach ($this->relays as $relay) {
+            if (str_starts_with($relay[1], 'wss://') === false) {
+                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            }
             if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
                 $writeRelays[] = $relay[1];
             }
@@ -92,6 +100,9 @@ class RelayListMetadata extends Event
         }
         $readRelays = [];
         foreach ($this->relays as $relay) {
+            if (str_starts_with($relay[1], 'wss://') === false) {
+                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            }
             if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
                 $readRelays[] = $relay[1];
             }
