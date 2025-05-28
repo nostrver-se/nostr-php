@@ -109,6 +109,9 @@ class PersistentConnection
      */
     public function transmit(): array
     {
+        if (!$this->websocketClient->isConnected()) {
+            $this->websocketClient->connect();
+        }
         $this->websocketClient->setPersistent($this->isPersistent());
         try {
             $this->websocketClient->text($this->payload);

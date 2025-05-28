@@ -14,7 +14,7 @@ try {
     // Setup relay and subscription
     $relay = new Relay('wss://relay.nostr.band');
     $subscription = new Subscription();
-    $subscriptionId = $subscription->setId();
+    $subscriptionId = $subscription->getId();
 
     // Create filter for text notes
     $filter = new Filter();
@@ -41,6 +41,7 @@ try {
 
             // Timeout limit reached, so we close the connection and exit the script here.
             if (time() - $startTime >= $timeoutSeconds) {
+                print PHP_EOL;
                 print "Reached timeout of {$timeoutSeconds} seconds, closing connection..." . PHP_EOL;
                 $connection->close();
                 exit(0);
