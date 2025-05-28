@@ -34,7 +34,7 @@ class RelayListMetadataTest extends TestCase
         // Replace the Request constructor with our mock
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The relays property is empty of swentel\nostr\Event\List\RelayListMetadata');
-        
+
         $relayList = new RelayListMetadata(self::TEST_PUBKEY);
         $relayList->getRelays();
     }
@@ -52,7 +52,7 @@ class RelayListMetadataTest extends TestCase
         ]);
 
         $writeRelays = $relayList->getWriteRelays();
-        
+
         $this->assertContains('wss://relay1.com', $writeRelays);
         $this->assertNotContains('wss://relay2.com', $writeRelays);
         $this->assertContains('wss://relay3.com', $writeRelays);
@@ -73,7 +73,7 @@ class RelayListMetadataTest extends TestCase
         ]);
 
         $readRelays = $relayList->getReadRelays();
-        
+
         $this->assertContains('wss://relay1.com', $readRelays);
         $this->assertNotContains('wss://relay2.com', $readRelays);
         $this->assertContains('wss://relay3.com', $readRelays);
@@ -88,7 +88,7 @@ class RelayListMetadataTest extends TestCase
     {
         $relayList = $this->createRelayListWithMockData(
             [['r', 'wss://fallback-relay.com', 'write']],
-            true
+            true,
         );
 
         $writeRelays = $relayList->getWriteRelays();
@@ -127,7 +127,7 @@ class RelayListMetadataTest extends TestCase
         // Create reflection class to modify private properties
         $relayList = new RelayListMetadata(self::TEST_PUBKEY);
         $reflection = new \ReflectionClass($relayList);
-        
+
         $relaysProperty = $reflection->getProperty('relays');
         $relaysProperty->setAccessible(true);
         $relaysProperty->setValue($relayList, $tags);
@@ -142,12 +142,12 @@ class RelayListMetadataTest extends TestCase
     {
         $relayList = new RelayListMetadata(self::TEST_PUBKEY);
         $reflection = new \ReflectionClass($relayList);
-        
+
         $method = $reflection->getMethod('getKnownRelays');
         $method->setAccessible(true);
-        
+
         $knownRelays = $method->invoke($relayList);
-        
+
         $this->assertIsArray($knownRelays);
         $this->assertNotEmpty($knownRelays);
         foreach ($knownRelays as $relay) {
@@ -162,14 +162,14 @@ class RelayListMetadataTest extends TestCase
     {
         $relayList = new RelayListMetadata(self::TEST_PUBKEY);
         $reflection = new \ReflectionClass($relayList);
-        
+
         $relaysProperty = $reflection->getProperty('relays');
         $relaysProperty->setAccessible(true);
         $relaysProperty->setValue($relayList, []);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The relays property is empty of swentel\nostr\Event\List\RelayListMetadata');
-        
+
         $relayList->getRelays();
         $relayList->getReadRelays();
         $relayList->getWriteRelays();
