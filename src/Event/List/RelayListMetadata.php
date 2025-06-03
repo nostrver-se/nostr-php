@@ -100,8 +100,8 @@ class RelayListMetadata extends Event
         }
         $readRelays = [];
         foreach ($this->relays as $relay) {
-            if (str_starts_with($relay[1], 'wss://') === false) {
-                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            if (!preg_match('/^(ws|wss):\/\//', $relay[1])) {
+                throw new \InvalidArgumentException('Invalid URL format. URL must start with ws:// or wss://');
             }
             if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
                 $readRelays[] = $relay[1];
