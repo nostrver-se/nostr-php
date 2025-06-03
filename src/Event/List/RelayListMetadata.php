@@ -53,7 +53,7 @@ class RelayListMetadata extends Event
     public function getRelays(): array
     {
         if (empty($this->relays)) {
-            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+            return [];
         }
         foreach ($this->relays as $relay) {
             if (str_starts_with($relay[1], 'wss://') === false) {
