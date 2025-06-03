@@ -107,6 +107,7 @@ class Profile extends Event
      * @param string $relayURL
      *   Relay to fetch from, defaults to wss://purplepag.es
      * @return $this
+     * @throws \JsonException
      */
     public function fetch(string $pubkey, string $relayURL = 'wss://purplepag.es'): Profile
     {

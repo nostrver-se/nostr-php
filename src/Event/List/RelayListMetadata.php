@@ -179,7 +179,9 @@ class RelayListMetadata extends Event
     {
         // TODO: This would ideally come from configuration.
         return [
+            'wss://profiles.nostrver.se',
             'wss://indexer.coracle.social',
+            'wss://profiles.nostr1.com',
             'wss://relay.nostr.band',
         ];
     }
