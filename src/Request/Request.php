@@ -168,7 +168,11 @@ class Request implements RequestInterface
                 }
                 // NIP-01 - Response NOTICE from the relay.
                 if ($relayResponse->type === 'NOTICE') {
-                    // Do nothing.
+                    // Relay returns an error.
+                    if (str_starts_with($relayResponse->message, 'ERROR:')) {
+                        $client->disconnect();
+                        break;
+                    }
                 }
                 // NIP-01 - Response EOSE from the relay.
                 if ($relayResponse->type === 'EOSE') {
