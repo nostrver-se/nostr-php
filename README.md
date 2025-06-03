@@ -280,7 +280,7 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 - [x] NIP-05 mapping Nostr keys to DNS-based internet identifiers (pr [89](https://github.com/nostrver-se/nostr-php/pull/89) credits to [dsbaars](https://github.com/dsbaars))
 - [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [x] NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90) credits to [dsbaars](https://github.com/dsbaars))
-- [ ] Support NIP-65 relay list metadata
+- [x] Support NIP-65 relay list metadata
 - [ ] Support NIP-29 relay-based groups (communities)
 - [ ] Support NIP-52 calendar events
 - [ ] Support NIP-46 remote signing initiated by the client (issue [#87](https://github.com/nostrver-se/nostr-php/issues/87)) 
