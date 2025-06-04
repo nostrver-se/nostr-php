@@ -87,7 +87,7 @@ class Nip19Helper
             $tlvEntries = [];
             $offset = 0;
             while ($offset < count($binaryData)) {
-                if ($offset + 1 >= count($binaryData)) {
+                if ($offset + 1 > count($binaryData)) {
                     throw new \RuntimeException("Incomplete TLV data");
                 }
                 // Read the Type (T) and Length (L)
