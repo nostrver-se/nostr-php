@@ -104,6 +104,15 @@ class DmRelaysList extends Event
                 }
             }
         }
+        // Cleaning up relay strings...
+        if (!empty($this->relays)) {
+            foreach ($this->relays as $index => $relay) {
+                if (str_contains($relay[1], ' ') === true) {
+                    // Remove spaces
+                    $this->relays[$index][1] = str_replace(' ', '', $relay[1]);
+                }
+            }
+        }
         return $this->relays;
     }
 

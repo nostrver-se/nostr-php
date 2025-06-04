@@ -56,8 +56,8 @@ class RelayListMetadata extends Event
             return [];
         }
         foreach ($this->relays as $relay) {
-            if (str_starts_with($relay[1], 'wss://') === false) {
-                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            if (!preg_match('/^(ws|wss):\/\//', $relay[1])) {
+                throw new \InvalidArgumentException('Invalid URL format. URL ' . $relay[1] . ' must start with ws:// or wss://');
             }
         }
         return $this->relays;
@@ -75,8 +75,8 @@ class RelayListMetadata extends Event
         }
         $writeRelays = [];
         foreach ($this->relays as $relay) {
-            if (str_starts_with($relay[1], 'wss://') === false) {
-                throw new \RuntimeException('The URL ' . $relay[1] . ' is not a valid websocket URL');
+            if (!preg_match('/^(ws|wss):\/\//', $relay[1])) {
+                throw new \InvalidArgumentException('Invalid URL format. URL ' . $relay[1] . ' must start with ws:// or wss://');
             }
             if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
                 $writeRelays[] = $relay[1];
@@ -101,7 +101,7 @@ class RelayListMetadata extends Event
         $readRelays = [];
         foreach ($this->relays as $relay) {
             if (!preg_match('/^(ws|wss):\/\//', $relay[1])) {
-                throw new \InvalidArgumentException('Invalid URL format. URL must start with ws:// or wss://');
+                throw new \InvalidArgumentException('Invalid URL format. URL ' . $relay[1] . ' must start with ws:// or wss://');
             }
             if (!isset($relay[2]) && str_starts_with($relay[1], 'wss://')) {
                 $readRelays[] = $relay[1];
@@ -165,6 +165,15 @@ class RelayListMetadata extends Event
                 }
                 if (!empty($this->relays)) {
                     break;
+                }
+            }
+        }
+        // Cleaning up relay strings...
+        if (!empty($this->relays)) {
+            foreach ($this->relays as $index => $relay) {
+                if (str_contains($relay[1], ' ') === true) {
+                    // Remove spaces
+                    $this->relays[$index][1] = str_replace(' ', '', $relay[1]);
                 }
             }
         }
