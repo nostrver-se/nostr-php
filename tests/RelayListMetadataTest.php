@@ -31,12 +31,9 @@ class RelayListMetadataTest extends TestCase
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('send')->willReturn([]);
 
-        // Replace the Request constructor with our mock
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The relays property is empty of swentel\nostr\Event\List\RelayListMetadata');
-
         $relayList = new RelayListMetadata(self::TEST_PUBKEY);
-        $relayList->getRelays();
+        $this->assertIsArray($relayList->getRelays());
+        $this->assertEmpty($relayList->getRelays());
     }
 
     /**
