@@ -264,6 +264,7 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 - [x] NIP-01 basic protocol flow description
   - [x] Publish events
   - [x] Request events (issue [#55](https://github.com/nostrver-se/nostr-php/pull/55) credits to [kriptonix](https://github.com/kriptonix))
+  - [x] Fetch event with a persistent connection (pr [#99](https://github.com/nostrver-se/nostr-php/pull/99))
   - [x] Implement all types of relay responses 
     - [x] `EVENT` - sends events requested by the client
     - [x] `OK` - indicate an acceptance or denial of an EVENT message
@@ -271,16 +272,14 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
     - [x] `CLOSED` - subscription is ended on the server side
     - [x] `NOTICE` - used to send human-readable messages (like errors) to clients
 - [x] NIP-04 encrypted direct messages (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
-- [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
-- [x] NIP-42 authentication of clients to relays
-- [x] NIP-19 bech32-encoded identifiers (pr [#68](https://github.com/nostrver-se/nostr-php/pull/68))
-  - [x] Encode identifiers
-  - [x] Decode identifiers
-- [x] NIP-24 extra metadata fields and tags (pr [94](https://github.com/nostrver-se/nostr-php/pull/94) credits to [dsbaars](https://github.com/dsbaars))
 - [x] NIP-05 mapping Nostr keys to DNS-based internet identifiers (pr [89](https://github.com/nostrver-se/nostr-php/pull/89) credits to [dsbaars](https://github.com/dsbaars))
-- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [x] NIP-17 private direct messages (pr [#90](https://github.com/nostrver-se/nostr-php/pull/90) credits to [dsbaars](https://github.com/dsbaars))
-- [x] Support NIP-65 relay list metadata (pr [#100](https://github.com/nostrver-se/nostr-php/pull/100))
+- [x] NIP-19 bech32-encoded identifiers (pr [#68](https://github.com/nostrver-se/nostr-php/pull/68))
+- [x] NIP-24 extra metadata fields and tags (pr [94](https://github.com/nostrver-se/nostr-php/pull/94) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-42 authentication of clients to relays
+- [x] NIP-44 encrypted payloads (pr [#84](https://github.com/nostrver-se/nostr-php/pull/84) credits to [dsbaars](https://github.com/dsbaars))
+- [x] NIP-65 relay list metadata (pr [#100](https://github.com/nostrver-se/nostr-php/pull/100))
+- [ ] Support multi-threading (async concurrency) for handling requests simultaneously
 - [ ] Support NIP-29 relay-based groups (communities)
 - [ ] Support NIP-52 calendar events
 - [ ] Support NIP-46 remote signing initiated by the client (issue [#87](https://github.com/nostrver-se/nostr-php/issues/87)) 
@@ -291,6 +290,7 @@ The documentation of phpDocumentor can be found at https://docs.phpdoc.org/.
 - [ ] Support NIP-40 expiration timestamp
 - [ ] Support NIP-47 Nostr Wallet Connect
 - [ ] Support NIP-49 private key encryption
+- [ ] Support NIP-77 Negentropy syncing
 
 ## Community
 
