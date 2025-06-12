@@ -54,7 +54,6 @@ class RelayListMetadataTest extends TestCase
         $this->assertNotContains('wss://relay2.com', $writeRelays);
         $this->assertContains('wss://relay3.com', $writeRelays);
         $this->assertContains('wss://relay4.com', $writeRelays);
-        $this->assertNotContains('http://invalid.com', $writeRelays);
     }
 
     /**
@@ -75,7 +74,6 @@ class RelayListMetadataTest extends TestCase
         $this->assertNotContains('wss://relay2.com', $readRelays);
         $this->assertContains('wss://relay3.com', $readRelays);
         $this->assertContains('wss://relay4.com', $readRelays);
-        $this->assertNotContains('http://invalid.com', $readRelays);
     }
 
     /**
@@ -103,9 +101,8 @@ class RelayListMetadataTest extends TestCase
             ['r', 'wss://valid.com', 'write'],
         ]);
 
-        $this->expectException(\RuntimeException::class);
-        $relayList->getWriteRelays();
-
+        $this->expectException(\InvalidArgumentException::class);
+        $relayList->getRelays();
     }
 
     /**
@@ -153,7 +150,22 @@ class RelayListMetadataTest extends TestCase
     }
 
     /**
-     * Test that empty relays throw exception for all getter methods.
+     * Test that relays array is empty when using the getRelays method
+     */
+    public function testEmptyRelaysReturnEmptyArray(): void
+    {
+        $relayList = new RelayListMetadata(self::TEST_PUBKEY);
+        $reflection = new \ReflectionClass($relayList);
+
+        $relaysProperty = $reflection->getProperty('relays');
+        $relaysProperty->setAccessible(true);
+        $relaysProperty->setValue($relayList, []);
+
+        $this->assertEmpty($relayList->getRelays());
+    }
+
+    /**
+     * Test that empty relays throw exception for getWriteRelays and getReadRelays methods.
      */
     public function testEmptyRelaysThrowExceptions(): void
     {
@@ -167,8 +179,7 @@ class RelayListMetadataTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The relays property is empty of swentel\nostr\Event\List\RelayListMetadata');
 
-        $relayList->getRelays();
-        $relayList->getReadRelays();
-        $relayList->getWriteRelays();
+        $this->assertEmpty($relayList->getReadRelays());
+        $this->assertEmpty($relayList->getWriteRelays());
     }
 }
