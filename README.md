@@ -11,7 +11,7 @@ More info about Nostr: https://github.com/nostr-protocol/nostr.
 
 ## Installation
 
-To use the package in your PHP project with Composer:
+To use the library as a package in your PHP project, you can add it via Composer:
 
 ```console
 $ composer require swentel/nostr-php
@@ -242,7 +242,18 @@ All tests can be found in `tests`.
 $ php vendor/bin/phpunit
 ```
 
-## Documentation with phpDocumentor
+## Documentation
+
+There is a comprehensive documentation website for the library: https://nostr-php.dev
+
+Also, this website is published with nsite on several Blossom servers which can be accessed on the following hosts:
+
+* https://npub1phpdev2d38u5hzs4jrsh360mevh0rjctu9669quy97wu23u8sqdqpfha0j.nsite.lol/
+* https://npub1phpdev2d38u5hzs4jrsh360mevh0rjctu9669quy97wu23u8sqdqpfha0j.nostrdeploy.com/
+
+Repository: https://github.com/nostrver-se/nostr-php.dev
+
+## phpDocumentor documentation
 
 Generate documentation with [phpDocumentor](https://phpdoc.org/).
 
