@@ -5,6 +5,7 @@
 composer.lock
 test*.php
 vendor/
+/.vscode
 
 /.phpdoc/cache/
 /phpdoc.nostr-php.dev

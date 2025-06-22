@@ -8,7 +8,6 @@ use swentel\nostr\Event\Event;
 use swentel\nostr\Key\Key;
 use swentel\nostr\Message\EventMessage;
 use swentel\nostr\Relay\Relay;
-use swentel\nostr\RelayResponse\RelayResponse;
 use swentel\nostr\RelayResponse\RelayResponseOk;
 use swentel\nostr\Request\Request;
 use swentel\nostr\Sign\Sign;
@@ -22,7 +21,10 @@ try {
     $note->setContent($content);
     // Sign event.
     $private_key = new Key();
-    $private_key = $private_key->generatePrivateKey();
+
+    // pull environment variable containing key that is allowed to AUTH to this relay
+    // uses the same env name as NAK
+    $private_key = getenv('NOSTR_SECRET_KEY');
     $signer = new Sign();
     $signer->signEvent($note, $private_key);
     // Optional, verify event.
@@ -43,7 +45,7 @@ try {
             if ($relayResponse instanceof RelayResponseOk) {
                 print 'The event has been transmitted to the relay ' . $relayUrl . PHP_EOL;
                 $eventId = $relayResponse->eventId;
-                print 'The received event id from the relay: ' . $relayResponse->eventId;
+                print 'The received event id from the relay: ' . $relayResponse->eventId.PHP_EOL;
                 // Now we could request the event with this id.
             }
         }

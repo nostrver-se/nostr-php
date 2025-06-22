@@ -41,7 +41,7 @@ try {
             if ($relayResponse->isSuccess) {
                 print 'The event has been transmitted to the relay ' . $relayUrl . PHP_EOL;
                 $eventId = $relayResponse->eventId;
-                print 'The received event id from the relay: ' . $relayResponse->eventId;
+                print 'The received event id from the relay: ' . $relayResponse->eventId.PHP_EOL;
                 // Now we could request the event with this id.
             }
         }
