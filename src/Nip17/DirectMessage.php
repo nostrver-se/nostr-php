@@ -117,14 +117,14 @@ class DirectMessage implements DirectMessageInterface
 
         try {
             // Extract the encrypted content from the gift wrap
-            $encryptedContent = method_exists($giftWrap, 'getContent') ?
-                $giftWrap->getContent() :
-                ($giftWrap->content ?? '');
+            $encryptedContent = method_exists($giftWrap, 'getContent')
+                ? $giftWrap->getContent()
+                : ($giftWrap->content ?? '');
 
             // Extract the gift wrap's random public key
-            $giftWrapPubkey = method_exists($giftWrap, 'getPublicKey') ?
-                $giftWrap->getPublicKey() :
-                $giftWrap->pubkey;
+            $giftWrapPubkey = method_exists($giftWrap, 'getPublicKey')
+                ? $giftWrap->getPublicKey()
+                : $giftWrap->pubkey;
 
             // Create the conversation key for the gift wrap layer
             // Gift wrap is encrypted using a conversation key between the recipient and the one-time random pubkey

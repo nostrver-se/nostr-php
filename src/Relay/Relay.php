@@ -45,7 +45,7 @@ class Relay implements RelayInterface
      * @param string $url
      *   The socket URL.
      */
-    public function __construct(string $url, MessageInterface|null $message = null)
+    public function __construct(string $url, ?MessageInterface $message = null)
     {
         $this->url = $url;
         $this->validateUrl();

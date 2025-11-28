@@ -392,9 +392,9 @@ class Nip19Helper
         $relays = Bech32::fromRelaysToBytes(
             $metadata->getRelays() ?? [],
         );
-        $pubkey = $metadata->getAuthor() ?
-            [Bech32::fromHexToBytes($metadata->getAuthor())] :
-            [Bech32::fromHexToBytes($event->getPublicKey())];
+        $pubkey = $metadata->getAuthor()
+            ? [Bech32::fromHexToBytes($metadata->getAuthor())]
+            : [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
             Bech32::fromIntegerToBytes($event->getKind()),
         ];
@@ -421,9 +421,9 @@ class Nip19Helper
         $relays = Bech32::fromRelaysToBytes(
             $metadata->getRelays() ?? [],
         );
-        $pubkey = $metadata->getAuthor() ?
-            [Bech32::fromHexToBytes($metadata->getAuthor())] :
-            [Bech32::fromHexToBytes($event->getPublicKey())];
+        $pubkey = $metadata->getAuthor()
+            ? [Bech32::fromHexToBytes($metadata->getAuthor())]
+            : [Bech32::fromHexToBytes($event->getPublicKey())];
         $kind = [
             Bech32::fromIntegerToBytes($event->getKind()),
         ];
@@ -437,9 +437,9 @@ class Nip19Helper
      */
     private function convertProfileToBytes(Profile $profile, TLV $metadata): array
     {
-        $pubkey = $metadata->getAuthor() ?
-            [Bech32::fromHexToBytes($metadata->getAuthor())] :
-            [Bech32::fromHexToBytes($profile->getPublicKey())];
+        $pubkey = $metadata->getAuthor()
+            ? [Bech32::fromHexToBytes($metadata->getAuthor())]
+            : [Bech32::fromHexToBytes($profile->getPublicKey())];
         $relays = Bech32::fromRelaysToBytes(
             $metadata->getRelays() ?? [],
         );
