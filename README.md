@@ -234,12 +234,12 @@ $bech32_public = $key->convertPublicKeyToBech32($public_key);
 $bech32_private = $key->convertPrivateKeyToBech32($private_key);
 ```
 
-## Run tests
+## Run tests with debug output
 
 All tests can be found in `tests`.
 
 ```console
-$ php vendor/bin/phpunit
+$ php vendor/bin/phpunit --debug
 ```
 
 ## Documentation
