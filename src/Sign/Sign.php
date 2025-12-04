@@ -50,8 +50,8 @@ class Sign
      */
     public static function serializeEvent(EventInterface $event): bool|string
     {
-        $array =
-        [
+        $array
+        = [
             0,
             $event->getPublicKey(),
             $event->getCreatedAt(),

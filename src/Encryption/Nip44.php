@@ -148,10 +148,10 @@ class Nip44
         $unpaddedLen = unpack('n', substr($padded, 0, 2))[1];
         $unpadded = substr($padded, 2, $unpaddedLen);
 
-        if ($unpaddedLen < self::MIN_PLAINTEXT_SIZE ||
-            $unpaddedLen > self::MAX_PLAINTEXT_SIZE ||
-            strlen($unpadded) !== $unpaddedLen ||
-            strlen($padded) !== 2 + self::calcPaddedLen($unpaddedLen)
+        if ($unpaddedLen < self::MIN_PLAINTEXT_SIZE
+            || $unpaddedLen > self::MAX_PLAINTEXT_SIZE
+            || strlen($unpadded) !== $unpaddedLen
+            || strlen($padded) !== 2 + self::calcPaddedLen($unpaddedLen)
         ) {
             throw new Exception('Invalid padding');
         }

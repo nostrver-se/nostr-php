@@ -11,7 +11,6 @@ use swentel\nostr\Request\Request;
 class RelayListMetadataTest extends TestCase
 {
     private const TEST_PUBKEY = '884704bd421721e292edbec8466287dd3a3c834c2ed269822b95a85e4f8a0c47';
-    private const TEST_RELAY_URL = 'wss://purplepag.es';
 
     /**
      * Test that the kind number cannot be changed from 10002.

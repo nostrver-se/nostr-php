@@ -105,7 +105,7 @@ class Request implements RequestInterface
      * @return array|RelayResponse
      * @throws \Throwable
      */
-    private function getResponseFromRelay(Relay $relay): array | RelayResponse
+    private function getResponseFromRelay(Relay $relay): array|RelayResponse
     {
         $client = $relay->getClient();
         $client->setTimeout(60);
