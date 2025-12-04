@@ -14,6 +14,12 @@ use swentel\nostr\Sign\Sign;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+/**
+ * This snippet show how to integrate the
+ * Search Profiles endpoint of Vertex.
+ * Docs: https://vertexlab.io/docs/endpoints/search-profiles/
+ */
+
 try {
     $event = new Event();
     $event->setKind(5315);
