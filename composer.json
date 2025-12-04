@@ -26,7 +26,7 @@
     "ext-gmp": "*",
     "ext-xml": "*",
     "bitwasp/bech32": "^0.0.1",
-    "leigh/chacha20": "^0.2.0",
+    "dsbaars/chacha20": "^0.3.0",
     "paragonie/ecc": "^2.4",
     "phrity/websocket": "^3.0",
     "simplito/elliptic-php": "^1.0"
