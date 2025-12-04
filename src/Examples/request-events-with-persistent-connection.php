@@ -12,7 +12,7 @@ use swentel\nostr\Request\PersistentConnection;
 
 try {
     // Setup relay and subscription
-    $relay = new Relay('wss://relay.nostr.band');
+    $relay = new Relay('wss://nos.lol');
     $subscription = new Subscription();
     $subscriptionId = $subscription->getId();
 

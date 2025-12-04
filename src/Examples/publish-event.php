@@ -15,7 +15,7 @@ try {
     $note = new Event();
     $note->setKind(1);
     $note->addTag(['t', 'introduction']);
-    $note->addTag(['r', 'wss://relay.nostr.band']);
+    $note->addTag(['r', 'wss://nos.lol']);
     $content = 'Hello Nostr world!';
     $note->setContent($content);
     // Sign event.
@@ -26,7 +26,7 @@ try {
     // Optional, verify event.
     $isValid = $note->verify();
     // Transmit the event to a relay.
-    $relay = new Relay('wss://relay.nostr.band');
+    $relay = new Relay('wss://nostr.lol');
     $eventMessage = new EventMessage($note);
     $relay->setMessage($eventMessage);
     $request = new Request($relay, $eventMessage);

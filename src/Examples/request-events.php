@@ -19,7 +19,7 @@ try {
     $filter1->setLimit(25);
     $filters = [$filter1];
     $requestMessage = new RequestMessage($subscription->getId(), $filters);
-    $relay = new Relay('wss://relay.nostr.band');
+    $relay = new Relay('wss://nos.lol');
     $request = new Request($relay, $requestMessage);
     $response = $request->send();
 

@@ -27,7 +27,6 @@ try {
     $relays = [
         new Relay('wss://relay.damus.io'),
         new Relay('wss://nos.lol'),
-        new Relay('wss://relay.nostr.band'),
         new Relay('wss://nostr.wine'),
     ];
     $relaySet = new RelaySet();
