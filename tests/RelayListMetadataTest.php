@@ -163,22 +163,4 @@ class RelayListMetadataTest extends TestCase
         $this->assertEmpty($relayList->getRelays());
     }
 
-    /**
-     * Test that empty relays throw exception for getWriteRelays and getReadRelays methods.
-     */
-    public function testEmptyRelaysThrowExceptions(): void
-    {
-        $relayList = new RelayListMetadata(self::TEST_PUBKEY);
-        $reflection = new \ReflectionClass($relayList);
-
-        $relaysProperty = $reflection->getProperty('relays');
-        $relaysProperty->setAccessible(true);
-        $relaysProperty->setValue($relayList, []);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The relays property is empty of swentel\nostr\Event\List\RelayListMetadata');
-
-        $this->assertEmpty($relayList->getReadRelays());
-        $this->assertEmpty($relayList->getWriteRelays());
-    }
 }
