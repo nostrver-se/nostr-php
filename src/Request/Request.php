@@ -43,6 +43,13 @@ class Request implements RequestInterface
     protected array $responses;
 
     /**
+     * Timeout in seconds for the websocket connection between the client and server.
+     *
+     * @var int|float
+     */
+    protected int|float $timeout = 60;
+
+    /**
      * Constructor for the Request class.
      * Initializes the url and payload properties based on the provided websocket and message.
      */
@@ -56,7 +63,18 @@ class Request implements RequestInterface
             $relaySet->setRelays([$relay]);
             $this->relays = $relaySet;
         }
+        // Default timeout in seconds.
+        $this->setTimeout($this->timeout);
         $this->payload = $message->generate();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTimeout(float|int $timeout): static
+    {
+        $this->timeout = $timeout;
+        return $this;
     }
 
     /**
@@ -108,7 +126,7 @@ class Request implements RequestInterface
     private function getResponseFromRelay(Relay $relay): array|RelayResponse
     {
         $client = $relay->getClient();
-        $client->setTimeout(60);
+        $client->setTimeout($this->timeout);
 
         try {
             $client->text($this->payload);

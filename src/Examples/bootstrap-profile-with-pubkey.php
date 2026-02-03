@@ -27,23 +27,21 @@ try {
     // A known pubkey (sebastix)
     $pubkey = '06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71';
     /**
-     * Within this class, there are some predefined relays which indexes profile related data as much as possible from the network.
-     * These relays are considered as good relays to bootstrap and collect data.
-     */
-    $relayListMetadata = new RelayListMetadata($pubkey);
-    // This is the list of relays where the given pubkey reads from.
-    $readRelays = $relayListMetadata->getReadRelays();
-    // This is the list of relays where the given pubkey writes (publishes) too.
-    $writeRelays = $relayListMetadata->getWriteRelays();
-    /**
      * Within the profile class, it will try to fetch as much us possible know metadata for this pubkey.
-     * Now we know to which relays the pubkey is writing to, we (assume to) know from which relay we can read the profile data from.
+     * It automatically tries to fetch the relays where the pubkey is writing to.
      */
     $profile = new Profile();
-    $profile->fetch($pubkey, $writeRelays[1] ?? null);
+    $profile->fetch($pubkey);
     print_r($profile) . PHP_EOL;
 
     // Get follow list (kind 3)
+    /**
+     * Within this class, there are some predefined relays which indexes profile related data as much as possible from the network.
+     * These relays are considered as good relays to bootstrap and collect data from the known pubkey.
+     */
+    $relayListMetadata = new RelayListMetadata($pubkey);
+    // This is the list of relays where the given pubkey writes (publishes) too.
+    $writeRelays = $relayListMetadata->getWriteRelays();
     $subscription = new Subscription();
     $filters = [];
     $filter = new Filter();

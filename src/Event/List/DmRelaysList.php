@@ -52,13 +52,8 @@ class DmRelaysList extends Event
      * @param string $relayURL
      * @return array
      */
-    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.nostr.band'): array
+    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.damus.io'): array
     {
-        /**
-         * @TODO
-         * Implements fetching the write relays where this pubkey writes to with RelayListMetadata class,
-         * so we than know where to possibly find the DM relays list.
-         */
         $this->setPublicKey($pubkey);
         $subscription = new Subscription();
         $filter = new Filter();
@@ -66,18 +61,29 @@ class DmRelaysList extends Event
         $filter->setKinds([$this->kind]);
         $filter->setAuthors([$pubkey]);
         $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
-        $relay = new Relay($relayURL);
-        $request = new Request($relay, $requestMessage);
-        $response = $request->send();
-        foreach ($response as $relayResponses) {
-            foreach ($relayResponses as $relayResponse) {
-                if ($relayResponse instanceof RelayResponseEvent) {
-                    $event = $relayResponse->event;
-                    $this->setTags($event->tags);
-                    $this->relays = $this->getTag('relay');
+        // Let's fetch the relays where this pubkey is writing to.
+        $relayListMetadata = new RelayListMetadata($pubkey, $relayURL);
+        $writeRelays = $relayListMetadata->getWriteRelays();
+        // If no write relays are found
+        if (empty($writeRelays)) {
+            $writeRelays[] = $relayURL;
+        }
+        foreach ($writeRelays as $relayURL) {
+            $relay = new Relay($relayURL);
+            $request = new Request($relay, $requestMessage);
+            $request->setTimeout(10);
+            $response = $request->send();
+            foreach ($response as $relayResponses) {
+                foreach ($relayResponses as $relayResponse) {
+                    if ($relayResponse instanceof RelayResponseEvent) {
+                        $event = $relayResponse->event;
+                        $this->setTags($event->tags);
+                        $this->relays = $this->getTag('relay');
+                    }
                 }
             }
         }
+
         if (empty($this->relays)) {
             // Fallback when no relays are found for given relay URL, let's query other relays.
             $other_relays_to_query = $this->getKnownRelays();
@@ -86,6 +92,7 @@ class DmRelaysList extends Event
                 $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
                 $relay->setUrl($relay_url);
                 $request = new Request($relay, $requestMessage);
+                $request->setTimeout(10);
                 $response = $request->send();
                 foreach ($response as $relayResponses) {
                     foreach ($relayResponses as $relayResponse) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace swentel\nostr\Event\Profile;
 
 use swentel\nostr\Event\Event;
+use swentel\nostr\Event\List\RelayListMetadata;
 use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Relay\Relay;
@@ -118,17 +119,30 @@ class Profile extends Event
         $filter->setKinds([$this->kind]);
         $filter->setAuthors([$pubkey]);
         $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
-        $relay = new Relay($relayURL);
-        $request = new Request($relay, $requestMessage);
-        $response = $request->send();
-        foreach ($response as $relayResponses) {
-            foreach ($relayResponses as $relayResponse) {
-                if ($relayResponse instanceof RelayResponseEvent) {
-                    $event = $relayResponse->event;
-                    $this->setId($event->id);
-                    $this->setSignature($event->sig);
-                    $this->setContent($event->content);
-                    $this->parseProfile($event->content);
+        // Let's fetch the relays where this pubkey is writing to.
+        $relayListMetadata = new RelayListMetadata($pubkey, $relayURL);
+        $writeRelays = $relayListMetadata->getWriteRelays();
+        // If no write relays are found
+        if (empty($writeRelays)) {
+            $writeRelays[] = $relayURL;
+        }
+        foreach ($writeRelays as $relayURL) {
+            $relay = new Relay($relayURL);
+            $request = new Request($relay, $requestMessage);
+            $request->setTimeout(5);
+            $response = $request->send();
+            // Handle response
+            foreach ($response as $relayResponses) {
+                foreach ($relayResponses as $relayResponse) {
+                    if ($relayResponse instanceof RelayResponseEvent) {
+                        $event = $relayResponse->event;
+                        $this->setId($event->id);
+                        $this->setSignature($event->sig);
+                        $this->setContent($event->content);
+                        $this->parseProfile($event->content);
+                        // Event with metadata found, break out these loops to continue.
+                        break 3;
+                    }
                 }
             }
         }
