@@ -271,7 +271,7 @@ class Nip19Helper
      * @return string
      * @throws \Exception
      */
-    public function encodeEvent(Event $event, array $relays = [], string $author = '', int $kind = null): string
+    public function encodeEvent(Event $event, array $relays = [], string $author = '', ?int $kind = null): string
     {
         $prefix = 'nevent';
         $tlv = new TLV(

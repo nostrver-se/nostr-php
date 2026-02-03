@@ -71,7 +71,7 @@ class RelayListMetadata extends Event
     public function getWriteRelays(): array
     {
         if (empty($this->relays)) {
-            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+            return [];
         }
         $writeRelays = [];
         foreach ($this->relays as $relay) {
@@ -96,7 +96,7 @@ class RelayListMetadata extends Event
     public function getReadRelays(): array
     {
         if (empty($this->relays)) {
-            throw new \RuntimeException('The relays property is empty of ' . __CLASS__);
+            return [];
         }
         $readRelays = [];
         foreach ($this->relays as $relay) {
@@ -119,7 +119,7 @@ class RelayListMetadata extends Event
      *
      * @param string $pubkey
      * @param string $relayURL
-     * @return array
+     * @return void
      */
     private function fetch(string $pubkey, string $relayURL = 'wss://purplepag.es'): void
     {
@@ -132,6 +132,7 @@ class RelayListMetadata extends Event
         $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
         $relay = new Relay($relayURL);
         $request = new Request($relay, $requestMessage);
+        $request->setTimeout(10);
         $response = $request->send();
         foreach ($response as $relayResponses) {
             foreach ($relayResponses as $relayResponse) {
@@ -150,6 +151,7 @@ class RelayListMetadata extends Event
                 $requestMessage = new RequestMessage($subscription->getId(), [$filter]);
                 $relay->setUrl($relay_url);
                 $request = new Request($relay, $requestMessage);
+                $request->setTimeout(10);
                 $response = $request->send();
                 foreach ($response as $relayResponses) {
                     foreach ($relayResponses as $relayResponse) {
@@ -193,7 +195,6 @@ class RelayListMetadata extends Event
             'wss://indexer.coracle.social',
             'wss://profiles.nostr1.com',
             'wss://user.kindpag.es',
-            'wss://relay.nostr.band',
         ];
     }
 }
