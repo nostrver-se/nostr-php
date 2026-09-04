@@ -152,7 +152,7 @@ class Nip19Helper
                     foreach ($item['value'] as $byte) {
                         $intValue = ($intValue << 8) | $byte;
                     }
-                    $kind = (string) $intValue;
+                    $kind = $intValue;
                     $tlvData['kind'] = $kind;
                 }
             }
@@ -307,7 +307,7 @@ class Nip19Helper
             $dTag,
             $author !== '' ? $author : $event->getPublicKey(),
             $relays,
-            $kind ?? $event->getKind(),
+            $kind ?: $event->getKind(),
         );
         $bytes_array = $this->convertAddressableEventToBytes($event, $metadata);
         $checksum = new Checksum($prefix, Bits::encode($bytes_array));
