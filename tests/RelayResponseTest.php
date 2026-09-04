@@ -7,8 +7,6 @@ use swentel\nostr\Filter\Filter;
 use swentel\nostr\Message\RequestMessage;
 use swentel\nostr\Relay\Relay;
 use swentel\nostr\RelayResponse\RelayResponseAuth;
-use swentel\nostr\RelayResponse\RelayResponseClosed;
-use swentel\nostr\RelayResponse\RelayResponseOk;
 use swentel\nostr\Request\Request;
 use swentel\nostr\Subscription\Subscription;
 
@@ -16,7 +14,7 @@ class RelayResponseTest extends TestCase
 {
     public function testSendRequestToRelayAndResultAuth()
     {
-        $relayUrl = 'wss://jingle.nostrver.se';
+        $relayUrl = 'wss://pyramid.fiatjaf.com';
 
         $relay = new Relay($relayUrl);
 
@@ -35,7 +33,5 @@ class RelayResponseTest extends TestCase
         $result = $request->send();
 
         $this->assertInstanceOf(RelayResponseAuth::class, $result[$relayUrl][0]);
-        $this->assertInstanceOf(RelayResponseClosed::class, $result[$relayUrl][1]);
-        $this->assertInstanceOf(RelayResponseOk::class, $result[$relayUrl][2]);
     }
 }

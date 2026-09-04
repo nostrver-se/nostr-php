@@ -52,7 +52,7 @@ class DmRelaysList extends Event
      * @param string $relayURL
      * @return array
      */
-    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.damus.io'): array
+    public function getRelays(string $pubkey, string $relayURL = 'wss://relay.ditto.pub'): array
     {
         $this->setPublicKey($pubkey);
         $subscription = new Subscription();
@@ -132,8 +132,8 @@ class DmRelaysList extends Event
     {
         // TODO: This would ideally come from configuration.
         return [
-            'wss://relay.damus.io',
-            'wss://relay.primal.net',
+            'wss://relay.ditto.pub',
+            'wss://nos.lol',
         ];
     }
 }

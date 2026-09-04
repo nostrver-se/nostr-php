@@ -6,7 +6,7 @@ relays:
 - wss://gitnostr.com
 - wss://nostr.sebastix.dev/
 - wss://offchain.pub/
-- wss://relay.damus.io/
 - wss://nos.lol/
 - wss://nostr.wine/
-- wss://ngit-relay.nostrver.se
+- wss://inner.sebastix.social
+- wss://pyramid.fiatjaf.com

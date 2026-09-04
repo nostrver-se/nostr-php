@@ -25,7 +25,7 @@ try {
     $filters = [$filter1];
     $requestMessage = new RequestMessage($subscription->getId(), $filters);
     $relays = [
-        new Relay('wss://relay.damus.io'),
+        new Relay('wss://relay.ditto.pub'),
         new Relay('wss://nos.lol'),
         new Relay('wss://nostr.wine'),
     ];

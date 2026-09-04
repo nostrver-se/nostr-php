@@ -15,7 +15,7 @@ use swentel\nostr\Request\Request;
 
 class RequestTest extends TestCase
 {
-    private const RELAY_URL = 'wss://relay.damus.io';
+    private const RELAY_URL = 'wss://relay.ditto.pub';
     private const TEST_PUBKEY = '884704bd421721e292edbec8466287dd3a3c834c2ed269822b95a85e4f8a0c47';
 
     protected Relay $relay;

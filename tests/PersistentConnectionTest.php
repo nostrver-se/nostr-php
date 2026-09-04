@@ -12,7 +12,7 @@ use swentel\nostr\Filter\Filter;
 
 class PersistentConnectionTest extends TestCase
 {
-    private const TEST_RELAY_URL = 'wss://relay.damus.io';
+    private const TEST_RELAY_URL = 'wss://relay.ditto.pub';
     private Relay $relay;
     private PersistentConnection $connection;
     private int $startTime;
