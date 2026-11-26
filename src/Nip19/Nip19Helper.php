@@ -10,6 +10,7 @@ use swentel\nostr\Event\Profile\Profile;
 use swentel\nostr\Key\Key;
 
 use function BitWasp\Bech32\convertBits;
+use function BitWasp\Bech32\decodeRaw;
 use function BitWasp\Bech32\encode;
 
 /**
@@ -49,28 +50,10 @@ class Nip19Helper
                     ),
                 );
             }
-            if ($length < 8) {
-                throw new \RuntimeException(message: 'Bech32 string is too short');
-            }
-            // Find the separator (1)
-            $pos = strrpos($bech32string, '1');
-            if ($pos === false) {
-                throw new \RuntimeException(message: 'Invalid bech32 string');
-            }
-            // Extract human-readable part (HRP)
-            $prefix = substr($bech32string, 0, $pos);
-
-            // Extract data part
-            $data_part = substr($bech32string, $pos + 1);
-            $data = [];
-            for ($i = 0, $iMax = strlen($data_part); $i < $iMax; $i++) {
-                $data[] = strpos(Bech32::BECH32_CHARSET, $data_part[$i]);
-                if ($data[$i] === false) {
-                    throw new \RuntimeException('Invalid character in Bech32 string');
-                }
-            }
+            // Validates characters, case and the checksum, and strips the checksum.
+            [$prefix, $data] = decodeRaw($bech32string);
             // Convert 5-bit data to 8-bit data
-            $binaryData = convertBits($data, count($data), 5, 8);
+            $binaryData = convertBits($data, count($data), 5, 8, false);
             switch ($prefix) {
                 case 'note':
                     // Format binary to hex with a max of 32 bytes to be processed.
@@ -87,7 +70,7 @@ class Nip19Helper
             $tlvEntries = [];
             $offset = 0;
             while ($offset < count($binaryData)) {
-                if ($offset + 1 > count($binaryData)) {
+                if ($offset + 2 > count($binaryData)) {
                     throw new \RuntimeException("Incomplete TLV data");
                 }
                 // Read the Type (T) and Length (L)

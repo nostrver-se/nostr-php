@@ -166,6 +166,40 @@ class Nip19Test extends TestCase
     /**
      * @test
      */
+    public function testInvalidChecksumIsRejected()
+    {
+        // NIP-19 nprofile example with the last checksum character changed.
+        $this->expectException(\RuntimeException::class);
+        $this->nip19->decode('nprofile1qqsrhuxx8l9ex335q7he0f09aej04zpazpl0ne2cgukyawd24mayt8gpp4mhxue69uhhytnc9e3k7mgpz4mhxue69uhkg6nzv9ejuumpv34kytnrdaksjlyr9q');
+    }
+
+    /**
+     * @test
+     */
+    public function testChecksumIsNotDecodedAsData()
+    {
+        // nprofile with only a pubkey: no relays must come out of the checksum bytes.
+        $decoded = $this->nip19->decode('nprofile1qqsrhuxx8l9ex335q7he0f09aej04zpazpl0ne2cgukyawd24mayt8g2lcy6q');
+        $this->assertSame(['pubkey' => '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d'], $decoded);
+
+        // npub payload is the 32-byte key only.
+        [$prefix, $bytes] = $this->nip19->decode('npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg');
+        $this->assertSame('npub', $prefix);
+        $this->assertCount(32, $bytes);
+    }
+
+    /**
+     * @test
+     */
+    public function testUppercaseIsAccepted()
+    {
+        $decoded = $this->nip19->decode('NPROFILE1QQSRHUXX8L9EX335Q7HE0F09AEJ04ZPAZPL0NE2CGUKYAWD24MAYT8G2LCY6Q');
+        $this->assertSame(['pubkey' => '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d'], $decoded);
+    }
+
+    /**
+     * @test
+     */
     public function testInvalidPrefix()
     {
         $this->expectException(\RuntimeException::class);
