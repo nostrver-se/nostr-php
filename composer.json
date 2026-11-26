@@ -22,7 +22,7 @@
     "chat": "https://t.me/nostr_php"
   },
   "require": {
-    "php": ">=8.2 <8.6",
+    "php": ">=8.2 <8.7",
     "ext-gmp": "*",
     "ext-xml": "*",
     "bitwasp/bech32": "^0.0.1",
